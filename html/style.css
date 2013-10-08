@@ -1,0 +1,255 @@
+body {
+    font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+    margin-left : 1.5em;
+    margin-right : 1.5em;
+    margin-bottom : 1.5em;
+}
+    
+a:link {text-decoration:none;}               /* unvisited link */
+a:visited {text-decoration:none;}            /* visited link */
+a:hover {text-decoration:underline;}         /* mouse over link */
+a:active {text-decoration:underline;}        /* selected link */
+a:link.wikipedia_link {color: #000000;}      /* wikipedia link */
+a:hover.wikipedia_link {color: #0000ff;}     /* mouse over link */
+
+hr {
+    margin-top: 1.5em;
+    color: #aaaaaa;
+    background-color: #aaaaaa;
+    height: 1px;
+    clear : both;
+}
+
+h1 {
+    margin-top : 1em;
+    margin-bottom : 0.5em;
+    font-size: 150%;
+}
+
+h2 {
+    margin-top : 0;
+}
+
+div#header p {
+    margin-top : 0.5em;
+    margin-bottom : 0.5em;
+}
+h2,
+div#tabs li {
+    font-size : 130%;
+}
+
+h3 {
+    margin-top : 1.5em;
+    margin-bottom : 0.5em;
+}
+h3,
+table#home_index{
+    font-size : 120%;
+    margin-top : 1em; 
+    margin-left : auto; 
+    margin-right : auto;
+}
+
+div#go_to_home {
+    float:left;
+}
+div#update_time {
+    float:right;
+}
+div#go_to_home,
+div#update_time {
+    margin-bottom : 1em;
+}
+
+div#update_time,
+div#go_to_home {
+    font-size : 80%;
+}
+
+p {
+    font-size : 90%;
+}
+
+div#info {
+    margin-top : 1em;
+    padding: 1em 1em 1em 1em;
+    border: 1px #bbbbbb solid;
+}
+div#info h2,
+div#info ul,
+div#info p {
+    font-size : 80%;
+}
+div#info h2 {
+    margin : 1em 0 0.5em 0;
+}
+div#info ul,
+div#info p {
+    margin : 0em;
+}
+   
+table {
+    border-collapse: collapse;
+    empty-cells: show;
+}
+table th, table td {
+    border: 1px #bbbbbb solid;
+    padding: 0.2em 0.4em;
+}
+
+table#stats td {
+    text-align : right;
+    font-size: 80%;
+}
+table#stats td:nth-child(1) {
+    text-align : left;
+    vertical-align: middle;
+}
+
+table.categoriesIndex {
+    margin: 1em 1em 1em 0;
+    font-size: 80%;
+}
+
+table.categoriesIndex {
+    margin-top : 0em;
+}
+
+table.categoriesIndex tr,
+table.categoriesIndex td,
+table.categoriesIndex th {
+    border: 1px #ffffff solid;
+}
+table.categoriesIndex td:nth-child(2),
+table.categoriesIndex td:nth-child(3) {
+    text-align : right;
+}
+
+table.data,
+table#legend {
+    font-size: 80%;
+}
+table#legend td:nth-child(1) {
+    text-align : center;
+}
+
+div#tabs {
+    margin-top : 1em;
+    }
+div#tabs ul {
+    list-style : none;
+    padding : 0;
+    margin : 0;
+}
+div#tabs li {
+    float: left;
+    border: 1px solid #bbb;
+    border-bottom-width: 0;
+    margin: 0;
+}
+div#tabs a {
+    text-decoration: none;
+    display: block;
+    background: #eee;
+    padding: 0.24em 1em;
+    color: black;/*#00c;*/
+    width: 8em;
+    text-align: center;
+}
+div#tabs a:hover {
+    background: #ddf;
+}
+div#tabs #selected {
+    border-color: black;
+}
+div#tabs #selected a {
+    position: relative;
+    top: 1px;
+    background: white;
+    color: black;
+    font-weight: bold;
+}
+
+div#content, div#subpage_content {
+    clear : both;
+    padding : 1em 1em 1em 1em;
+}
+div#content {
+    border : 1px solid black;
+}
+
+table#home_index{
+    margin-bottom : 2em;
+}
+table#home_index a {
+    display: block;
+}
+table#home_index img {
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+div#nonMappableCategoriesDiv,
+div#nonMappableArticlesDiv {
+    font-size : 90%;
+}
+
+.item_img {
+    vertical-align: middle;
+    margin-left : 0.5em;
+    margin-right : 0.5em;
+}
+
+div#selectNonMappable {
+    border: 2px #ffb2b2 solid;
+    margin-bottom : 1em;
+}
+
+div.showHideNonMappable {
+    margin-bottom : 0.3em;
+}
+div.showHideNonMappable a {
+    font-size: 70%;
+    color: #e5e4e3;
+    margin-bottom : 1em;
+}
+div.showHideNonMappable a:hover {
+    color : black;
+} 
+
+.non_mappable {
+    background-color: #f2f1f0;
+    /*set display : '' for showing non_mappable articles and categories by default*/
+    display : none;
+}
+
+.articleLinkImg {
+    vertical-align: middle;
+}
+
+.categoryLink .overpassTurboLink {
+   visibility: hidden;
+}  
+.categoryLink:hover .overpassTurboLink {
+   visibility: visible;
+}  
+
+.done100 {
+    background-color: #6df21f;
+}
+.done099 {
+    background-color: #FFFFB2;
+}
+.done075 {
+    background-color: #FECC5C;
+}
+.done050 {
+    background-color: #FD8D3C;
+}
+.done025 {
+    background-color: #F03B20;
+}
+.done0 {
+    background-color: #BD0026;
+}

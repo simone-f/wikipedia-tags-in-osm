@@ -1,0 +1,96 @@
+[general]
+osmdir = 
+preferred language = it
+country = italy
+outdir =
+
+[themes]
+altro = Stazioni meteorologiche d'Italia
+cultura = Biblioteche d'Italia per regione | Osservatori astronomici d'Italia | Siti archeologici d'Italia | Università in Italia | Orti botanici d'Italia | Scuole in Italia | Teatri d'Italia
+escursionismo = Bivacchi d'Italia | Rifugi d'Italia | Sentieri delle Alpi | Sentieri dell'Italia
+infrastrutture = Aeroporti d'Italia per regione | Fari d'Italia | Metropolitane in Italia | Porti d'Italia | Canali artificiali d'Italia | Funicolari in Italia |Parchi eolici in Italia | Stazioni ferroviarie d'Italia | Centrali idroelettriche in Italia| Idroscali d'Italia |Piste ciclabili d'Italia |Trafori ferroviari in Italia | Depositi locomotive d'Italia | Linee ferroviarie in Italia |Ponti d'Italia
+luoghi di culto = Abbazie d'Italia | Cattedrali d'Italia | Monasteri d'Italia | Santuari cattolici d'Italia | Basiliche d'Italia | Cimiteri d'Italia | Moschee d'Italia | Sinagoghe d'Italia | Cappelle d'Italia | Eremi d'Italia | Oratori d'Italia | Templi d'Italia
+natura = Aree naturali protette per regione | Cascate d'Italia | Grotte d'Italia | Stretti d'Italia | Baie d'Italia | Coste d'Italia | Isole d'Italia | Zone umide | Canali naturali d'Italia | Foreste d'Italia | Laghi d'Italia per regione | Canyon d'Italia | Ghiacciai d'Italia | Lagune d'Italia | Capi e promontori d'Italia | Golfi d'Italia | Passi e valichi d'Italia
+sport = Circuiti motoristici italiani | Stadi del ghiaccio in Italia | Stadi del ghiaccio in Italia | Impianti sportivi in Italia per regione | Piste sciistiche italiane | Trampolini in Italia
+strutture architettoniche = Architetture militari d'Italia per regione | Fontane d'Italia | Monumenti d'Italia | Piazze d'Italia | Caffè storici d'Italia | Gallerie commerciali | Musei d'Italia per regione | Ville d'Italia | Centri commerciali d'Italia | Grattacieli d'Italia | Palazzi d'Italia
+svago = Parchi di divertimento in Italia
+
+[debug]
+print categories to text files = false
+clickable cells = false
+
+[catscan dates]
+Stazioni_meteorologiche_d'Italia = Oct 01, ore 20
+Biblioteche_d'Italia_per_regione = Oct 01, ore 20
+Osservatori_astronomici_d'Italia = Oct 01, ore 20
+Siti_archeologici_d'Italia = Oct 01, ore 20
+Università_in_Italia = Oct 01, ore 20
+Orti_botanici_d'Italia = Oct 01, ore 20
+Scuole_in_Italia = Oct 01, ore 20
+Teatri_d'Italia = Oct 01, ore 20
+Bivacchi_d'Italia = Oct 01, ore 20
+Rifugi_d'Italia = Oct 01, ore 20
+Sentieri_delle_Alpi = Oct 01, ore 20
+Sentieri_dell'Italia = Oct 01, ore 20
+Aeroporti_d'Italia_per_regione = Oct 01, ore 20
+Fari_d'Italia = Oct 01, ore 20
+Metropolitane_in_Italia = Oct 01, ore 20
+Porti_d'Italia = Oct 01, ore 20
+Canali_artificiali_d'Italia = Oct 01, ore 20
+Funicolari_in_Italia = Oct 01, ore 20
+Parchi_eolici_in_Italia = Oct 01, ore 20
+Stazioni_ferroviarie_d'Italia = Oct 01, ore 20
+Centrali_idroelettriche_in_Italia = Oct 01, ore 20
+Idroscali_d'Italia = Oct 01, ore 20
+Piste_ciclabili_d'Italia = Oct 01, ore 20
+Trafori_ferroviari_in_Italia = Oct 01, ore 20
+Depositi_locomotive_d'Italia = Oct 01, ore 20
+Linee_ferroviarie_in_Italia = Oct 01, ore 20
+Ponti_d'Italia = Oct 01, ore 20
+Abbazie_d'Italia = Oct 01, ore 20
+Cattedrali_d'Italia = Oct 01, ore 20
+Monasteri_d'Italia = Oct 01, ore 20
+Santuari_cattolici_d'Italia = Oct 01, ore 20
+Basiliche_d'Italia = Oct 01, ore 20
+Cimiteri_d'Italia = Oct 01, ore 20
+Moschee_d'Italia = Oct 01, ore 20
+Sinagoghe_d'Italia = Oct 01, ore 20
+Cappelle_d'Italia = Oct 01, ore 20
+Eremi_d'Italia = Oct 01, ore 20
+Oratori_d'Italia = Oct 01, ore 20
+Templi_d'Italia = Oct 01, ore 20
+Aree_naturali_protette_per_regione = Oct 01, ore 20
+Cascate_d'Italia = Oct 01, ore 20
+Grotte_d'Italia = Oct 01, ore 20
+Stretti_d'Italia = Oct 01, ore 20
+Baie_d'Italia = Oct 01, ore 20
+Coste_d'Italia = Oct 01, ore 20
+Isole_d'Italia = Oct 01, ore 20
+Zone_umide = Oct 01, ore 20
+Canali_naturali_d'Italia = Oct 01, ore 20
+Foreste_d'Italia = Oct 01, ore 20
+Laghi_d'Italia_per_regione = Oct 01, ore 20
+Canyon_d'Italia = Oct 01, ore 20
+Ghiacciai_d'Italia = Oct 01, ore 20
+Lagune_d'Italia = Oct 01, ore 20
+Capi_e_promontori_d'Italia = Oct 01, ore 20
+Golfi_d'Italia = Oct 01, ore 20
+Passi_e_valichi_d'Italia = Oct 01, ore 20
+Circuiti_motoristici_italiani = Oct 01, ore 20
+Stadi_del_ghiaccio_in_Italia = Oct 01, ore 20
+Impianti_sportivi_in_Italia_per_regione = Oct 01, ore 20
+Piste_sciistiche_italiane = Oct 01, ore 20
+Trampolini_in_Italia = Oct 01, ore 20
+Architetture_militari_d'Italia_per_regione = Oct 01, ore 20
+Fontane_d'Italia = Oct 01, ore 20
+Monumenti_d'Italia = Oct 01, ore 20
+Piazze_d'Italia = Oct 01, ore 20
+Caffè_storici_d'Italia = Oct 01, ore 20
+Gallerie_commerciali = Oct 01, ore 20
+Musei_d'Italia_per_regione = Oct 01, ore 20
+Ville_d'Italia = Oct 01, ore 20
+Centri_commerciali_d'Italia = Oct 01, ore 20
+Grattacieli_d'Italia = Oct 01, ore 20
+Palazzi_d'Italia = Oct 01, ore 20
+Parchi_di_divertimento_in_Italia = Oct 01, ore 20
+

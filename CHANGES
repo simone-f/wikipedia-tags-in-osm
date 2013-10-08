@@ -1,0 +1,17 @@
+v0.1.3
+======
+- Rename "not mappable" occurences to "non mappable"
+- Create directories if missing
+
+v0.1.2
+======
+- Fixes in methods for downloading and updating OSM data
+
+v0.1.1
+======
+- Fix bug (reported by Luca Delucchi): convert_pbf_to_o5m is not working
+- Add license informations
+
+v0.1
+====
+Initial release
