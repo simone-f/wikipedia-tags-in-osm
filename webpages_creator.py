@@ -289,7 +289,7 @@ class Homepage(Helpers):
         code += '\n        <li> Articoli o sottocategorie appartenenti a più categorie possono ripetersi più volte in una stessa pagina (i conteggi ne tengono conto).</li>'
         code += '\n      </ul>'
         code += '\n      <h2>Script per generare le pagine</h2>'
-        code += '\n      <p>Codice: <a href="http://bit.ly/16i1FFx" target="_blank">wikipedia_tags_in_osm %s</a> (GPLv3)<br>Mail: groppo8@gmail.com</p>' % self.app.version
+        code += '\n      <p>Codice: <a href="https://github.com/simone-f/wikipedia-tags-in-osm" target="_blank">wikipedia-tags-in-osm %s</a> (GPLv3)<br>Mail: groppo8@gmail.com</p>' % self.app.version
         code += '\n      <p><br>Attribuzioni:</p>'
         code += '\n      <p>Icone dei temi: <a href="https://github.com/mapbox/maki" target="_blank" target="_blank">Maki</a> (BSD)<br>'
         code += '\n      Stemmi regionali: <a href="http://www.araldicacivica.it" target="_blank">www.araldicacivica.it</a> (<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/it/">CC BY-NC-ND 3.0</a>)<br>'

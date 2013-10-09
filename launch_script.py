@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Nome-Programma.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Starting from a a list of Wikipedia categories written by the user in
+"""Starting from a list of Wikipedia categories written by the user in
    'config' file, the script:
    - downloads/updates a national OSM data file
    - downloads from (from catscan) Wikipedia data regarding the selected
@@ -45,10 +45,10 @@ from webpages_creator import Creator
 class App:
     def __init__(self):
         #Options
-        testo = "A partire da una lista di categorie inserite dall'utente nel file 'config', lo script:\
+        text = "A partire da una lista di categorie inserite dall'utente nel file 'config', lo script:\
  scarica/aggiorna i dati OSM nazionali, scarica da Wikipedia i dati sulle categorie (gli articoli che le compongono)\
  e crea delle pagine HTML indicando gli articoli già taggati e da taggare in OSM."
-        parser = argparse.ArgumentParser(description=testo)
+        parser = argparse.ArgumentParser(description=text)
         group = parser.add_mutually_exclusive_group()
         #Manage OSM data
         parser.add_argument("-d", "--download_osm", help="Scarica i dati OSM nazionali (da Geofabrik)",
@@ -84,7 +84,7 @@ class App:
         os.chdir(os.path.dirname(sys.argv[0]))
         
         #Configurations
-        self.version = "v0.1.2"
+        self.version = "v0.1.3"
         #From 'config' file
         themesAndCatsNames = self.read_config()
         # OSM data
