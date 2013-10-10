@@ -295,7 +295,7 @@ class Homepage(Helpers):
         code += '\n      Stemmi regionali: <a href="http://www.araldicacivica.it" target="_blank">www.araldicacivica.it</a> (<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/it/">CC BY-NC-ND 3.0</a>)<br>'
         code += '\n      Icone di nodi, way, relazioni ed Overpass Turbo da <a href="http://wiki.openstreetmap.org/">Wiki OSM</a>.</p>'
         code += '\n    </div>'
-        #Tabs: themes|regions|errors
+        #Tabs: themes|regions
         code += '\n    <div id="tabs">'
         code += '\n      <ul>'
         for n, modeName in enumerate(modesNames):
@@ -317,46 +317,53 @@ class Homepage(Helpers):
         self.code = code
 
     def stats_table(self):
-        """Return html code of a table with the numebr of tegged articles
+        """Return html code of a table with the numbers of tagged/non tagged
+           articles of the first and the last 9 days
         """
         red = "#cc0000"
         green = "#00cc7a"
-        strings = {"to do"  : "Da mappare",
-                   "mapped" : "Mappati",
-                   "total"  : "Totali",
-                   "errors" : "Errori"}
+        modes = [("to do", "Da mappare"),
+                 ("mapped", "Mappati"),
+                 ("total", "Totali")]
+
         code = '\n      <table id="stats">'
         code += '\n        <tr>'
         code += '\n          <th>Articoli</th>'
-        for date in self.app.dates:
+        if len(self.app.dates) >= 11:
+            dates = [self.app.dates[0]] + self.app.dates[-9:]
+            days = [self.app.days[0]] + self.app.days[-9:]
+        else:
+            dates = self.app.dates
+            days = self.app.days
+        #dates
+        for date in dates:
             code += '\n          <th>%s</th>' % date
         code += '\n        </tr>'
-        for status in ("mapped", "to do", "total"):
+        for mode, description in modes:
             #first cell
-            if status == "total":
-                code += '\n        <tr>\n          <th>Tag</th>'
-                for d in range(len(self.app.days)):
-                    code += '\n          <th></th>'
+            if mode == "total":
+                code += '\n        <tr>'
+                code += '\n          <th colspan="%d">Tag</th>' % (len(days) + 1)
                 code += '\n        </tr>'
             code += '\n        <tr>'
-            code += '\n          <td>%s</td>' % strings[status]
+            code += '\n          <td>%s</td>' % description
             #data
-            for index, day in enumerate(self.app.days):
-                value = int(day[status])
+            for index, day in enumerate(days):
+                value = int(day[mode])
                 differenceStr = ""
-                if index > 0:#= len(self.app.days) - 1:
-                    previousvalue = int(self.app.days[index-1][status])
-                    difference = int(value) - previousvalue
+                if index > 0:
+                    previousValue = int(days[index-1][mode])
+                    difference = int(value) - previousValue
                     if difference != 0:
                         differenceStr = str(difference)
                         if difference > 0:
-                            if status == "to do":
+                            if mode == "to do":
                                 color = red
                             else:
                                 color = green
                             differenceStr = "+%s" % differenceStr
                         elif difference < 0:
-                            if status == "to do":
+                            if mode == "to do":
                                 color = green
                             else:
                                 color = red
