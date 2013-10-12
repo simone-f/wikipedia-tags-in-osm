@@ -31,7 +31,7 @@ class ParseOSMData():
     def __init__(self, app):
         """ Read an OSM file containing only wikipedia*=* tagged data
             and extract tags and titles of Wikipedia articles.
-            
+
             Returned variables:
             allTags = [list of Wikipedia tags], used to count tags numbers
             articles = {Wikipedia article title : tag}
@@ -39,13 +39,13 @@ class ParseOSMData():
             badTags = {}
         """
         self.app = app
-        
+
         #Read false positive
         self.falsePositiveTags = self.read_false_positive()
-        
+
         #Parse OSM file and extract tags and osmIds
         self.allTags, tagsAndOsmids = self.parse_osm_file()
-        
+
         #Extract articles titles from tags
         #create dictionaries with data like {title : osmIds}
         self.titles = {}        #articles tagged in preferred the language
@@ -57,7 +57,7 @@ class ParseOSMData():
         for lang, titles in self.foreignTitles.iteritems():
             n += len(titles)
         print "  %d tags referring to foreign languages have been found." % n
-        
+
         #Translate foreign titles to preferred language
         self.nonexistent = {}
         foreignTitlesDisabled = False        #for debugging
@@ -93,7 +93,7 @@ class ParseOSMData():
                     tags.append(row[0].decode("utf-8"))
         ifile.close()
         return tags
-        
+
 #### Parse OSM file ####################################################
     def parse_osm_file(self):
         """Extract from an OSM file wikipeida tags and OSM id where the
@@ -146,7 +146,7 @@ class ParseOSMData():
         #             "w_Foreignlang"    : {} wikipedia = foreign lang:title,
         #             "wForeignlang"     : {} wikipedia = foreign lang:title,
         #             "langMissing"              : {}} wikipedia = title (lang missing)
-                     
+
         dicts = {"w_lang"           : {},
                  "w_LANG"           : {},
                  "wLang_"           : {},
@@ -276,12 +276,12 @@ class ParseOSMData():
                                 #### wrong url, not Wikipedia url --> wrong tag
                                 self.add_title_to_dict(self.wrongTags, tagString, osmIds)
         return dicts
-    
+
     def add_title_to_foreignTitles(self, language, title, osmIds):
         if language not in self.foreignTitles:
             self.foreignTitles[language] = {}
         self.add_title_to_dict(self.foreignTitles[language], title, osmIds)
-        
+
     def add_title_to_dict(self, dictionary, title, osmIds):
         """Add article title and osmIds to a dictionary
         """
@@ -345,9 +345,9 @@ class ParseOSMData():
 
         #Query Wikipedia API, 50 titles of the same language per time
         self.nonexistent = {}        # non existent page or wrong url
-        
+
         #stringsPerLang = {"hr" : stringsPerLang["hr"]}      #debugging
-        
+
         for language, fiftyStringsList in stringsPerLang.iteritems():
             print "\n- Get translations for %s titles:" % language
             for fiftyStrings in fiftyStringsList:
@@ -423,7 +423,7 @@ class ParseOSMData():
         print "  nonexistent titles in %s: %d" % (language, len(titles))
         for title in titles:
             print " ", title.encode("utf-8")
-        
+
     def add_to_converted(self, language, newconverted):
         if language not in self.converted:
             self.converted[language] = {}
@@ -451,14 +451,14 @@ class ParseOSMData():
         ifile.close()
         #self.print_translations(converted)
         return converted
-    
+
     def print_translations(self, c):
         for lang, translations in c.iteritems():
             print
             print "language:", lang
             for foreign, preferred in translations.iteritems():
                 print "%s --> %s" % (foreign, preferred)
-                
+
     def save_updated_conversions(self):
         print "\n- Salvataggio del file con le traduzioni"
         call("cp '%s/conversions.csv' '%s/old_conversions.csv'" % (self.app.WIKIPEDIAANSWERS, self.app.WIKIPEDIAANSWERS), shell=True)

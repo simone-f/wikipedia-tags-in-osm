@@ -32,7 +32,7 @@ class Themes:
         for themeName in sorted(themesAndCatsNames.keys()):
             categoriesNames = sorted(themesAndCatsNames[themeName])
             self.themesList.append(Theme(app, themeName, categoriesNames))
-            
+
 class Theme:
     def __init__(self, app, name, categoriesNames):
         self.name = name.capitalize()
@@ -41,7 +41,7 @@ class Theme:
             catscanFile = os.path.join(app.CATSCANDIR, name, "%s.csv" % categoryName)
             category = Category(app, catId, catscanFile, categoryName, True)
             self.categories.append(category)
-        
+
     def check_articles_in_osm(self):
         """Create two lists with titles of tagged/not tagged articles
         """
@@ -54,7 +54,7 @@ class Theme:
                 self.titlesInOSM.append(article.name)
         self.titlesInOSM = list(set(self.titlesInOSM))
         self.titlesNotInOSM = list(set(self.titlesNotInOSM))
-        
+
 class Regions:
     def __init__(self, app):
         names = ["Abruzzo", "Basilicata", "Calabria", "Campania",
@@ -66,7 +66,7 @@ class Regions:
         for regId, name in enumerate(names):
             region = Region(app, name.replace(" ", "_"), regId)
             self.regionsList.append(region)
-            
+
 class Region:
     def __init__(self, app, name, regId):
         self.name = name
@@ -80,7 +80,7 @@ class Region:
         self.articles = []
         self.articles_html = ""
         self.html = ""
-        
+
 class Category:
     """
     A Wikipedia category
@@ -103,7 +103,7 @@ class Category:
             #A mainCategory is a category with a catsan file and a
             #dedicated webpage
             self.mainCategory = self
-            self.mainCategory.allSubcategories = []        
+            self.mainCategory.allSubcategories = []
             self.updateTime = self.app.categoriesDates[self.name.encode("utf-8")]
         else:
             self.mainCategory = mainCategory
@@ -131,14 +131,14 @@ class Category:
         #the switch that shows not mappable items will not be visible in webpages
         self.articlesAreAllMappable = True
         self.isAllMappable = True
-        
+
         #Mappable or not
         if not mappable or self.mainCategory.name in self.app.nonMappable and self.name in self.app.nonMappable[self.mainCategory.name]["subcategories"]:
             #print "not mappable category", self.name
             self.isMappable = False
         else:
             self.isMappable = True
-                
+
         #Build articles
         for artIdx, articleName in enumerate(categoriesData[categoryName]["articles"]):
             artId = "%s_%d" % (self.ident, artIdx)
@@ -151,7 +151,7 @@ class Category:
             else:
                 self.articlesAreAllMappable = False
                 self.isAllMappable = False
-                                                   
+
         #Build subcategories
         for subIdx, subcatName in enumerate(categoriesData[categoryName]["subcategories"]):
             subIdx = "%s_%s" % (self.ident, subIdx)
@@ -160,7 +160,7 @@ class Category:
             for article in subcategory.allMArticles:
                 if article.name not in [a.name for a in self.allMArticles]:
                     self.allMArticles.append(article)
-        
+
         #Check if completelyMappable. If the category is not completely
         #mappable, a link will appear on webpages to show not mappable categories
         if self.isAllMappable:
@@ -168,7 +168,7 @@ class Category:
                 if not subcategory.isMappable or not subcategory.isAllMappable:
                     self.isAllMappable = False
                     break
-        
+
         self.subItemsNumber = None
         #Check if this category is a duplicate subcategory of mainCategory
         #mainCategory == one webpage
@@ -182,7 +182,7 @@ class Category:
 
         self.articles_html = ""
         self.html = ""
-        
+
     def read_categories_data(self, catscanFile, category):
         """Extract categories data from catscan
         """
@@ -216,7 +216,7 @@ class Category:
                 else:
                     rowType = "subcategories"
                 categoriesData[categoryName][rowType].append(name)
-                
+
         #Cleanup. Remove empty categories
         isClean = False
         while not isClean:
@@ -240,15 +240,15 @@ class Category:
                     categoriesdata[catName]["subcategories"].remove(subcatName)
                     isClean = False
         return categoriesdata, isClean
-        
+
     def print_category_tree_to_file(self):
         """Save category tree to a text file (for debugging)
         """
-        text = self.category_graph("", True)
+        text = self.create_category_graph("", True)
         dict_file = open(os.path.join("data", "logs", "%s_dict.txt" % self.name), "w")
         dict_file.write(text)
         dict_file.close()
-        
+
     def check_articles_in_osm(self):
         """Add to articles and categories info regarding it's status
            in OSM (it is tagged or not)
@@ -259,7 +259,7 @@ class Category:
             for article in subcategory.allMArticles:
                 self.check_article_in_osm(article, "allMArticles")
             subcategory.check_articles_in_osm()
-            
+
         #Calculate mapping progress
         # articles
         self.progress = {}
@@ -270,7 +270,7 @@ class Category:
         if self.allMArticles != []:
             self.progress["allMArticles"] = {"num" : None, "string" : None}
             self.progress["allMArticles"]["string"], self.progress["allMArticles"]["num"] = self.calculate_tagging_progress(self.allArticlesInOSM, self.allMArticles)
-            
+
     def check_article_in_osm(self, article, mode):
         """Add to article and category information regarding it's status
            in OSM (it is tagged or not).
@@ -290,7 +290,7 @@ class Category:
                 self.articlesNotInOSM.append(article)
             if article.name not in [a.name for a in self.allArticlesNotInOSM]:
                 self.allArticlesNotInOSM.append(article)
-    
+
     def calculate_tagging_progress(self, taggedArticles, allArticles):
         progressString = "%s/%d" % (len(taggedArticles), len(allArticles))
         progressNum = float(len(taggedArticles)) / float(len(allArticles))
@@ -308,16 +308,16 @@ class Category:
         print "Tagged articles:", subcat.progress["allMArticles"]["string"], "(", subcat.progress["allMArticles"]["num"], "%)"
         print "Graph:"
         self.categoryGraph = ""
-        categoryGraph =self.category_graph("", True)
+        categoryGraph = self.create_category_graph("", True)
         print categoryGraph
-        
-    def category_graph(self, tree, last):
+
+    def create_category_graph(self, tree, last):
         """Print a graphic of category data (for debugging)
         """
         rows = ""
         #category name
         nonMappable = "(NON MAPPABLE) "
-        categoryName = self.name.replace("_", " ")
+        categoryName = self.name.replace("_", " ").encode("utf-8")
         if not self.isMappable:
             categoryName = nonMappable + categoryName
         categoryName = " " + categoryName
@@ -326,14 +326,14 @@ class Category:
         else:
             row = tree + "|_" + categoryName
         rows += "\n" + row
-        
+
         if last:
             tree += "  "
         else:
             tree += "| "
         #articles names
         for article in self.articles:
-            articleName = article.name.replace("_", " ")
+            articleName = article.name.replace("_", " ").encode("utf-8")
             if not article.isMappable:
                 articleName = nonMappable + articleName
             else:
@@ -347,16 +347,16 @@ class Category:
                 row += " " * (len(categoryName) - 1)
             row += "|_" + articleName
             rows += "\n" + row
-            
+
         #subcategories
         for i, subcategory in enumerate(self.subcategories):
             if i == len(self.subcategories) - 1:
                 last = True
             else:
                 last = False
-            rows += subcategory.category_graph(tree, last)
+            rows += subcategory.create_category_graph(tree, last)
         return rows
-                
+
     def build_json_tree(self):      #for debugging
         """Build a nested dictionary of category for d3.js, with
            categories and articles as nodes
@@ -373,10 +373,10 @@ class Category:
             children.append(subcategoryDict)
         tree["children"] = children
         return tree
-        
+
     def build_json_tree_1(self):      #for debugging
         """Build a nested dictionary of category for d3.js, with
-           Categories as node, articles as node attributes 
+           Categories as node, articles as node attributes
         """
         tree = {}
         tree["name"] = self.name.replace("_", " ")
@@ -398,7 +398,7 @@ class Category:
         data = json.dumps(self.build_json_tree_1(), indent=4)
         ifile.write(data)
         ifile.close()
-        
+
 class Article:
     def __init__(self, app, artId, name):
         """A Wikipedia article
@@ -409,7 +409,7 @@ class Article:
         self.name = name
         self.wikipediaUrl = "http://it.wikipedia.org/wiki/%s" % urllib.quote_plus(self.name.encode("utf-8"))
         self.wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=it&title=%s" % self.name.encode("utf-8")
-    
+
     def check_if_in_osm(self):
         if self.name in self.app.taggedTitles:
             self.inOSM = True
@@ -417,7 +417,7 @@ class Article:
         else:
             self.inOSM = False
             self.osmIds = []
-    
+
     def setMappable(self, mainCategory, parentCategory):
         if not parentCategory.isMappable or \
 mainCategory.name in self.app.nonMappable and self.name in self.app.nonMappable[mainCategory.name]["articles"]:
@@ -425,4 +425,4 @@ mainCategory.name in self.app.nonMappable and self.name in self.app.nonMappable[
             self.isMappable = False
         else:
             self.isMappable = True
-        
+

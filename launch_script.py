@@ -77,12 +77,12 @@ class App:
         if self.args.category_info or self.args.category_info\
            or self.args.create_webpages or self.args.print_categories_list:
             self.args.analyze = True
-            
+
         if len(sys.argv)==1:
             parser.print_help()
             sys.exit(1)
         os.chdir(os.path.dirname(sys.argv[0]))
-        
+
         #Configurations
         self.version = "v0.1.3"
         #From 'config' file
@@ -111,6 +111,9 @@ class App:
         statsDir = os.path.join("data", "stats")
         if not os.path.exists(statsDir):
             os.makedirs(statsDir)
+        logsDir = os.path.join("data", "logs")
+        if not os.path.exists(logsDir):
+            os.makedirs(logsDir)
         self.homePageTitle = "Articoli Wikipedia etichettabili in OSM"
         self.UPDATETIME = time.strftime("%b %d, ore %H", time.localtime())
 
@@ -118,7 +121,7 @@ class App:
 ### Manage OpenStreetMap data ##########################################
         #Analyse national OSM data file and create lists of already
         #tagged Wikipedia articles.
-        
+
         #Download/update OSM data
         if self.args.download_osm or self.args.update_osm:
             if self.args.download_osm:
@@ -130,7 +133,7 @@ class App:
         if self.args.update_osm and not status:
             print "I dati OSM erano già aggiornati all'ultimo minuto, o l'aggiornamento con osmupdate è stato interrotto.\
 Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
-                    
+
         if not self.args.analyze:
             #"There's nothing left for me to tell you"
             sys.exit(1)
@@ -142,7 +145,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
                 #If an article is tagged in a foreign language, ask to Wikpedia
                 #what is the corrisponding article of the preferred language, so
                 #that we can flag it as tagged aswell.
-                print "\n- Leggi file OSM ed estrai articoli taggati"
+                print "\n- Estrai dal file OSM gli articoli già taggati"
                 parseOSMData = ParseOSMData(self)
                 #list of Wikipedia tags in OSM
                 self.tagsInOSM = parseOSMData.allTags
@@ -156,16 +159,16 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
                 #in case the parser misses them (strange tags)
                 self.add_tagged_articles()
 
-        
+
 ### Manage Wikipedia data ##############################################
-        #Read from 'non-mappable' file the categories and articles that 
+        #Read from 'non-mappable' file the categories and articles that
         #aren't mappable e.g. "Paintings in the X museum",
         #self.nonMappable = {mainCategory.name : {"articles" : [], "subcategories" : []}}
         self.nonMappable = self.read_non_mappable_items()
-        
+
         #Check if we have Wikipedia data from catscan of all the selected categories
         themesAndCatsNames = self.check_catscan_data(themesAndCatsNames)
-        
+
         #Organize Wikipedia data.
         #self.themes = [Theme(), ...]
         #  Theme().categories = [Category(), ...]
@@ -174,12 +177,12 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         #categories without catscan data
         self.categoriesWithoutData = []
         self.themes = Themes(self, themesAndCatsNames).themesList
-            
+
         #Organize data in regions, for a different visualization
         #self.regions = [Region()]
         #  Region().categories = [Category(), ... ]
         self.regions = Regions(self).regionsList
-            
+
         #Print names of all categories
         if self.args.print_categories_list:
             self.display_categories_names()
@@ -191,12 +194,12 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
 ### Merge OSM info into Wikipedia data #################################
         #Add to Wikipedia categories and articles istances info about
         #their status in OSM: (tagged/not tagged), osm ids and counters
-        print "\n- Controlla quali articoli nelle liste sono già taggati nel file OSM nazionale"
+        print "\n- Controlla quali articoli nelle liste sono già taggati nel file OSM"
         for theme in self.themes:
             for category in theme.categories:
                 category.check_articles_in_osm()
         self.titlesInOSM, self.titlesNotInOSM = self.lists_of_titles_in_OSM_or_not()
-        
+
         #For debugging
         # print info about a specific category
         if self.args.category_info:
@@ -208,7 +211,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             for theme in self.themes:
                 for category in theme.categories:
                     category.print_category_tree_to_file()
-        
+
         #Read and update stats with the number of tagged articles
         self.dates, self.days = self.read_past_stats()
         download_other_countries = False
@@ -222,7 +225,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             del self.days[-2]
             print "\n Questa è la seconda volta che i dati vengono analizzati oggi. \
 Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei conteggi."
-                
+
         #Create webpages
         if self.args.create_webpages:
             print "\n- Crea pagine web"
@@ -237,13 +240,13 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
             self.save_stats_to_csv()
         else:
             print "\nI nuovi conteggi non vengono salvati."
-        
+
         #Copy files from html dir to outdir (for example a Dropbox directory)
         if self.args.copy:
             self.copy_html_files_to_outdir()
-        
+
         print "\nDone."
-               
+
 
 ### Configuration from config file #####################################
     def read_config(self):
@@ -288,7 +291,7 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         url = "http://download.geofabrik.de/europe/%s-latest.osm.pbf" % self.country
         call("wget -c '%s' -O %s" % (url, self.countryPBF), shell=True)
         self.convert_pbf_to_o5m()
-        
+
     def convert_pbf_to_o5m(self):
         """Convert file format PBF --> O5M, necessary for using osmfilter later
         """
@@ -331,7 +334,7 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         print "\n- Estrai i dati OSM con tag wikipedia"
         command = 'osmfilter %s --keep="wikipedia*=*" --keep-tags="all wikipedia*=*" --drop-version --ignore-dependencies -o=%s' % (self.countryO5M, self.wOSMFile)
         call(command, shell=True)
-    
+
     def lists_of_titles_in_OSM_or_not(self):
         """Create a list of already tagged titles, for counting their
            number
@@ -347,13 +350,13 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         titlesInOSM = list(set(titlesInOSM))
         titlesNotInOSM = list(set(titlesNotInOSM))
         return titlesInOSM, titlesNotInOSM
-        
+
 ### Manage catscan data ################################################
     def check_catscan_data(self, themesAndCatsNames):
         """Check if we have Wikipedia data from catscan (subcategories names
            and articles names) of all the categories written in 'config' file
         """
-        print "\n- Controlla la presenza dei dati Wikipedia (articoli delle cateogrie) per ogni categorie inserita nel file 'config'"
+        print "\n- Controlla la presenza dei dati Wikipedia (catscan) di tutte le categorie nel file 'config'"
         needInfo = {}
         for themeName, categoriesNames in themesAndCatsNames.iteritems():
             for categoryName in categoriesNames:
@@ -370,7 +373,7 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
                 if not result:
                     themesAndCatsNames[themeName].remove(categoryName)
         return themesAndCatsNames
-                    
+
     def download_a_new_category(self, themeName, categoryName):
         """Download data (subcategories and articles) of a new category
            from catscan (http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php)
@@ -384,14 +387,14 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
 
         if themeName not in os.listdir(self.CATSCANDIR):
             os.makedirs(os.path.join(self.CATSCANDIR, themeName))
-            
+
         #Download the CSV file with subcategories and articles of the requested category
         url = "http://toolserver.org/~daniel/WikiSense/CategoryIntersect.php?"
         url += "wikilang=%s" % self.WIKIPEDIALANG
         url += "&wikifam=.wikipedia.org"
         url += "&basecat=" + urllib.quote_plus(categoryName.encode("utf-8"))
         url += "&basedeep=8&templates=&mode=al&format=csv"
-        
+
         print "url:"
         print url
 
@@ -401,7 +404,7 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         csvFile.write(data.read())
         csvFile.close()
         print "Dati Wikipedia sulla nuova categoria salvati in:\n%s" % filename
-        
+
         #Remember category date
         configparser = ConfigParser.RawConfigParser()
         configparser.optionxform=str
@@ -420,7 +423,7 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
            Wikipedia articles or categories like: "Paintings in the X museum",
            "Opere nel Castello Sforzesco‎"...
         """
-        print "\n- Leggi lista di articoli e categorie da ignorare perché non mappabili, dal 'file ./data/wikipedia/non_mappable'"
+        print "\n- Leggi le liste di articoli e categorie da ignorare perché non mappabili, dal 'file ./data/wikipedia/non_mappable'"
         #nonMappable = {category : {"subcategories" : [], "articles" : []}, ...}
         nonMappableParser = ConfigParser.RawConfigParser()
         nonMappableParser.read(self.NONMAPPABLE)
@@ -469,7 +472,7 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
                         break
         if not catFound:
             print "\nNessuna categoria trovata con il nome specificato."
-            
+
     def display_categories_names(self):
         """Print to terminal the list of main categories
         """
@@ -480,7 +483,7 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
             for category in theme.categories:
                 print "%d - %s" % (categoryNum, category.name.replace("_", " "))
                 categoryNum += 1
-            
+
 
 ### Statistics #########################################################
     def read_past_stats(self):
@@ -589,8 +592,8 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
             print "\n  *Scrivi nel file 'config' --> 'outdir', il path della directory su cui copiare i file."
         else:
             call("cp -R ./html/* %s" % self.OUTDIR, shell=True)
-            
-            
+
+
 def main():
     App()
 

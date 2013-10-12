@@ -45,7 +45,7 @@ class Helpers:
         else:
             classe = "done099"
         return classe, progressString
-        
+
     def wikipediaLink(self, item):
         text = item.name.replace("_", " ")
         title = "Vedi %s: %s" % (item.typ.lower(), text.replace("\"", "&quot;"))
@@ -63,7 +63,7 @@ class Helpers:
         for osmId in osmIds:
             osmIdsString += '%s(%s);' % (elementType[osmId[0]], osmId[1:])
         return osmIdsString
-        
+
     def overpass_query(self, item):
         if isinstance(item, Article):
             elementsString = self.overpass_osm_ids_string(item)
@@ -80,20 +80,20 @@ class Helpers:
         query += '(._;>;);'
         query += 'out meta qt;'
         return query
-        
+
     def josm_link(self, query, img):
         url = "http://localhost:8111/import?url=http://overpass.osm.rambler.ru/cgi/interpreter?data=" + query
         title = "Scarica in JOSM"
         link = self.url_to_link(url, title, None, img)
         return link
-        
+
     def overpass_turbo_link(self, query, cssClass=""):
         url = 'http://overpass-turbo.eu/index.html?Q=%s&R' % urllib.quote_plus(query)
         title = "Visualizza come mappa cliccabile, immagine... (Overpass Turbo)"
         img = "../img/Overpass-turbo.png"
         link = self.url_to_link(url, title, None, img, cssClass)
         return link
-    
+
     def osm_ids_string(self, item):
         elementType = {"n" : "node", "w" : "way", "r" : "relation"}
         elements = {"nodes" : [], "ways" :[], "relations" : []}
@@ -122,7 +122,7 @@ class Helpers:
             osmDivId = item.ident
             osmIdsString = '<div id="%s" style="display:none"><br>%s</div>' % (osmDivId, osmIdsString)
         return osmIdsString
-        
+
     def url_to_link(self, url, title, text, img=None, cssClass="", target=""):
         if target is None:
             target = ""
@@ -134,7 +134,7 @@ class Helpers:
             textOrImg = text
         code = '<a href="%s" title="%s"%s%s>%s</a>' % (url, title, target, cssClass, textOrImg)
         return code
-        
+
     def article_links(self, app, article):
         """Create links from OSM objects to various services
         """
@@ -143,23 +143,23 @@ class Helpers:
         wiwosmTitle = "Vedi mappa Wikipedia (WIWOSM)"
         wiwosmImg = "../img/wiwosm.png"
         wiwosmLink = self.url_to_link(wiwosmUrl, wiwosmTitle, None, wiwosmImg)
-        
+
         #Show div with OSM ids of the article
         osmUrl = "javascript:showHideDiv(\'%s\');" % article.ident
         osmLinkTitle = "Vedi pagina OSM"
         osmLinkImg = "../img/osm.png"
         osmLink = self.url_to_link(osmUrl, osmLinkTitle, None, osmLinkImg, "", None)
         osmIdsDiv = self.osm_ids_string(article)
-    
+
         query = self.overpass_query(article)
-        
+
         #JOSM remote control link
         img = "../img/josm.png"
         josmLink = self.josm_link(query, img)
-        
+
         #Overpass Turbo link
         overpassTurboLink = self.overpass_turbo_link(query)
-        
+
         code = '\n      %s ' % wiwosmLink
         code += '\n      %s ' % osmLink
         code += '\n      %s ' % josmLink
@@ -167,7 +167,7 @@ class Helpers:
         code += '\n      %s' % osmIdsDiv
         return code
 
-    
+
 ### Webpages creator ###################################################
 class Creator():
     def __init__(self, app):
@@ -182,7 +182,7 @@ class Creator():
         for modeNumber, mode in enumerate(modes):
             modeInfo = (modeNumber, mode)
             self.homepages.append(Homepage(app, modeInfo).code)
-        
+
         #Create categories pages
         for theme in app.themes:
             for category in theme.categories:
@@ -190,14 +190,14 @@ class Creator():
                 for subcategory in category.subcategories:
                     subcategory.html = Category_table(app, subcategory, selectNonMappable).code
                 category.html = Subpage(app, "themes", "", category, selectNonMappable).code
-                
+
         #Create regions pages
         for region in app.regions:
             region.html = Subpage(app, "regions", "_1", region, selectNonMappable).code
-        
+
         #Create errors page
         self.errorsHtml = ErrorsPage(app).code
-        
+
         #Save all HTML files
         self.save_html_files()
 
@@ -223,7 +223,7 @@ class Creator():
         self.save_file(self.errorsHtml, "errors.html")
         if not self.app.args.nofx:
             call("firefox html/index.html", shell=True)
-        
+
     def save_file(self, text, fileName):
         fileOut = open(os.path.join(self.app.HTMLDIR, fileName), "w")
         if isinstance(text, unicode):
@@ -372,7 +372,7 @@ class Homepage(Helpers):
             code += '\n        </tr>'
         code += '\n      </table>'
         return code
-        
+
     def index(self, items, mode):
         """Return html code of a table with themes or regions, to be used
            as index in the homepage
@@ -395,7 +395,7 @@ class Homepage(Helpers):
         code += '\n      </tr>'
         code += '\n    </table>'
         return code
-        
+
     def themes_and_regions_tabs(self, mode):
         """Return html code of homepage tabs: themes and regions
         """
@@ -413,7 +413,7 @@ class Homepage(Helpers):
             if mode == "regions":
                 itemTitle = '<a href="./subpages/%s.html">%s</a>' % (item.name, itemTitle)
             code += '\n\n    <h3>%s<a id="%s"></a>%s</h3>' % (linkTop, item.name, itemTitle)
-            
+
             #categories per theme or per region and number of
             #tagged/not tagged articles
             code += '\n    <table class="categoriesIndex">'
@@ -434,8 +434,8 @@ class Homepage(Helpers):
                 code += '\n      </tr>'
             code += '\n    </table>'
         return code
-        
-        
+
+
 ### Subpage ###############################################################
 class Subpage(Helpers):
     def __init__(self, app, mode, suffix, item, selectNonMappable):
@@ -497,10 +497,10 @@ class Subpage(Helpers):
         code += '\n      Aggiornamento stato mappatura: %s' % self.app.UPDATETIME
         code += '\n    </div>'
         code += '\n</div>'
-        
+
         code += '\n\n<!-- Content -->'
         code += '\n<div id="content">'
-        
+
         # Title. Main category or region name
         if mode == "themes":
             progressClass, progressString = self.progress_strings(item, "allMArticles")
@@ -509,7 +509,7 @@ class Subpage(Helpers):
             #mode == "regions"
             img = '<img src="../img/%s/%s.png" class="item_img">' % (mode, item.name.lower())
             code += '\n<h2>%s<a id="index"></a>%s</h2>' % (img, item.name.replace("_", " "))
-            
+
         if selectNonMappable:
             code += '\n<div id="selectNonMappable">'
             code += '\n  Per contrassegnare alcune categorie ed articoli come "non mappabili": clicca sulle loro celle, copia le stringhe qui sotto ed incollale nel file "./data/wikipedia/non_mappable".<br><br>'
@@ -518,13 +518,13 @@ class Subpage(Helpers):
             code += '\n  Articoli:'
             code += '\n  <div id="nonMappableArticles">&nbsp;</div>'
             code += '\n</div>'
-            
+
         # Index with articles and subcategories of a category
         code += '\n\n<!-- Index -->'
         if mode == "themes" and item.articles != [] and item.mArticles == []:
             code += '\n<div class="showHideNonMappable"><a href=\'javascript:showHideNonMappable("%s_index");\' title="Visualizza sottocategorie non mappabili">Mostra non mappabili</a></div>' % item.ident
         code += '\n%s' % Subpage_index_table(item, mode).code
-        
+
         # Legenda
         code += '\n\n<!-- Legenda -->'
         code += '\n<p><a href="javascript:showHideDiv(\'legenda\');">Legenda</a></p>'
@@ -542,7 +542,7 @@ class Subpage(Helpers):
         code += '\n    <tr><td><img src="../img/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td></tr>'
         code += '\n  </table>'
         code += '\n</div>'
-        
+
         # Articles table
         if item.articles != []:
             code += '\n\n<!-- Articles -->'
@@ -554,7 +554,7 @@ class Subpage(Helpers):
             if not item.articlesAreAllMappable:
                 code += '\n<div class="showHideNonMappable"><a href=\'javascript:showHideNonMappable("%s");\' title="Visualizza articoli non mappabili">Mostra non mappabili</a></div>' % divId
             code += '\n%s\n' % item.articles_html
-            
+
         # Subcategories tables
         code += '\n\n<!-- Subcategories -->'
         for subcategory in item.subcategories:
@@ -578,8 +578,8 @@ class Subpage(Helpers):
         code += '\n</div>'
         code += '\n</body>\n</html>'
         self.code = code
-        
-        
+
+
 ### Categories and regions tables ######################################
 class Subpage_index_table(Helpers):
     def __init__(self, item, mode):
@@ -630,7 +630,7 @@ class Articles_table(Helpers):
         if item.articles == []:
             self.code = ""
             return
-            
+
         tableId = ""
         if not item.articlesAreAllMappable:
             tableId = ' id="%s_articles"' % item.ident
@@ -657,7 +657,7 @@ class Articles_table(Helpers):
             code += "\n  </tr>"
         code += "\n</table>"
         self.code = code
-        
+
 class Category_table(Helpers):
     def __init__(self, app, category, selectNonMappable):
         """Return an html table with subcategories (and their articles)
@@ -674,7 +674,7 @@ class Category_table(Helpers):
         code = self.build_table(code, category, columnsNumber)
         code += '\n</table>'
         self.code = code
-    
+
     def table_columns_number(self, category, i=0):
         if category.subcategories != []:
             columnsNumber = max([self.table_columns_number(subcategory, i + 1) for subcategory in category.subcategories])
@@ -743,7 +743,7 @@ class Category_table(Helpers):
                 code += "\n    <td%s>%s</td>" % (nowrap, links)
             code += "\n  </tr>"
         return code
-        
+
 
 ### ErrorsPage #########################################################
 class ErrorsPage(Helpers):
@@ -779,7 +779,7 @@ class ErrorsPage(Helpers):
         code += '\n    </div>'
         code += '\n</body>\n</html>'
         self.code = code
-    
+
     def errors_or_warnings_table(self, tagsDict):
         """Return a table with wrong tags or tags with warnings
         """
