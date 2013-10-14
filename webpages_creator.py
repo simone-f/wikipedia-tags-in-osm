@@ -53,27 +53,29 @@ class Helpers:
         link = self.url_to_link(item.wikipediaUrl, title, text, None, cssClass)
         return link
 
-    def overpass_osm_ids_string(self, article, osmids=None):
-        elementType = {"n" : "node", "w" : "way", "r" : "relation"}
+    def osm_ids_string_for_overpass(self, article, osmids=None):
+        """Return an OSM ids string used by Overpass
+        """
+        elementTypeAbbr = {"n" : "node", "w" : "way", "r" : "relation"}
         osmIdsString = ""
         if osmids is None:
             osmIds = article.osmIds
         else:
             osmIds = osmids
         for osmId in osmIds:
-            osmIdsString += '%s(%s);' % (elementType[osmId[0]], osmId[1:])
+            osmIdsString += '%s(%s);' % (elementTypeAbbr[osmId[0]], osmId[1:])
         return osmIdsString
 
     def overpass_query(self, item):
         if isinstance(item, Article):
-            elementsString = self.overpass_osm_ids_string(item)
+            elementsString = self.osm_ids_string_for_overpass(item)
         elif isinstance(item, Category):
             elementsString = ""
             for article in item.allArticlesInOSM:
-                elementsString += self.overpass_osm_ids_string(article)
+                elementsString += self.osm_ids_string_for_overpass(article)
         else:
             #wrongTags and badTags are not articles nor categories
-            elementsString = self.overpass_osm_ids_string(None, item)
+            elementsString = self.osm_ids_string_for_overpass(None, item)
         query = '('
         query += elementsString
         query += ');'
@@ -95,33 +97,34 @@ class Helpers:
         return link
 
     def osm_ids_string(self, item):
-        elementType = {"n" : "node", "w" : "way", "r" : "relation"}
+        elementTypeAbbr = {"n" : "node", "w" : "way", "r" : "relation"}
         elements = {"nodes" : [], "ways" :[], "relations" : []}
         if isinstance(item, Article):
             osmIds = item.osmIds
         else:
             #item = wrongTags or badTags
             osmIds = item
+        #create links to OSM web pages
         for osmId in osmIds:
-            url = "http://www.openstreetmap.org/browse/%s/%s" % (elementType[osmId[0]], osmId[1:])
+            url = "http://www.openstreetmap.org/browse/%s/%s" % (elementTypeAbbr[osmId[0]], osmId[1:])
             link = self.url_to_link(url, "%s" % "Vedi pagina OSM", osmId[1:])
-            elements[elementType[osmId[0]] + "s"].append(link)
+            elements[elementTypeAbbr[osmId[0]] + "s"].append(link)
         osmIdsString = ""
-        for elementsType, elementsList in elements.iteritems():
-            if len(elementsList) > 0:
+        for elementsType, linksList in elements.iteritems():
+            if len(linksList) > 0:
                 if osmIdsString != "":
                     osmIdsString += "<br>"
                 if isinstance(item, Article):
                     imgPath = "../img/"
                 else:
                     imgPath = "./img/"
-                img = '<img title="%s" src=%s%s.png>' % (elementsType, imgPath, elementsType)
-                osmIdsString += "%s %s" % (img, ", ".join(elementsList))
+                img = '<img title="%s" src=%s%s.png>' % (elementTypeAbbr, imgPath, elementsType)
+                osmIdsString += "%s %s" % (img, ", ".join(linksList))
         if isinstance(item, Article):
-            #return the string inside a div
+            #put the string into a div
             osmDivId = item.ident
             osmIdsString = '<div id="%s" style="display:none"><br>%s</div>' % (osmDivId, osmIdsString)
-        return osmIdsString
+        return elements, osmIdsString
 
     def url_to_link(self, url, title, text, img=None, cssClass="", target=""):
         if target is None:
@@ -136,7 +139,8 @@ class Helpers:
         return code
 
     def article_links(self, app, article):
-        """Create links from OSM objects to various services
+        """Create links for tagged article from OSM objects to various
+           services
         """
         #WIWOSM link
         wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=%s&title=%s" % (app.WIKIPEDIALANG, article.name)
@@ -144,12 +148,16 @@ class Helpers:
         wiwosmImg = "../img/wiwosm.png"
         wiwosmLink = self.url_to_link(wiwosmUrl, wiwosmTitle, None, wiwosmImg)
 
-        #Show div with OSM ids of the article
+        #Show a div with OSM ids of the article
+        #osm ids div
+        elements, osmIdsDiv = self.osm_ids_string(article)
+        #link for showing the div
         osmUrl = "javascript:showHideDiv(\'%s\');" % article.ident
         osmLinkTitle = "Vedi pagina OSM"
-        osmLinkImg = "../img/osm.png"
+        #check which kind of OSM primitive is used for tagging and use the right icon
+        elementsTypesAbbr = [eType[0] for eType in elements if elements[eType] != []]
+        osmLinkImg = "../img/osm_%s.png" % "".join(sorted(elementsTypesAbbr))
         osmLink = self.url_to_link(osmUrl, osmLinkTitle, None, osmLinkImg, "", None)
-        osmIdsDiv = self.osm_ids_string(article)
 
         query = self.overpass_query(article)
 
@@ -786,7 +794,7 @@ class ErrorsPage(Helpers):
         code = '\n    <table class="data">'
         for tag in sorted(tagsDict.keys()):
             osmIds = tagsDict[tag]
-            osmIdsLinks = self.osm_ids_string(osmIds)
+            elements, osmIdsLinks = self.osm_ids_string(osmIds)
             query = self.overpass_query(osmIds)
             img = "./img/josm.png"
             josmLink = " %s" % self.josm_link(query, img)
