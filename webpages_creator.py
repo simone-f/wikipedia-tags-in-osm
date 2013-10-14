@@ -93,6 +93,8 @@ class Helpers:
         url = 'http://overpass-turbo.eu/index.html?Q=%s&R' % urllib.quote_plus(query)
         title = "Visualizza come mappa cliccabile, immagine... (Overpass Turbo)"
         img = "../img/Overpass-turbo.png"
+        if cssClass != "":
+            cssClass = ' class="%s"' % cssClass
         link = self.url_to_link(url, title, None, img, cssClass)
         return link
 
@@ -126,7 +128,20 @@ class Helpers:
             osmIdsString = '<div id="%s" style="display:none"><br>%s</div>' % (osmDivId, osmIdsString)
         return elements, osmIdsString
 
+    def add_tags_link(self, category):
+        url = "http://toolserver.org/~kolossos/osm-add-tags/index.php?"
+        url += "lang=it"
+        url += "&bbox=%s" % self.app.COUNTRYBBOX
+        url += "&cat=%s" % urllib.quote_plus(category.name.encode("utf-8"))
+        url += "&key=*&value=*&basedeep=10&types=*&request=Submit&iwl=yes"
+        title = "Cerca oggetti ed aggiungi tag (WIWOSM add-tags)"
+        img = "../img/add-tags.png"
+        link = self.url_to_link(url, title, None, img)
+        return link
+
     def url_to_link(self, url, title, text, img=None, cssClass="", target=""):
+        """Return a link from some parameters
+        """
         if target is None:
             target = ""
         else:
@@ -537,19 +552,7 @@ class Subpage(Helpers):
         code += '\n\n<!-- Legenda -->'
         code += '\n<p><a href="javascript:showHideDiv(\'legenda\');">Legenda</a></p>'
         code += '\n<div id="legenda" style="display:none">'
-        code += '\n  <table id="legend">'
-        code += '\n    <tr><td class="done100"></td><td>100% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done099"></td><td>99% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done075"></td><td>75% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done050"></td><td>50% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done025"></td><td>25% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done0"></td><td>0% articoli taggati</td></tr>'
-        code += '\n    <tr><td><img src="../img/wiwosm.png"></td><td>Vedi l\'oggetto sulla mappa Wikipedia</td></tr>'
-        code += '\n    <tr><td><img src="../img/josm.png"></td><td>Scarica l\'oggetto in JOSM</td></tr>'
-        code += '\n    <tr><td><img src="../img/osm.png"></td><td>Vedi la pagina OSM dell\'oggetto</td></tr>'
-        code += '\n    <tr><td><img src="../img/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td></tr>'
-        code += '\n  </table>'
-        code += '\n</div>'
+        code += self.legend_table()
 
         # Articles table
         if item.articles != []:
@@ -586,6 +589,25 @@ class Subpage(Helpers):
         code += '\n</div>'
         code += '\n</body>\n</html>'
         self.code = code
+
+    def legend_table(self):
+        """Return an html table with the legend
+        """
+        code = '\n  <table id="legend">'
+        code += '\n    <tr><td class="done100"></td><td>100% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="done099"></td><td>99% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="done075"></td><td>75% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="done050"></td><td>50% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="done025"></td><td>25% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="done0"></td><td>0% articoli taggati</td></tr>'
+        code += '\n    <tr><td><img src="../img/wiwosm.png"></td><td>Vedi l\'oggetto sulla mappa Wikipedia</td></tr>'
+        code += '\n    <tr><td><img src="../img/josm.png"></td><td>Scarica l\'oggetto in JOSM</td></tr>'
+        code += '\n    <tr><td><img src="../img/osm.png"></td><td>Vedi la pagina OSM dell\'oggetto</td></tr>'
+        code += '\n    <tr><td><img src="../img/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td></tr>'
+        code += '\n    <tr><td><img src="../img/add-tags.png"></td><td>Cerca in OSM possibili oggetti corrispondenti agli articoli e taggali facilmente tramite lo strumento <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a> di WOWOSM</td></tr>'
+        code += '\n  </table>'
+        code += '\n</div>'
+        return code
 
 
 ### Categories and regions tables ######################################
@@ -729,14 +751,16 @@ class Category_table(Helpers):
         if self.selectNonMappable:
             onclick = ' onclick="getName(this);"'
         if isinstance(item, Category):
+            catDiv = "<div class=categoryLink><span>%s</span>" % self.wikipediaLink(item)
+            if item.allArticlesNotInOSM != []:
+                #add a link to WIWOSM tool "add-tags"
+                catDiv += "\n %s" % self.add_tags_link(item)
             if item.allArticlesInOSM != [] and not self.selectNonMappable:
-                #use a div to add an overpass link
+                #add a link to overpass for showing all objects
                 query = self.overpass_query(item)
-                addClass = ' class="overpassTurboLink"'
-                catDiv = "<div class=categoryLink><span>%s</span>" % self.wikipediaLink(item)
-                catDiv += " %s</div>" % self.overpass_turbo_link(query, addClass)
-            else:
-                catDiv = self.wikipediaLink(item)
+                linkClass = "overpassTurboLink"
+                catDiv += "\n %s" % self.overpass_turbo_link(query, linkClass)
+            catDiv += "</div>"
             code += "\n    <td%s%s%s>%s</td>" % (onclick, rowspan, cssclass, catDiv)
         if isinstance(item, Article):
             code += "\n    <td%s%s%s>%s</td>" % (onclick, colspan, cssclass, self.wikipediaLink(item))

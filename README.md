@@ -50,6 +50,7 @@ The script: downloads informations about those categories (subcategories and art
 Write in './config' file:
 
 * 'osmdir', the directory where you want to download national OSM data
+* 'osmbbox', the bbox of the country (it will be used by WIWOSM add-tags tool)
 * 'preferred language', Wikipedia lang, for example: 'it'
 * 'country', the country name as used in GEOFABRIK repository, for example: 'italy'
 * (optional) add a Wikipedia category to the project, by adding its name to an existing theme, or to a new one, in 'themes' section. The script will then download its data (subcategories and articles names) from Wikipedia. To refresh a category, just delete its file in '.data/wikipedia/catscan/theme'.

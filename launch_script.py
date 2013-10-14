@@ -259,6 +259,7 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         self.WIKIPEDIALANG = configparser.get("general", "preferred language")
         self.country = configparser.get("general", "country")
         self.OSMDIR = configparser.get("general", "osmdir")
+        self.COUNTRYBBOX = configparser.get("general", "osmbbox")
         self.countryPoly = os.path.join("data", "OSM", "%s.poly" % self.country)
         if self.WIKIPEDIALANG == "" or self.country == "" or self.OSMDIR == "":
             print "\n* Inserisci nel file 'config' le opzioni 'osmdir', 'preferred language', 'country'"
