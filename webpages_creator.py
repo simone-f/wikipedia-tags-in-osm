@@ -451,8 +451,8 @@ class Homepage(Helpers):
                 else:
                     url = "./subpages/%s.html#%s" % (item.name, category.name)
                 code += '\n        <td>- <a href="%s" title="Vedi pagina">%s</a></td>' % (url, category.name.replace("_", " "))
-                code += '\n        <td class="%s">%s</td>' % (progressClass, len(category.allTitlesInOSM))
-                code += '\n        <td class="%s">%s</td>' % (progressClass, len(category.allTitles))
+                code += '\n        <td class="index_%s">%s</td>' % (progressClass, len(category.allArticlesInOSM))
+                code += '\n        <td class="index_%s">%s</td>' % (progressClass, len(category.allMArticles))
                 code += '\n      </tr>'
             code += '\n    </table>'
         return code
@@ -579,8 +579,7 @@ class Subpage(Helpers):
             code += '\n\n<h3>'
             code += '<a href=#index>&#8593;</a> '
             code += '<a id="%s"></a>' % subcategory.name
-            code += '%s %s' % (self.wikipediaLink(subcategory), progressString)
-            code += ' <span class=%s>&nbsp;&nbsp;</span>' % progressClass
+            code += '%s <span class=%s>%s</span>' % (self.wikipediaLink(subcategory), progressClass, progressString)
             code += '%s</h3>' % overpassTurboLink
             if not subcategory.isAllMappable:
                 code += '\n<div class="showHideNonMappable"><a href="javascript:showHideNonMappable(\'%s\');" title="Mostra anche categorie ed articoli non mappabili">Mostra non mappabili</a></div>' % subcategory.ident
@@ -631,8 +630,8 @@ class Subpage_index_table(Helpers):
             # progress
             if item.titles != []:
                 progressClass, progressString = self.progress_strings(item, "articles")
-                code += '\n      <td class="%s">%s</td>' % (progressClass, len(item.titlesInOSM))
-                code += '\n      <td class="%s">%s</td>' % (progressClass, len(item.articles))
+                code += '\n      <td class="inde_%s">%s</td>' % (progressClass, len(item.articlesInOSM))
+                code += '\n      <td class="inde_%s">%s</td>' % (progressClass, len(item.articles))
             code += '\n    </tr>'
         # subcategories index
         for subcategory in item.subcategories:
@@ -646,8 +645,8 @@ class Subpage_index_table(Helpers):
             # progress
             if subcategory.isMappable:
                 progressClass, progressString = self.progress_strings(subcategory, "allMArticles")
-                code += '\n      <td class="%s">%s</td>' % (progressClass, len(subcategory.allTitlesInOSM))
-                code += '\n      <td class="%s">%s</td>' % (progressClass, len(subcategory.allTitles))
+                code += '\n      <td class="index_%s">%s</td>' % (progressClass, len(subcategory.allArticlesInOSM))
+                code += '\n      <td class="index_%s">%s</td>' % (progressClass, len(subcategory.allMArticles))
             code += '\n    </tr>'
         code += '\n  </table>'
         self.code = code

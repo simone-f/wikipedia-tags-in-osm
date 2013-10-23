@@ -46,8 +46,8 @@ h3 {
 h3,
 table#home_index{
     font-size : 120%;
-    margin-top : 1em; 
-    margin-left : auto; 
+    margin-top : 1em;
+    margin-left : auto;
     margin-right : auto;
 }
 
@@ -88,7 +88,7 @@ div#info ul,
 div#info p {
     margin : 0em;
 }
-   
+
 table {
     border-collapse: collapse;
     empty-cells: show;
@@ -216,7 +216,7 @@ div.showHideNonMappable a {
 }
 div.showHideNonMappable a:hover {
     color : black;
-} 
+}
 
 .non_mappable {
     background-color: #f2f1f0;
@@ -230,26 +230,60 @@ div.showHideNonMappable a:hover {
 
 .categoryLink .overpassTurboLink {
    visibility: hidden;
-}  
+}
 .categoryLink:hover .overpassTurboLink {
    visibility: visible;
 }
 
+.done100, .done099, .done075, .done050, .done025 {
+    border-bottom: 5px solid;
+}
+
+.done0 {
+    border-color: #BD0026;
+}
+.index_done0 {
+    background-color: #BD0026;
+}
+
 .done100 {
+    border-color: #6df21f;
+}
+.index_done100 {
     background-color: #6df21f;
 }
+
 .done099 {
+    border-color: #FFFFB2;
+}
+.index_done099 {
     background-color: #FFFFB2;
 }
+
 .done075 {
+    border-color: #FECC5C;
+    }
+.index_done075 {
     background-color: #FECC5C;
 }
+
 .done050 {
+    border-color: #FD8D3C;
+}
+.index_done050 {
     background-color: #FD8D3C;
 }
+
 .done025 {
+    border-color: #F03B20;
+}
+.index_done025 {
     background-color: #F03B20;
 }
+
 .done0 {
+    border-color: #BD0026;
+}
+.index_done0 {
     background-color: #BD0026;
 }
