@@ -53,29 +53,23 @@ class Helpers:
         link = self.url_to_link(item.wikipediaUrl, title, text, None, cssClass)
         return link
 
-    def osm_ids_string_for_overpass(self, article, osmids=None):
+    def osm_ids_string_for_overpass(self, osmIds):
         """Return an OSM ids string used by Overpass
         """
         elementTypeAbbr = {"n" : "node", "w" : "way", "r" : "relation"}
         osmIdsString = ""
-        if osmids is None:
-            osmIds = article.osmIds
-        else:
-            osmIds = osmids
         for osmId in osmIds:
             osmIdsString += '%s(%s);' % (elementTypeAbbr[osmId[0]], osmId[1:])
         return osmIdsString
 
     def overpass_query(self, item):
         if isinstance(item, Article):
-            elementsString = self.osm_ids_string_for_overpass(item)
+            elementsString = self.osm_ids_string_for_overpass(item.osmIds)
         elif isinstance(item, Category):
-            elementsString = ""
-            for article in item.allArticlesInOSM:
-                elementsString += self.osm_ids_string_for_overpass(article)
+            elementsString = self.osm_ids_string_for_overpass(item.allOsmIds)
         else:
             #wrongTags and badTags are not articles nor categories
-            elementsString = self.osm_ids_string_for_overpass(None, item)
+            elementsString = self.osm_ids_string_for_overpass(item)
         query = '('
         query += elementsString
         query += ');'
@@ -312,7 +306,7 @@ class Homepage(Helpers):
         code += '\n      </ul>'
         code += '\n      <h2>Difetti nelle liste</h2>'
         code += '\n      <ul>'
-        code += '\n        <li> Articoli o categorie <b>non mappabili</b>, ad es. "es. Dipinti nel Museo Tal Dei Tali", possono essere rimossi dalla pagina, se segnalate (vedi mail).</li>'
+        code += '\n        <li> Articoli o categorie <b>non mappabili</b>, ad es. "es. Dipinti nel Museo Tal Dei Tali", possono essere rimossi dalla pagina, se segnalati (vedi mail).</li>'
         code += '\n        <li> Può accadere che in una sottocategoria ricadano articoli non riguardanti il tema di partenza. Se questi sono mappabili vengono comunque mostrati in tabella.</li>'
         code += '\n        <li> Articoli o sottocategorie appartenenti a più categorie possono ripetersi più volte in una stessa pagina (i conteggi ne tengono conto).</li>'
         code += '\n      </ul>'
@@ -443,7 +437,7 @@ class Homepage(Helpers):
             code += '\n\n    <h3>%s<a id="%s"></a>%s</h3>' % (linkTop, item.name, itemTitle)
 
             #categories per theme or per region and number of
-            #tagged/not tagged articles
+            #tagged/non tagged articles
             code += '\n    <table class="categoriesIndex">'
             if mode == "themes":
                 subitems = item.categories
@@ -457,8 +451,8 @@ class Homepage(Helpers):
                 else:
                     url = "./subpages/%s.html#%s" % (item.name, category.name)
                 code += '\n        <td>- <a href="%s" title="Vedi pagina">%s</a></td>' % (url, category.name.replace("_", " "))
-                code += '\n        <td class="%s">%s</td>' % (progressClass, len(category.allArticlesInOSM))
-                code += '\n        <td class="%s">%s</td>' % (progressClass, len(category.allMArticles))
+                code += '\n        <td class="%s">%s</td>' % (progressClass, len(category.allTitlesInOSM))
+                code += '\n        <td class="%s">%s</td>' % (progressClass, len(category.allTitles))
                 code += '\n      </tr>'
             code += '\n    </table>'
         return code
@@ -549,7 +543,7 @@ class Subpage(Helpers):
 
         # Index with articles and subcategories of a category
         code += '\n\n<!-- Index -->'
-        if mode == "themes" and item.articles != [] and item.mArticles == []:
+        if mode == "themes" and item.articles != [] and item.titles == []:
             code += '\n<div class="showHideNonMappable"><a href=\'javascript:showHideNonMappable("%s_index");\' title="Visualizza sottocategorie non mappabili">Mostra non mappabili</a></div>' % item.ident
         code += '\n%s' % Subpage_index_table(item, mode).code
 
@@ -563,7 +557,7 @@ class Subpage(Helpers):
         if item.articles != []:
             code += '\n\n<!-- Articles -->'
             articlesProgressString = ""
-            if item.mArticles != []:
+            if item.titles != []:
                 articlesProgressClass, articlesProgressString = self.progress_strings(item, "articles")
             code += '\n\n<h3><a href=#index>&#8593;</a> <a id="Articles"></a>Articoli %s</h3>' % articlesProgressString
             divId = "%s_articles" % item.ident
@@ -577,7 +571,7 @@ class Subpage(Helpers):
             progressString = ""
             if subcategory.isMappable:
                 progressClass, progressString = self.progress_strings(subcategory, "allMArticles")
-            if subcategory.allArticlesInOSM != []:
+            if subcategory.allTitlesInOSM != []:
                 query = self.overpass_query(subcategory)
                 overpassTurboLink = " %s" % self.overpass_turbo_link(query)
             else:
@@ -629,15 +623,15 @@ class Subpage_index_table(Helpers):
         if item.articles != []:
             colspan = ""
             cssclass = ""
-            if item.mArticles == []:
+            if item.titles == []:
                 cssclass = ' class="non_mappable"'
                 colspan = ' colspan="3"'
             code += '\n    <tr>'
             code += '\n      <td%s%s>- <a href="#Articles">Articoli</a></td>' % (cssclass, colspan)
             # progress
-            if item.mArticles != []:
+            if item.titles != []:
                 progressClass, progressString = self.progress_strings(item, "articles")
-                code += '\n      <td class="%s">%s</td>' % (progressClass, len(item.articlesInOSM))
+                code += '\n      <td class="%s">%s</td>' % (progressClass, len(item.titlesInOSM))
                 code += '\n      <td class="%s">%s</td>' % (progressClass, len(item.articles))
             code += '\n    </tr>'
         # subcategories index
@@ -652,8 +646,8 @@ class Subpage_index_table(Helpers):
             # progress
             if subcategory.isMappable:
                 progressClass, progressString = self.progress_strings(subcategory, "allMArticles")
-                code += '\n      <td class="%s">%s</td>' % (progressClass, len(subcategory.allArticlesInOSM))
-                code += '\n      <td class="%s">%s</td>' % (progressClass, len(subcategory.allMArticles))
+                code += '\n      <td class="%s">%s</td>' % (progressClass, len(subcategory.allTitlesInOSM))
+                code += '\n      <td class="%s">%s</td>' % (progressClass, len(subcategory.allTitles))
             code += '\n    </tr>'
         code += '\n  </table>'
         self.code = code
@@ -757,10 +751,10 @@ class Category_table(Helpers):
             onclick = ' onclick="getName(this);"'
         if isinstance(item, Category):
             catDiv = "<div class=categoryLink><span>%s</span>" % self.wikipediaLink(item)
-            if item.allArticlesNotInOSM != []:
+            if not len(item.allTitles) == len(item.allTitlesInOSM): #allTitlesNotInOSM != []:
                 #add a link to WIWOSM tool "add-tags"
                 catDiv += "\n %s" % self.add_tags_link(item)
-            if item.allArticlesInOSM != [] and not self.selectNonMappable:
+            if item.allTitlesInOSM != [] and not self.selectNonMappable:
                 #add a link to overpass for showing all objects
                 query = self.overpass_query(item)
                 linkClass = "overpassTurboLink"

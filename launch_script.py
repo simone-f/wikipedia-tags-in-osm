@@ -78,7 +78,7 @@ class App:
            or self.args.create_webpages or self.args.print_categories_list:
             self.args.analyze = True
 
-        if len(sys.argv)==1:
+        if len(sys.argv) == 1:
             parser.print_help()
             sys.exit(1)
         os.chdir(os.path.dirname(sys.argv[0]))

@@ -33,6 +33,7 @@ class Themes:
             categoriesNames = sorted(themesAndCatsNames[themeName])
             self.themesList.append(Theme(app, themeName, categoriesNames))
 
+
 class Theme:
     def __init__(self, app, name, categoriesNames):
         self.name = name.capitalize()
@@ -45,15 +46,16 @@ class Theme:
     def check_articles_in_osm(self):
         """Create two lists with titles of tagged/not tagged articles
         """
+        self.titles = []
         self.titlesInOSM = []
         self.titlesNotInOSM = []
         for category in self.categories:
-            for article in category.allArticlesNotInOSM:
-                self.titlesNotInOSM.append(article.name)
-            for article in category.allArticlesInOSM:
-                self.titlesInOSM.append(article.name)
+            self.titles.extend(category.allTitles)
+            self.titlesInOSM.extend(category.allTitlesInOSM)
+        self.titles = list(set(self.titles))
         self.titlesInOSM = list(set(self.titlesInOSM))
-        self.titlesNotInOSM = list(set(self.titlesNotInOSM))
+        self.titlesNotInOSM = [t for t in self.titles if not t in self.titlesInOSM]
+
 
 class Regions:
     def __init__(self, app):
@@ -66,6 +68,7 @@ class Regions:
         for regId, name in enumerate(names):
             region = Region(app, name.replace(" ", "_"), regId)
             self.regionsList.append(region)
+
 
 class Region:
     def __init__(self, app, name, regId):
@@ -81,18 +84,16 @@ class Region:
         self.articles_html = ""
         self.html = ""
 
+
 class Category:
     """
-    A Wikipedia category
+    A category of Wikipedia
 
-    Attributi:
-    subcategories = list of subcategories, Subcategory() instances
-    articles = list of articles (first level), Article() instances
-    articlesContainer = object containing articles (first level), ArticlesContainer()
-    allMArticles = list of all articles inside category and it's subcategories
-    articlesInOSM = [articoli già taggati in OSM]
-    missingInOSM = [articoli non taggati in OSM]
-    html = testo html per la pagina web della categoria
+    articles, list of instances of Article class
+    titles, list of titles (strings) of mappable articles
+    titlesInOSM, list of titles (strings) of mappable articles already tagged in OSM
+    osmIds, list of OSM objects
+    html, html code of web page
     """
     def __init__(self, app, catId, catscanFile, categoryName, mappable, mainCategory=None, categoriesData=None):
         self.app = app
@@ -118,19 +119,20 @@ class Category:
         self.subcategories = []
         #Articles of the category
         self.articles = []
-        #mappable articles of the category
-        self.mArticles = []
-        self.articlesInOSM = []
-        self.articlesNotInOSM = []
-        #Mappable articles in this category + mappable articles in its
-        #subcategories, used to calculate tagging progress
-        self.allMArticles = []
-        self.allArticlesInOSM = []
-        self.allArticlesNotInOSM = []
-        #If not all category's subcateogries and articles are mappable
-        #the switch that shows not mappable items will not be visible in webpages
+        #Articles of cateogry + articles of its subcategories
+        self.allArticles = []
+        #Titles of mappable aarticles
+        self.titles = []
+        self.allTitles = []
+        self.titlesInOSM = []
+        self.allTitlesInOSM = []
+        #If not all subcategories and articles are mappable
+        #the switch that shows non mappable items will not be visible in webpages
         self.articlesAreAllMappable = True
         self.isAllMappable = True
+        #OSM objects belonging to the Wikipedia category
+        self.osmIds = []
+        self.allOsmIds = []
 
         #Mappable or not
         if not mappable or self.mainCategory.name in self.app.nonMappable and self.name in self.app.nonMappable[self.mainCategory.name]["subcategories"]:
@@ -145,10 +147,8 @@ class Category:
             article = Article(app, artId, articleName)
             article.setMappable(self.mainCategory, self)
             self.articles.append(article)
-            if article.isMappable:
-                self.mArticles.append(article)
-                self.allMArticles.append(article)
-            else:
+            self.allArticles.append(article)
+            if not article.isMappable:
                 self.articlesAreAllMappable = False
                 self.isAllMappable = False
 
@@ -157,9 +157,7 @@ class Category:
             subIdx = "%s_%s" % (self.ident, subIdx)
             subcategory = Category(app, subIdx, catscanFile, subcatName, self.isMappable, self.mainCategory, categoriesData)
             self.subcategories.append(subcategory)
-            for article in subcategory.allMArticles:
-                if article.name not in [a.name for a in self.allMArticles]:
-                    self.allMArticles.append(article)
+            self.allArticles.extend(subcategory.allArticles)
 
         #Check if completelyMappable. If the category is not completely
         #mappable, a link will appear on webpages to show not mappable categories
@@ -169,15 +167,12 @@ class Category:
                     self.isAllMappable = False
                     break
 
-        self.subItemsNumber = None
         #Check if this category is a duplicate subcategory of mainCategory
         #mainCategory == one webpage
-        #self.subItemsNumber is used to know the rows number of an html table
         """if self.name in [c.name for c in self.mainCategory.allSubcategories]:
             self.isDuplicate = True
         else:
             self.isDuplicate = False"""
-        self.subItemsNumber = len(self.articles) + sum([subcategory.subItemsNumber for subcategory in self.subcategories])
         self.mainCategory.allSubcategories.append(self)
 
         self.articles_html = ""
@@ -253,28 +248,46 @@ class Category:
         """Add to articles and categories info regarding it's status
            in OSM (it is tagged or not)
         """
-        for article in self.articles:
-            self.check_article_in_osm(article, "articles")
         for subcategory in self.subcategories:
-            for article in subcategory.allMArticles:
-                self.check_article_in_osm(article, "allMArticles")
-            subcategory.check_articles_in_osm()
+            if subcategory.isMappable:
+                subcategory.check_articles_in_osm1()
+        #articles in category
+        for article in self.articles:
+            if article.isMappable:
+		        if not hasattr(article, "inOSM"):
+		            article.check_if_in_osm()
+		        self.titles.append(article.name)
+		        if article.inOSM:
+		            self.titlesInOSM.append(article.name)
+		            self.osmIds.extend(article.osmIds)
+        #articles in subcategories
+        self.allTitles.extend(self.titles)
+        self.allTitlesInOSM.extend(self.titlesInOSM)
+        self.allOsmIds.extend(self.osmIds)
+        for subcategory in self.subcategories:
+            if subcategory.isMappable:
+                self.allTitles.extend(subcategory.allTitles)
+                self.allTitlesInOSM.extend(subcategory.allTitlesInOSM)
+                self.allOsmIds.extend(subcategory.allOsmIds)
+        #remove duplicate
+        self.allTitles = list(set(self.allTitles))
+        self.allTitlesInOSM = list(set(self.allTitlesInOSM))
+        self.allOsmIds = list(set(self.allOsmIds))
 
         #Calculate mapping progress
         # articles
         self.progress = {}
-        if self.mArticles != []:
+        if self.titles != []:
+            #print "articles"
             self.progress["articles"] = {"num" : None, "string" : None}
-            self.progress["articles"]["string"], self.progress["articles"]["num"] = self.calculate_tagging_progress(self.articlesInOSM, self.mArticles)
+            self.progress["articles"]["string"], self.progress["articles"]["num"] = self.calculate_progress(self.titlesInOSM, self.titles)
         # category
-        if self.allMArticles != []:
+        if self.allTitles != []:
             self.progress["allMArticles"] = {"num" : None, "string" : None}
-            self.progress["allMArticles"]["string"], self.progress["allMArticles"]["num"] = self.calculate_tagging_progress(self.allArticlesInOSM, self.allMArticles)
+            self.progress["allMArticles"]["string"], self.progress["allMArticles"]["num"] = self.calculate_progress(self.allTitlesInOSM, self.allTitles)
 
-    def check_article_in_osm(self, article, mode):
-        """Add to article and category information regarding it's status
-           in OSM (it is tagged or not).
-           fill article.inOsm, self.allArticlesInOSM, self.allArticlesNotInOSM
+    def calculate_progress(self, taggedArticles, allArticles):
+        """Return tagging progress
         """
         if not hasattr(article, "inOSM"):
             article.check_if_in_osm()
@@ -363,7 +376,7 @@ class Category:
         """
         tree = {}
         tree["name"] = self.name.replace("_", " ")
-        tree["subitems"] = self.subItemsNumber
+        tree["size"] = self.allArticles
         children = []
         if self.articles != []:
             for article in self.articles:
@@ -380,7 +393,7 @@ class Category:
         """
         tree = {}
         tree["name"] = self.name.replace("_", " ")
-        tree["subitems"] = self.subItemsNumber
+        tree["size"] = self.allArticles
         tree["articles"] = []
         if self.articles != []:
             tree["articles"] = [article.name.replace("_", " ") for article in self.articles]
@@ -395,7 +408,7 @@ class Category:
     def write_json_file(self):      #for debugging
         import json
         ifile = open("./outjson.json", "w")
-        data = json.dumps(self.build_json_tree_1(), indent=4)
+        data = json.dumps(self.build_json_tree(), indent=4)
         ifile.write(data)
         ifile.close()
 
