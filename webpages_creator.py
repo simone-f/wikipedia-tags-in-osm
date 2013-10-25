@@ -9,7 +9,7 @@
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 
-#  Nome-Programma is distributed in the hope that it will be useful,
+#  wikipedia-tags-in-osm is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Nome-Programma.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Crate webpages with the lists of Wikipedia categories and articles
+"""Create webpages with the lists of Wikipedia categories and articles
 """
 
 import os
@@ -98,7 +98,7 @@ class Helpers:
         if isinstance(item, Article):
             osmIds = item.osmIds
         else:
-            #item = wrongTags or badTags
+            #item == ids of wrongTags or badTags
             osmIds = item
         #create links to OSM web pages
         for osmId in osmIds:
@@ -114,7 +114,7 @@ class Helpers:
                     imgPath = "../img/"
                 else:
                     imgPath = "./img/"
-                img = '<img title="%s" src=%s%s.png>' % (elementTypeAbbr, imgPath, elementsType)
+                img = '<img title="%s" src=%s%s.png>' % (elementsType[:-1], imgPath, elementsType)
                 osmIdsString += "%s %s" % (img, ", ".join(linksList))
         if isinstance(item, Article):
             #put the string into a div
