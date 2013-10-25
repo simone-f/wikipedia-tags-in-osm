@@ -140,24 +140,23 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         else:
             if not os.path.isfile(self.wOSMFile):
                 self.filter_wikipedia_data_in_OSM_file()
-            else:
-                #Extract Wikipedia articles tagged in OSM with preferred language.
-                #If an article is tagged in a foreign language, ask to Wikpedia
-                #what is the corrisponding article of the preferred language, so
-                #that we can flag it as tagged aswell.
-                print "\n- Estrai dal file OSM gli articoli già taggati"
-                parseOSMData = ParseOSMData(self)
-                #list of Wikipedia tags in OSM
-                self.tagsInOSM = parseOSMData.allTags
-                #list of tagged Wikipedia articles
-                self.taggedTitles = parseOSMData.titles
-                #tags with errors
-                self.wrongTags = parseOSMData.wrongTags
-                #ugly tags (with url, language capitalized...), not errors
-                self.badTags = parseOSMData.badTags
-                #add articles manually flagged as tagged in data/workaround/tagged.csv
-                #in case the parser misses them (strange tags)
-                self.add_tagged_articles()
+            #Extract Wikipedia articles tagged in OSM with preferred language.
+            #If an article is tagged in a foreign language, ask to Wikpedia
+            #what is the corrisponding article of the preferred language, so
+            #that we can flag it as tagged aswell.
+            print "\n- Estrai dal file OSM gli articoli già taggati"
+            parseOSMData = ParseOSMData(self)
+            #list of Wikipedia tags in OSM
+            self.tagsInOSM = parseOSMData.allTags
+            #list of tagged Wikipedia articles
+            self.taggedTitles = parseOSMData.titles
+            #tags with errors
+            self.wrongTags = parseOSMData.wrongTags
+            #ugly tags (with url, language capitalized...), not errors
+            self.badTags = parseOSMData.badTags
+            #add articles manually flagged as tagged in data/workaround/tagged.csv
+            #in case the parser misses them (strange tags)
+            self.add_tagged_articles()
 
 
 ### Manage Wikipedia data ##############################################
