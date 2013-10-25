@@ -451,8 +451,8 @@ class Homepage(Helpers):
                 else:
                     url = "./subpages/%s.html#%s" % (item.name, category.name)
                 code += '\n        <td>- <a href="%s" title="Vedi pagina">%s</a></td>' % (url, category.name.replace("_", " "))
-                code += '\n        <td class="index_%s">%s</td>' % (progressClass, len(category.allArticlesInOSM))
-                code += '\n        <td class="index_%s">%s</td>' % (progressClass, len(category.allMArticles))
+                code += '\n        <td class="index_%s">%s</td>' % (progressClass, len(category.allTitlesInOSM))
+                code += '\n        <td class="index_%s">%s</td>' % (progressClass, len(category.allTitles))
                 code += '\n      </tr>'
             code += '\n    </table>'
         return code
@@ -592,12 +592,12 @@ class Subpage(Helpers):
         """Return an html table with the legend
         """
         code = '\n  <table id="legend">'
-        code += '\n    <tr><td class="done100"></td><td>100% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done099"></td><td>99% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done075"></td><td>75% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done050"></td><td>50% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done025"></td><td>25% articoli taggati</td></tr>'
-        code += '\n    <tr><td class="done0"></td><td>0% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="index_done100"></td><td>100% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="index_done099"></td><td>99% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="index_done075"></td><td>75% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="index_done050"></td><td>50% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="index_done025"></td><td>25% articoli taggati</td></tr>'
+        code += '\n    <tr><td class="index_done0"></td><td>0% articoli taggati</td></tr>'
         code += '\n    <tr><td><img src="../img/wiwosm.png"></td><td>Vedi l\'oggetto sulla mappa Wikipedia</td></tr>'
         code += '\n    <tr><td><img src="../img/josm.png"></td><td>Scarica l\'oggetto in JOSM</td></tr>'
         code += '\n    <tr><td><img src="../img/osm.png"></td><td>Vedi la pagina OSM dell\'oggetto</td></tr>'
@@ -630,8 +630,8 @@ class Subpage_index_table(Helpers):
             # progress
             if item.titles != []:
                 progressClass, progressString = self.progress_strings(item, "articles")
-                code += '\n      <td class="inde_%s">%s</td>' % (progressClass, len(item.articlesInOSM))
-                code += '\n      <td class="inde_%s">%s</td>' % (progressClass, len(item.articles))
+                code += '\n      <td class="index_%s">%s</td>' % (progressClass, len(item.titlesInOSM))
+                code += '\n      <td class="index_%s">%s</td>' % (progressClass, len(item.titles))
             code += '\n    </tr>'
         # subcategories index
         for subcategory in item.subcategories:
@@ -645,8 +645,8 @@ class Subpage_index_table(Helpers):
             # progress
             if subcategory.isMappable:
                 progressClass, progressString = self.progress_strings(subcategory, "allMArticles")
-                code += '\n      <td class="index_%s">%s</td>' % (progressClass, len(subcategory.allArticlesInOSM))
-                code += '\n      <td class="index_%s">%s</td>' % (progressClass, len(subcategory.allMArticles))
+                code += '\n      <td class="index_%s">%s</td>' % (progressClass, len(subcategory.allTitlesInOSM))
+                code += '\n      <td class="index_%s">%s</td>' % (progressClass, len(subcategory.allTitles))
             code += '\n    </tr>'
         code += '\n  </table>'
         self.code = code
@@ -730,7 +730,7 @@ class Category_table(Helpers):
             isFirstItem = False
         #subcategories
         for subcategory in subcategories:
-            rowsnumber = subcategory.subItemsNumber
+            rowsnumber = len(subcategory.allArticles)
             if rowsnumber > 1:
                 rowspan = " rowspan=%s" % rowsnumber
             else:

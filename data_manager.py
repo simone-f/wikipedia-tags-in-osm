@@ -250,16 +250,16 @@ class Category:
         """
         for subcategory in self.subcategories:
             if subcategory.isMappable:
-                subcategory.check_articles_in_osm1()
+                subcategory.check_articles_in_osm()
         #articles in category
         for article in self.articles:
             if article.isMappable:
-		        if not hasattr(article, "inOSM"):
-		            article.check_if_in_osm()
-		        self.titles.append(article.name)
-		        if article.inOSM:
-		            self.titlesInOSM.append(article.name)
-		            self.osmIds.extend(article.osmIds)
+                if not hasattr(article, "inOSM"):
+                    article.check_if_in_osm()
+                self.titles.append(article.name)
+                if article.inOSM:
+                    self.titlesInOSM.append(article.name)
+                    self.osmIds.extend(article.osmIds)
         #articles in subcategories
         self.allTitles.extend(self.titles)
         self.allTitlesInOSM.extend(self.titlesInOSM)
@@ -280,29 +280,11 @@ class Category:
         if self.titles != []:
             #print "articles"
             self.progress["articles"] = {"num" : None, "string" : None}
-            self.progress["articles"]["string"], self.progress["articles"]["num"] = self.calculate_progress(self.titlesInOSM, self.titles)
+            self.progress["articles"]["string"], self.progress["articles"]["num"] = self.calculate_tagging_progress(self.titlesInOSM, self.titles)
         # category
         if self.allTitles != []:
             self.progress["allMArticles"] = {"num" : None, "string" : None}
-            self.progress["allMArticles"]["string"], self.progress["allMArticles"]["num"] = self.calculate_progress(self.allTitlesInOSM, self.allTitles)
-
-    def calculate_progress(self, taggedArticles, allArticles):
-        """Return tagging progress
-        """
-        if not hasattr(article, "inOSM"):
-            article.check_if_in_osm()
-        if article.inOSM:
-            #in OSM
-            if mode == "articles" and article.name not in [a.name for a in self.articlesInOSM]:
-                self.articlesInOSM.append(article)
-            if article.name not in [a.name for a in self.allArticlesInOSM]:
-                self.allArticlesInOSM.append(article)
-        else:
-            #not in OSM
-            if mode == "articles" and article.name not in [a.name for a in self.articlesNotInOSM]:
-                self.articlesNotInOSM.append(article)
-            if article.name not in [a.name for a in self.allArticlesNotInOSM]:
-                self.allArticlesNotInOSM.append(article)
+            self.progress["allMArticles"]["string"], self.progress["allMArticles"]["num"] = self.calculate_tagging_progress(self.allTitlesInOSM, self.allTitles)
 
     def calculate_tagging_progress(self, taggedArticles, allArticles):
         progressString = "%s/%d" % (len(taggedArticles), len(allArticles))
