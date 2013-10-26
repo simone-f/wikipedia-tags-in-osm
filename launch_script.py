@@ -173,8 +173,9 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         #self.nonMappable = {mainCategory.name : {"articles" : [], "subcategories" : []}}
         self.nonMappable = self.read_non_mappable_items()
 
-        #Check if we have Wikipedia data from catscan of all the selected categories
-        themesAndCatsNames = self.check_catscan_data(themesAndCatsNames)
+        #Check if we have Wikipedia data from CatScan of all the
+        #categories in the project (config file)
+        themesAndCatsNames = wikipedia_downloader.check_catscan_data(self, themesAndCatsNames)
 
         #Organize Wikipedia data.
         #self.themes = [Theme(), ...]
@@ -370,70 +371,6 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         titlesNotInOSM = list(set(titlesNotInOSM))
         return titlesInOSM, titlesNotInOSM
 
-### Manage catscan data ################################################
-    def check_catscan_data(self, themesAndCatsNames):
-        """Check if we have Wikipedia data from catscan (subcategories names
-           and articles names) of all the categories written in 'config' file
-        """
-        print "\n- Controlla la presenza dei dati Wikipedia (catscan) di tutte le categorie nel file 'config'"
-        needInfo = {}
-        for themeName, categoriesNames in themesAndCatsNames.iteritems():
-            for categoryName in categoriesNames:
-                categoryCatscanFile = os.path.join(self.CATSCANDIR, themeName, "%s.csv" % categoryName)
-                categoryCatscanFile = categoryCatscanFile.encode("utf-8")
-                if not os.path.isfile(categoryCatscanFile):
-                    if not themeName in needInfo:
-                        needInfo[themeName] = []
-                    needInfo[themeName].append(categoryName)
-        #download catscan data of missing categories
-        for themeName, categoriesNames in needInfo.iteritems():
-            for categoryName in categoriesNames:
-                result = self.download_a_new_category(themeName, categoryName)
-                if not result:
-                    themesAndCatsNames[themeName].remove(categoryName)
-        return themesAndCatsNames
-
-    def download_a_new_category(self, themeName, categoryName):
-        """Download data (subcategories and articles) of a new category
-           from catscan (http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php)
-           and save it to: CATSCANDIR/theme name/category name.csv
-        """
-        print "\n- Scarico (da catscan) la lista di sottocategorie ed articoli di una nuova categoria Wikipedia"
-        response = raw_input("\n- Scarico dati categoria %s da catscan?\n[y|n]" % categoryName.encode("utf-8"))
-        if response != "y":
-            return False
-        print "\ndownloading category info from catscan..."
-
-        if themeName not in os.listdir(self.CATSCANDIR):
-            os.makedirs(os.path.join(self.CATSCANDIR, themeName))
-
-        #Download the CSV file with subcategories and articles of the requested category
-        url = "http://toolserver.org/~daniel/WikiSense/CategoryIntersect.php?"
-        url += "wikilang=%s" % self.WIKIPEDIALANG
-        url += "&wikifam=.wikipedia.org"
-        url += "&basecat=" + urllib.quote_plus(categoryName.encode("utf-8"))
-        url += "&basedeep=8&templates=&mode=al&format=csv"
-
-        print "url:"
-        print url
-
-        data = urllib2.urlopen(url)
-        filename = os.path.join(self.CATSCANDIR, themeName, "%s.csv" % categoryName)
-        csvFile = open(filename,'w')
-        csvFile.write(data.read())
-        csvFile.close()
-        print "Dati Wikipedia sulla nuova categoria salvati in:\n%s" % filename
-
-        #Remember category date
-        configparser = ConfigParser.RawConfigParser()
-        configparser.optionxform=str
-        configparser.read("config")
-        categoryDate = time.strftime("%b %d, ore %H", time.localtime())
-        configparser.set("catscan dates", categoryName.encode("utf-8"), categoryDate)
-        configparser.write(open("config", "w"))
-        #update category date
-        self.categoriesDates[categoryName] = categoryDate
-        return True
 
 ### Not mappable items and false positive tags #########################
     def read_non_mappable_items(self):

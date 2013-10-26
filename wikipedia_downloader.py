@@ -17,7 +17,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Nome-Programma.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Check which articles don't have the Coord template, by asking to Wikipedia
+"""Functions for getting info from CatScan and Wikipedia API:
+   - download subcategories and articles names of a category (CatScan)
+   - check which articles have/don't have the Coord template (Wikipedia API)
 """
 
 
@@ -29,6 +31,73 @@ import json
 from subprocess import call
 
 
+### Manage catscan data ################################################
+def check_catscan_data(app, themesAndCatsNames):
+    """Check if we have Wikipedia data from catscan (subcategories names
+       and articles names) of all the categories written in 'config' file
+    """
+    print "\n- Controlla la presenza dei dati Wikipedia (catscan) di tutte le categorie nel file 'config'"
+    needInfo = {}
+    for themeName, categoriesNames in themesAndCatsNames.iteritems():
+        for categoryName in categoriesNames:
+            categoryCatscanFile = os.path.join(app.CATSCANDIR, themeName, "%s.csv" % categoryName)
+            categoryCatscanFile = categoryCatscanFile.encode("utf-8")
+            if not os.path.isfile(categoryCatscanFile):
+                if not themeName in needInfo:
+                    needInfo[themeName] = []
+                needInfo[themeName].append(categoryName)
+    #download catscan data of missing categories
+    for themeName, categoriesNames in needInfo.iteritems():
+        for categoryName in categoriesNames:
+            result = download_a_new_category(themeName, categoryName)
+            if not result:
+                themesAndCatsNames[themeName].remove(categoryName)
+    return themesAndCatsNames
+
+def download_a_new_category(app, themeName, categoryName):
+    """Download data (subcategories and articles) of a new category
+       from catscan (http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php)
+       and save it to: CATSCANDIR/theme name/category name.csv
+    """
+    print "\n- Scarico (da catscan) la lista di sottocategorie ed articoli di una nuova categoria Wikipedia"
+    response = raw_input("\n- Scarico dati categoria %s da catscan?\n[y|n]" % categoryName.encode("utf-8"))
+    if response != "y":
+        return False
+    print "\ndownloading category info from catscan..."
+
+    if themeName not in os.listdir(app.CATSCANDIR):
+        os.makedirs(os.path.join(app.CATSCANDIR, themeName))
+
+    #Download the CSV file with subcategories and articles of the requested category
+    url = "http://toolserver.org/~daniel/WikiSense/CategoryIntersect.php?"
+    url += "wikilang=%s" % app.WIKIPEDIALANG
+    url += "&wikifam=.wikipedia.org"
+    url += "&basecat=" + urllib.quote_plus(categoryName.encode("utf-8"))
+    url += "&basedeep=8&templates=&mode=al&format=csv"
+
+    print "url:"
+    print url
+
+    data = urllib2.urlopen(url)
+    filename = os.path.join(app.CATSCANDIR, themeName, "%s.csv" % categoryName)
+    csvFile = open(filename,'w')
+    csvFile.write(data.read())
+    csvFile.close()
+    print "Dati Wikipedia sulla nuova categoria salvati in:\n%s" % filename
+
+    #Remember category date
+    configparser = ConfigParser.RawConfigParser()
+    configparser.optionxform=str
+    configparser.read("config")
+    categoryDate = time.strftime("%b %d, ore %H", time.localtime())
+    configparser.set("catscan dates", categoryName.encode("utf-8"), categoryDate)
+    configparser.write(open("config", "w"))
+    #update category date
+    app.categoriesDates[categoryName] = categoryDate
+    return True
+
+
+### Ask to Wikipedia the titles of articles with/without Coord template
 def read_old_templates_status(app):
     """Read from old_templates_status.csv which articles have/doesn't have
        the Coord template
@@ -48,7 +117,7 @@ def read_old_templates_status(app):
 
 
 def update_templates_status(app):
-    """  Ask to Wikipedia which articles have/have not the Coord template
+    """Update info from Wikipedia API
     """
     #create strings with fifty titles each
     unknownStatus = []
