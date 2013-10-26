@@ -40,6 +40,7 @@ import sys
 from osm_parser import ParseOSMData
 from data_manager import Themes, Regions
 from webpages_creator import Creator
+import wikipedia_downloader
 
 
 class App:
@@ -59,8 +60,10 @@ class App:
         parser.add_argument("-a", "--analyze", help="Analizza i dati: Wikipedia (sottocategorie ed articoli delle categorie) ed OSM (tag Wikipedia presenti)",
                             action="store_true")
         parser.add_argument("--category_info", help="Analizza i dati e stampa le informazioni su una specifica categoria",
-                            action='store')
-        group.add_argument("-p", "--print_categories_list", help="Analizza i dati e stampa la lista delle categorie nel progetto",
+                            action="store")
+        parser.add_argument("-t", "--show_missing_templates", help="Segnala gli articoli senza template Coord",
+                            action="store_true")
+        group.add_argument("-p", "--print_categories_list", help="Analizza i dati e stampa la lista delle categorie nel progetto.",
                             action="store_true")
         #Create webpages
         group.add_argument("-w", "--create_webpages", help="Analizza i dati ed aggiorna le pagine web",
@@ -75,7 +78,8 @@ class App:
                             action="store_true")
         self.args = parser.parse_args()
         if self.args.category_info or self.args.category_info\
-           or self.args.create_webpages or self.args.print_categories_list:
+           or self.args.create_webpages or self.args.print_categories_list\
+           or self.args.show_missing_templates:
             self.args.analyze = True
 
         if len(sys.argv) == 1:
@@ -114,6 +118,10 @@ class App:
         logsDir = os.path.join("data", "logs")
         if not os.path.exists(logsDir):
             os.makedirs(logsDir)
+        self.MISSINGTEMPLATESDIR = os.path.join("data", "wikipedia", "missing_templates")
+        if not os.path.exists(self.MISSINGTEMPLATESDIR):
+            os.makedirs(self.MISSINGTEMPLATESDIR)
+        self.TEMPLATESSTATUSFILE = os.path.join(self.MISSINGTEMPLATESDIR, "missing_templates.csv")
         self.homePageTitle = "Articoli Wikipedia etichettabili in OSM"
         self.UPDATETIME = time.strftime("%b %d, ore %H", time.localtime())
 
@@ -198,6 +206,17 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             for category in theme.categories:
                 category.check_articles_in_osm()
         self.titlesInOSM, self.titlesNotInOSM = self.lists_of_titles_in_OSM_or_not()
+
+        #Ask to Wikipedia which articles have/have not Coord template.
+        #Articles with article.hasTemplate == False will be marked on web pages.
+        if self.args.show_missing_templates:
+            print "\n- Controlla quali articoli non hanno il template Coord in Wikipedia"
+            self.templatesStatus = wikipedia_downloader.read_old_templates_status(self)
+            wikipedia_downloader.update_templates_status(self)
+            #Set hasTemplate = False to articles without Coord template
+            for theme in self.themes:
+                for category in theme.categories:
+                    category.set_hasTemplate_in_articles()
 
         #For debugging
         # print info about a specific category

@@ -122,6 +122,12 @@ class Helpers:
             osmIdsString = '<div id="%s" style="display:none"><br>%s</div>' % (osmDivId, osmIdsString)
         return elements, osmIdsString
 
+    def missing_template_link(self, article):
+        title = "Sulla pagina Wikipedia manca il template coord"
+        img = "../img/no_template.png"
+        link = '<span class="missing_template_alert"><img src="%s" title="%s" class="articleLinkImg"></span>' % (img, title)
+        return link
+
     def add_tags_link(self, category):
         url = "http://toolserver.org/~kolossos/osm-add-tags/index.php?"
         url += "lang=it"
@@ -181,6 +187,9 @@ class Helpers:
         code += '\n      %s ' % osmLink
         code += '\n      %s ' % josmLink
         code += '\n      %s' % overpassTurboLink
+        if app.args.show_missing_templates and hasattr(article, "hasTemplate"):
+            if not article.hasTemplate:
+                code += '\n      %s' % self.missing_template_link(article)
         code += '\n      %s' % osmIdsDiv
         return code
 
@@ -508,6 +517,17 @@ class Subpage(Helpers):
         code += '\n                  }'
         code += '\n          }'
         code += '\n        </script>'
+        code += '\n        <script>'
+        code += '\n          $(document).ready(function() {'
+        code += '\n            $(".missing_template_alert").click(function (event) {'
+        code += '\n                var msg = "All\'articolo in Wikipedia manca il testo per mostrare le coordinate e la mappa OSM (il template Coord).";'
+        code += '\n                msg += "\\n\\nAggiungi in cima alla pagina il seguente codice, completando le coordinate:";'
+        code += '\n                msg += "\\n\\n{{coord|lat (gradi decimali)|N|long (gradi decimali)|E|display=title}}";'
+        code += '\n                msg += "\\n\\nPuoi copiare le coordinate da JOSM: scaricando l\'oggetto e cliccando nel riquadro in basso a sinistra.";'
+        code += '\n                alert(msg);'
+        code += '\n                });'
+        code += '\n           });'
+        code += '\n        </script>'
         code += '\n    </head>'
         code += '\n<body>'
         code += '\n\n<!-- Header -->'
@@ -598,14 +618,15 @@ class Subpage(Helpers):
         code += '\n    <tr><td class="index_done050"></td><td>50% articoli taggati</td></tr>'
         code += '\n    <tr><td class="index_done025"></td><td>25% articoli taggati</td></tr>'
         code += '\n    <tr><td class="index_done0"></td><td>0% articoli taggati</td></tr>'
+        code += '\n    <tr><td><img src="../img/add-tags.png"></td><td>Cerca in OSM possibili oggetti corrispondenti agli articoli e taggali facilmente tramite lo strumento <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a></td></tr>'
         code += '\n    <tr><td><img src="../img/wiwosm.png"></td><td>Vedi l\'oggetto sulla mappa Wikipedia</td></tr>'
         code += '\n    <tr><td><img src="../img/josm.png"></td><td>Scarica l\'oggetto in JOSM</td></tr>'
         code += '\n    <tr><td><img src="../img/osm.png"></td><td>Vedi la pagina OSM dell\'oggetto</td></tr>'
         code += '\n    <tr><td><img src="../img/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td></tr>'
-        code += '\n    <tr><td><img src="../img/add-tags.png"></td><td>Cerca in OSM possibili oggetti corrispondenti agli articoli e taggali facilmente tramite lo strumento <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a> di WOWOSM</td></tr>'
+        code += '\n    <tr><td><img src="../img/no_template.png"></td><td>All\'articolo su Wikipedia manca il <a href="https://it.wikipedia.org/wiki/Template%3ACoord" target="_blank">template Coord</a>. Clicca su un\'icona per ulteriori informazioni</td></tr>'
         code += '\n  </table>'
         code += '\n</div>'
-        return code
+        return code.decode("utf-8")
 
 
 ### Categories and regions tables ######################################

@@ -287,9 +287,23 @@ class Category:
             self.progress["allMArticles"]["string"], self.progress["allMArticles"]["num"] = self.calculate_tagging_progress(self.allTitlesInOSM, self.allTitles)
 
     def calculate_tagging_progress(self, taggedArticles, allArticles):
+        """Return tagging progress
+        """
         progressString = "%s/%d" % (len(taggedArticles), len(allArticles))
         progressNum = float(len(taggedArticles)) / float(len(allArticles))
         return progressString, progressNum
+
+    def set_hasTemplate_in_articles(self):
+        for article in self.allArticles:
+            if article.isMappable and article.inOSM and not hasattr(article, "hasTemplate"):
+                if article.name not in self.app.templatesStatus:
+                    pass
+                    #print "* Errore: articolo non presente nel dizionario templatesStatus:", article.name.encode("utf-8")
+                else:
+                    if self.app.templatesStatus[article.name] == "True":
+                        article.hasTemplate = True
+                    else:
+                        article.hasTemplate = False
 
 
 ### print category info ################################################
