@@ -314,7 +314,7 @@ class Homepage(Helpers):
         code += '\n    <h1><a id="top"></a>Articoli Wikipedia mappabili in OSM</h1>'
         code += '\n    <p>Liste di articoli Wikipedia (IT) mappabili in OpenStreetMap, tramite il tag "<b><a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank">wikipedia</a> = it:Titolo dell\'articolo</b>".</p>'
         code += '\n    <!-- Informations -->'
-        code += '\n    <p><a id="description" href="javascript:showHideDiv(\'info\');">Informazioni e conteggi</a> | <a href="errors.html" title="Visualizza tag sospetti">Tag sospetti</a></p>'
+        code += '\n    <p><a id="description" href="javascript:showHideDiv(\'info\');"><img src="./img/info.png" class="infoImg"> Informazioni e conteggi</a> | <a href="errors.html" title="Visualizza tag sospetti">Tag sospetti</a></p>'
         #Info
         code += '\n    <div id="info" style="display:none">'
         code += self.stats_table()
@@ -610,17 +610,17 @@ class Subpage(Helpers):
             code += '\n  <div id="nonMappableArticles">&nbsp;</div>'
             code += '\n</div>'
 
+        # Legenda
+        code += '\n\n<!-- Legenda -->'
+        code += '\n<p><a href="javascript:showHideDiv(\'legenda\');"><img src="../img/info.png" class="infoImg"> Legenda</a></p>'
+        code += '\n<div id="legenda" style="display:none">'
+        code += self.legend_table()
+
         # Index with articles and subcategories of a category
         code += '\n\n<!-- Index -->'
         if mode == "themes" and item.articles != [] and item.titles == []:
             code += '\n<div class="showHideNonMappable"><a href=\'javascript:showHideNonMappable("%s_index");\' title="Visualizza sottocategorie non mappabili">Mostra non mappabili</a></div>' % item.ident
         code += '\n%s' % Subpage_index_table(app, item, mode).code
-
-        # Legenda
-        code += '\n\n<!-- Legenda -->'
-        code += '\n<p><a href="javascript:showHideDiv(\'legenda\');">Legenda</a></p>'
-        code += '\n<div id="legenda" style="display:none">'
-        code += self.legend_table()
 
         # Articles table
         if item.articles != []:

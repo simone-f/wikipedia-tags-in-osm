@@ -226,7 +226,7 @@ div.showHideNonMappable a:hover {
     display : none;
 }
 
-.articleLinkImg {
+.articleLinkImg, .infoImg {
     vertical-align: middle;
 }
 
