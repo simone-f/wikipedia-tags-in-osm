@@ -297,13 +297,27 @@ class Category:
         for article in self.allArticles:
             if article.isMappable and article.inOSM and not hasattr(article, "hasTemplate"):
                 if article.name not in self.app.templatesStatus:
-                    pass
-                    #print "* Errore: articolo non presente nel dizionario templatesStatus:", article.name.encode("utf-8")
+                    print "* Errore: articolo non presente nel dizionario templatesStatus:", article.name.encode("utf-8")
                 else:
                     if self.app.templatesStatus[article.name] == "True":
                         article.hasTemplate = True
                     else:
                         article.hasTemplate = False
+
+    def check_articles_coords_in_wikipedia(self):
+        """Add coordinates to those articles that are not yet in OSM but
+           whose coordinates are known by Wikipedia
+        """
+        for article in self.articles:
+            self.check_article_coords_in_wikipedia(article)
+        for subcategory in self.subcategories:
+            if subcategory.isMappable:
+                subcategory.check_articles_coords_in_wikipedia()
+
+    def check_article_coords_in_wikipedia(self, article):
+        if article.isMappable and not article.inOSM and article.name in self.app.titlesCoords:
+            article.wikipediaCoords = self.app.titlesCoords[article.name]
+            self.app.titlesInProjectWithCoords.append(article.name)
 
 
 ### print category info ################################################

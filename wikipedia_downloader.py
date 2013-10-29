@@ -218,3 +218,45 @@ def save_updated_templates_status(app):
     print "  Articoli taggati: %d" % len(app.templatesStatus)
     print "    con template  : %d" % len([i for i in app.templatesStatus.values() if i == "True"])
     print "    senza template: %d" % len([i for i in app.templatesStatus.values() if i == "False"])
+
+
+### Add Wikipedia coordinates to non tagged articles ###################
+def add_wikipedia_coordinates(app):
+    #If Wikipedia knows the position of an article not already tagged
+    #in OSM add the attribute wikipediaCoords to the article
+    coordsFile = os.path.join(os.path.join("data", "wikipedia", "wikipedia_%s_coordinates.csv" % app.WIKIPEDIALANG))
+    if not os.path.isfile(coordsFile):
+        #download the file with Wikipedia coordinates if missing
+        download_and_filter_wikipedia_coordinates(app)
+    app.titlesCoords = {}
+    #read coords
+    inFile = open(coordsFile, "r")
+    reader = csv.reader(inFile, delimiter = '\t')
+    for row in reader:
+        title, lat, lon = row
+        app.titlesCoords[title.replace(" ", "_").decode("utf-8")] = [float(lat), float(lon)]
+    inFile.close()
+    app.titlesInProjectWithCoords = []
+    #add wikipediaCoords attribute to articles
+    for theme in app.themes:
+        for category in theme.categories:
+            category.check_articles_coords_in_wikipedia()
+    app.titlesInProjectWithCoords = list(set(app.titlesInProjectWithCoords))
+    print "  articoli:", len(app.titlesInProjectWithCoords)
+
+def download_and_filter_wikipedia_coordinates(app):
+    """Download and filter file with Wikipedia coordinates, provided by
+       user Kolossos
+    """
+    #download
+    url = "http://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world/new_C.gz"
+    print "\n* Il file con le coordinate Wikipedia non è presente e sarà scaricato."
+    print "  File provided by user Kolossos:", url
+    inFile = os.path.join("data", "wikipedia", "new_C.gz")
+    #call('wget -c "%s" -O %s' % (url, inFile), shell=True)
+    coordsFile = os.path.join("data", "wikipedia", "wikipedia_%s_coordinates.csv" % app.WIKIPEDIALANG)
+    #filter coordinates of articles in WIKIPEDIALANG
+    print "  filtra coordinate in %s ..." % app.WIKIPEDIALANG
+    call('zgrep ^%s "%s" | cut -f2,3,4 > %s' % (app.WIKIPEDIALANG, inFile, coordsFile), shell=True)
+    print "  rimuovi il file non più necessario: %s" % inFile
+    call('rm "%s"' % inFile, shell=True)

@@ -1,4 +1,4 @@
-#! /usr/bin/python
+po#! /usr/bin/python
 # -*- coding: utf-8 -*-
 #
 #  Copyright 2013 Simone F. <groppo8@gmail.com>
@@ -77,9 +77,18 @@ class Helpers:
         query += 'out meta qt;'
         return query
 
-    def josm_link(self, query, img):
-        url = "http://localhost:8111/import?url=http://overpass.osm.rambler.ru/cgi/interpreter?data=" + query
-        title = "Scarica in JOSM"
+    def josm_link(self, mode, data, img):
+        url = "http://localhost:8111/"
+        if mode == "download":
+            url += "import?url=http://overpass.osm.rambler.ru/cgi/interpreter?data=" + data
+            title = "Scarica in JOSM"
+        elif mode == "load_and_zoom":
+            left = data[1] - 0.0005
+            right = data[1] + 0.0005
+            top = data[0] + 0.0005
+            bottom = data[0] - 0.0005
+            url += "load_and_zoom?left=%f&right=%f&top=%f&bottom=%f" % tuple((left, right, top, bottom))
+            title = "Zooma in JOSM vicino all'oggetto da taggare"
         link = self.url_to_link(url, title, None, img)
         return link
 
@@ -153,7 +162,7 @@ class Helpers:
         code = '<a href="%s" title="%s"%s%s>%s</a>' % (url, title, target, cssClass, textOrImg)
         return code
 
-    def article_links(self, app, article):
+    def tagged_article_links(self, app, article):
         """Create links for tagged article from OSM objects to various
            services
         """
@@ -178,7 +187,7 @@ class Helpers:
 
         #JOSM remote control link
         img = "../img/josm.png"
-        josmLink = self.josm_link(query, img)
+        josmLink = self.josm_link("download", query, img)
 
         #Overpass Turbo link
         overpassTurboLink = self.overpass_turbo_link(query)
@@ -191,6 +200,17 @@ class Helpers:
             if not article.hasTemplate:
                 code += '\n      %s' % self.missing_template_link(article)
         code += '\n      %s' % osmIdsDiv
+        return code
+
+    def non_tagged_article_links(self, app, article):
+        """Create links for an article not tagged in OSM yet
+        """
+        if hasattr(article, "wikipediaCoords"):
+            #the article is not tagged but Wikipedia knows its coordinates
+            img = "../img/josm_load_and_zoom.png"
+            code = self.josm_link("load_and_zoom", article.wikipediaCoords, img)
+        else:
+            code = ""
         return code
 
 
@@ -624,6 +644,7 @@ class Subpage(Helpers):
         code += '\n    <tr><td><img src="../img/osm.png"></td><td>Vedi la pagina OSM dell\'oggetto</td></tr>'
         code += '\n    <tr><td><img src="../img/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td></tr>'
         code += '\n    <tr><td><img src="../img/no_template.png"></td><td>All\'articolo su Wikipedia manca il <a href="https://it.wikipedia.org/wiki/Template%3ACoord" target="_blank">template Coord</a>. Clicca su un\'icona per ulteriori informazioni</td></tr>'
+        code += '\n    <tr><td><img src="../img/josm_load_and_zoom.png"></td><td>L\'articolo non è taggato ma Wikipedia ne conosce la posizione. Clicca sull\'icona per aprire JOSM alla posizione conosciuta e trovare più facilmente l\'oggetto da taggare</td></tr>'
         code += '\n  </table>'
         code += '\n</div>'
         return code.decode("utf-8")
@@ -693,9 +714,9 @@ class Articles_table(Helpers):
                 colspan = ' colspan="2"'
             else:
                 if article.inOSM:
-                    links = self.article_links(app, article)
+                    links = self.tagged_article_links(app, article)
                 else:
-                    links = ""
+                    links = self.non_tagged_article_links(app, article)
             code += "\n  <tr>"
             onclick = ""
             if selectNonMappable:
@@ -769,6 +790,7 @@ class Category_table(Helpers):
         onclick = ""
         if self.selectNonMappable:
             onclick = ' onclick="getName(this);"'
+        #Category
         if isinstance(item, Category):
             catDiv = "<div class=categoryLink><span>%s</span>" % self.wikipediaLink(item)
             if not len(item.allTitles) == len(item.allTitlesInOSM): #allTitlesNotInOSM != []:
@@ -781,14 +803,16 @@ class Category_table(Helpers):
                 catDiv += "\n %s" % self.overpass_turbo_link(query, linkClass)
             catDiv += "</div>"
             code += "\n    <td%s%s%s>%s</td>" % (onclick, rowspan, cssclass, catDiv)
+        #Article
         if isinstance(item, Article):
             code += "\n    <td%s%s%s>%s</td>" % (onclick, colspan, cssclass, self.wikipediaLink(item))
             if item.isMappable:
-                #add cell with article info (links if tagged)
-                links = ""
+                #add one more cell with article info (links if tagged)
                 nowrap = ""
                 if item.inOSM:
-                    links = self.article_links(self.app, item)
+                    links = self.tagged_article_links(self.app, item)
+                else:
+                    links = self.non_tagged_article_links(self.app, item)
                 if links != "":
                     nowrap = " NOWRAP"
                 code += "\n    <td%s>%s</td>" % (nowrap, links)
@@ -840,7 +864,7 @@ class ErrorsPage(Helpers):
             elements, osmIdsLinks = self.osm_ids_string(osmIds)
             query = self.overpass_query(osmIds)
             img = "./img/josm.png"
-            josmLink = " %s" % self.josm_link(query, img)
+            josmLink = " %s" % self.josm_link("download", query, img)
             code += '\n      <tr>'
             code += '\n        <td>%s</td>' % tag.encode("utf-8")
             code += '\n        <td>%s</td><td>%s</td>' % (osmIdsLinks, josmLink)

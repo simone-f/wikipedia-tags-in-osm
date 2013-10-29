@@ -63,6 +63,8 @@ class App:
                             action="store")
         parser.add_argument("-t", "--show_missing_templates", help="Segnala gli articoli senza template Coord",
                             action="store_true")
+        parser.add_argument("-c", "--show_link_to_wikipedia_coordinates", help="Se un articolo non taggato ha delle coordinate su Wikipedia, mostra un link per zoomare sulla sua posizione con JOSM",
+                            action="store_true")
         group.add_argument("-p", "--print_categories_list", help="Analizza i dati e stampa la lista delle categorie nel progetto.",
                             action="store_true")
         #Create webpages
@@ -218,6 +220,13 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             for theme in self.themes:
                 for category in theme.categories:
                     category.set_hasTemplate_in_articles()
+
+        #If an article is not already tagged in OSM but Wikipedia knows its
+        #position, it is possible to add a link to zoom to that position
+        #with JOSM.
+        if self.args.show_link_to_wikipedia_coordinates:
+            print "\n- Controlla di quali articoli non taggati Wikipedia conosce già la posizione"
+            wikipedia_downloader.add_wikipedia_coordinates(self)
 
         #For debugging
         # print info about a specific category
