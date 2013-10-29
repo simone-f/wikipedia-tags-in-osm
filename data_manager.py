@@ -294,15 +294,24 @@ class Category:
         return progressString, progressNum
 
     def set_hasTemplate_in_articles(self):
-        for article in self.allArticles:
-            if article.isMappable and article.inOSM and not hasattr(article, "hasTemplate"):
-                if article.name not in self.app.templatesStatus:
-                    print "* Errore: articolo non presente nel dizionario templatesStatus:", article.name.encode("utf-8")
+        for article in self.articles:
+            self.set_hasTemplate_in_article(article)
+        for subcategory in self.subcategories:
+            if subcategory.isMappable:
+                subcategory.set_hasTemplate_in_articles()
+        titlesWithoutTemplates = [article.name for article in self.allArticles if hasattr(article, "hasTemplate") and not article.hasTemplate]
+        titlesWithoutTemplates = list(set(titlesWithoutTemplates))
+        self.missingTemplatesNum = len(titlesWithoutTemplates)
+
+    def set_hasTemplate_in_article(self, article):
+        if article.isMappable and article.inOSM and not hasattr(article, "hasTemplate"):
+            if article.name not in self.app.templatesStatus:
+                print "* Errore: articolo non presente nel dizionario templatesStatus:", article.name.encode("utf-8")
+            else:
+                if self.app.templatesStatus[article.name] == "True":
+                    article.hasTemplate = True
                 else:
-                    if self.app.templatesStatus[article.name] == "True":
-                        article.hasTemplate = True
-                    else:
-                        article.hasTemplate = False
+                    article.hasTemplate = False
 
     def check_articles_coords_in_wikipedia(self):
         """Add coordinates to those articles that are not yet in OSM but
@@ -313,6 +322,9 @@ class Category:
         for subcategory in self.subcategories:
             if subcategory.isMappable:
                 subcategory.check_articles_coords_in_wikipedia()
+        titlesWithCoords = [article.name for article in self.allArticles if hasattr(article, "wikipediaCoords")]
+        titlesWithCoords = list(set(titlesWithCoords))
+        self.wikipediaCoordsNum = len(titlesWithCoords)
 
     def check_article_coords_in_wikipedia(self, article):
         if article.isMappable and not article.inOSM and article.name in self.app.titlesCoords:
