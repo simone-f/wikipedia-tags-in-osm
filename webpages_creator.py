@@ -1,4 +1,4 @@
-po#! /usr/bin/python
+#! /usr/bin/python
 # -*- coding: utf-8 -*-
 #
 #  Copyright 2013 Simone F. <groppo8@gmail.com>
@@ -620,6 +620,8 @@ class Subpage(Helpers):
             code += '<a href=#index>&#8593;</a> '
             code += '<a id="%s"></a>' % subcategory.name
             code += '%s <span class=%s>%s</span>' % (self.wikipediaLink(subcategory), progressClass, progressString)
+            if not len(subcategory.allTitles) == len(subcategory.allTitlesInOSM):
+                code += " %s" % self.add_tags_link(subcategory)
             code += '%s</h3>' % overpassTurboLink
             if not subcategory.isAllMappable:
                 code += '\n<div class="showHideNonMappable"><a href="javascript:showHideNonMappable(\'%s\');" title="Mostra anche categorie ed articoli non mappabili">Mostra non mappabili</a></div>' % subcategory.ident
@@ -793,7 +795,7 @@ class Category_table(Helpers):
         #Category
         if isinstance(item, Category):
             catDiv = "<div class=categoryLink><span>%s</span>" % self.wikipediaLink(item)
-            if not len(item.allTitles) == len(item.allTitlesInOSM): #allTitlesNotInOSM != []:
+            if not len(item.allTitles) == len(item.allTitlesInOSM):
                 #add a link to WIWOSM tool "add-tags"
                 catDiv += "\n %s" % self.add_tags_link(item)
             if item.allTitlesInOSM != [] and not self.selectNonMappable:
