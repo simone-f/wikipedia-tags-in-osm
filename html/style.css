@@ -124,10 +124,23 @@ table.categoriesIndex th {
 table.categoriesIndex td:nth-child(2),
 table.categoriesIndex td:nth-child(3),
 table.categoriesIndex td:nth-child(4),
-table.categoriesIndex td:nth-child(5),
-table.categoriesIndex th:nth-child(4),
-table.categoriesIndex th:nth-child(5){
+table.categoriesIndex th:nth-child(3),
+table.categoriesIndex th:nth-child(4) {
     text-align : right;
+}
+
+/*Progress bars*/
+.progress {
+ width: 100px;
+ border: 1px solid #bbb;
+ position: relative;
+}
+.percent {
+ position: absolute;
+ right: 4px;
+}
+.bar {
+ height: 15px;
 }
 
 table.data,
@@ -239,7 +252,7 @@ div.showHideNonMappable a:hover {
    visibility: visible;
 }
 
-.done100, .done099, .done075, .done050, .done025 {
+.done100, .done099, .done075, .done050, .done025, .done0 {
     border-bottom: 5px solid;
 }
 
