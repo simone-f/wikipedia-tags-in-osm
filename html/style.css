@@ -124,7 +124,9 @@ table.categoriesIndex th {
 table.categoriesIndex td:nth-child(2),
 table.categoriesIndex td:nth-child(3),
 table.categoriesIndex td:nth-child(4),
-table.categoriesIndex td:nth-child(5) {
+table.categoriesIndex td:nth-child(5),
+table.categoriesIndex th:nth-child(4),
+table.categoriesIndex th:nth-child(5){
     text-align : right;
 }
 
@@ -230,10 +232,10 @@ div.showHideNonMappable a:hover {
     vertical-align: middle;
 }
 
-.categoryLink .overpassTurboLink {
+.category .overpassTurboLink {
    visibility: hidden;
 }
-.categoryLink:hover .overpassTurboLink {
+.category:hover .overpassTurboLink {
    visibility: visible;
 }
 
