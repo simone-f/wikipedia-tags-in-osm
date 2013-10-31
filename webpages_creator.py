@@ -875,26 +875,33 @@ class Category_table(Helpers):
         """Add a cell to the table
         """
         code = "\n  <tr>" if not isFirstItem else ""
-        cssclass = ' class="non_mappable"' if not item.isMappable else ""
         onclick = ""
         if self.selectNonMappable:
             onclick = ' onclick="getName(this);"'
+        cssClasses = []
+        if not item.isMappable:
+            cssClasses.append("non_mappable")
+        if isinstance(item, Category):
+            cssClasses.append("category")
+        if cssClasses == []:
+            cssClass = ""
+        else:
+            cssClass = ' class="%s"' % " ".join(cssClasses)
         #Category
         if isinstance(item, Category):
-            catDiv = "<div class=categoryLink><span>%s</span>" % self.wikipediaLink(item)
+            catData = self.wikipediaLink(item)
             if not len(item.allTitles) == len(item.allTitlesInOSM):
                 #add a link to WIWOSM tool "add-tags"
-                catDiv += "\n %s" % self.add_tags_link(item)
+                catData += "\n %s" % self.add_tags_link(item)
             if item.allTitlesInOSM != [] and not self.selectNonMappable:
                 #add a link to overpass for showing all objects
                 query = self.overpass_query(item)
                 linkClass = "overpassTurboLink"
-                catDiv += "\n %s" % self.overpass_turbo_link(query, linkClass)
-            catDiv += "</div>"
-            code += "\n    <td%s%s%s>%s</td>" % (onclick, rowspan, cssclass, catDiv)
+                catData += "\n %s" % self.overpass_turbo_link(query, linkClass)
+            code += "\n    <td%s%s%s>%s</td>" % (onclick, rowspan, cssClass, catData)
         #Article
         if isinstance(item, Article):
-            code += "\n    <td%s%s%s>%s</td>" % (onclick, colspan, cssclass, self.wikipediaLink(item))
+            code += "\n    <td%s%s%s>%s</td>" % (onclick, colspan, cssClass, self.wikipediaLink(item))
             if item.isMappable:
                 #add one more cell with article info (links if tagged)
                 nowrap = ""
