@@ -213,6 +213,19 @@ class Helpers:
             code = ""
         return code
 
+    def header_needed(self, mode, subitems):
+        """Return True or False if any subcategory has wikipediaCoordinates
+           or misses Coord template. It is used to know if it is
+           necessary to show headers in index tables
+        """
+        for subitem in subitems:
+            if subitem.isMappable:
+                number = {"wikipediaCoords" : subitem.wikipediaCoordsNum,
+                          "missingTemplates" : subitem.missingTemplatesNum}
+                if number[mode] > 0:
+                    return True
+        return False
+
 
 ### Webpages creator ###################################################
 class Creator():
@@ -472,7 +485,8 @@ class Homepage(Helpers):
                 subitems = item.categories
             else:
                 subitems = item.subcategories
-            #headers
+            #table headers
+            code += '\n      <thead>'
             code += '\n      <tr>'
             code += '\n        <th></th>'
             code += '\n        <th>'
@@ -483,11 +497,14 @@ class Homepage(Helpers):
             if itemIdx == 0:
                 code += 'Articoli<br>in Wikipedia'
             code += '</th>'
-            if self.app.args.show_link_to_wikipedia_coordinates:
+            if self.app.args.show_link_to_wikipedia_coordinates and self.header_needed("wikipediaCoords", subitems):
                 code += '\n        <th><img src="./img/josm_load_and_zoom.png" title="Articoli non taggati ma di cui si conosce la posizione"></th>'
-            if self.app.args.show_missing_templates:
+            if self.app.args.show_missing_templates and self.header_needed("missingTemplates", subitems):
                 code += '\n        <th><img src="./img/no_template.png" title="Articoli taggati ma senza template Coord in Wikipedia"></th>'
             code += '\n      </tr>'
+            code += '\n      </thead>'
+            #table body
+            code += '\n      <tbody>'
             for catIdx, category in enumerate(subitems):
                 progressClass, progressString = self.progress_strings(category, "allMArticles")
                 code += '\n      <tr>'
@@ -513,6 +530,7 @@ class Homepage(Helpers):
                         missingTemplatesNum = ""
                     code += '\n        <td>%s</td>' % missingTemplatesNum
                 code += '\n      </tr>'
+            code += '\n      </tbody>'
             code += '\n    </table>'
         return code
 
@@ -692,15 +710,20 @@ class Subpage_index_table(Helpers):
         if mode != "regions" and not item.articlesAreAllMappable:
             tableId = ' id="%s_index"' % item.ident
         code = '  <table class="categoriesIndex"%s>' % tableId
+        #table headers
+        code += '\n    <thead>'
         code += '\n    <tr>'
         code += '\n      <th></th>'
         code += '\n      <th></th>'
         code += '\n      <th></th>'
-        if app.args.show_link_to_wikipedia_coordinates:
+        if app.args.show_link_to_wikipedia_coordinates and self.header_needed("wikipediaCoords", item.subcategories):
             code += '\n      <th><img src="../img/josm_load_and_zoom.png" title="Articoli non taggati ma di cui si conosce la posizione"></th>'
-        if app.args.show_missing_templates:
+        if app.args.show_missing_templates and self.header_needed("missingTemplates", item.subcategories):
             code += '\n      <th><img src="../img/no_template.png" title="Articoli taggati ma senza template Coord in Wikipedia"></th>'
         code += '\n    </tr>'
+        code += '\n    </thead>'
+        #table body
+        code += '\n    <tbody>'
         # articles index
         if item.articles != []:
             colspan = ""
@@ -755,6 +778,7 @@ class Subpage_index_table(Helpers):
                         missingTemplatesNum = ""
                     code += '\n      <td>%s</td>' % missingTemplatesNum
             code += '\n    </tr>'
+        code += '\n    </tbody>'
         code += '\n  </table>'
         self.code = code
 
