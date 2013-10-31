@@ -38,6 +38,7 @@ import sys
 
 #local imports
 from osm_parser import ParseOSMData
+import osm_downloader as OSM
 from data_manager import Themes, Regions
 from webpages_creator import Creator
 import wikipedia_downloader
@@ -135,11 +136,11 @@ class App:
         #Download/update OSM data
         if self.args.download_osm or self.args.update_osm:
             if self.args.download_osm:
-                self.download_OSM_data()
+                OSM.download_OSM_data(self)
             if self.args.update_osm:
-                status = self.update_OSM_data()
+                status = OSM.update_OSM_data(self)
         if self.args.download_osm or (self.args.update_osm and status):
-            self.filter_wikipedia_data_in_OSM_file()
+            OSM.filter_wikipedia_data_in_OSM_file(self)
         if self.args.update_osm and not status:
             print "I dati OSM erano già aggiornati all'ultimo minuto, o l'aggiornamento con osmupdate è stato interrotto.\
 Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
@@ -149,7 +150,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             sys.exit(1)
         else:
             if not os.path.isfile(self.wOSMFile):
-                self.filter_wikipedia_data_in_OSM_file()
+                OSM.filter_wikipedia_data_in_OSM_file(self)
             #Extract Wikipedia articles tagged in OSM with preferred language.
             #If an article is tagged in a foreign language, ask to Wikpedia
             #what is the corrisponding article of the preferred language, so
@@ -308,77 +309,6 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         self.print_categories_to_text_files = configparser.get("debug", "print categories to text files")
         self.clickable_cells = configparser.get("debug", "clickable cells")
         return themesAndCatsNames
-
-
-### Download/update OSM data ###########################################
-    def download_OSM_data(self):
-        """Download OSM data from GEOFABRIK, in PBF format
-        """
-        print "\n- Scarico i dati di OSM Italia da Geofabrik ..."
-        if os.path.isfile(self.countryPBF):
-            call('mv %s %s' % (self.countryPBF, self.oldCountryPBF), shell=True)
-        url = "http://download.geofabrik.de/europe/%s-latest.osm.pbf" % self.country
-        call("wget -c '%s' -O %s" % (url, self.countryPBF), shell=True)
-        self.convert_pbf_to_o5m()
-
-    def convert_pbf_to_o5m(self):
-        """Convert file format PBF --> O5M, necessary for using osmfilter later
-        """
-        if not os.path.isfile(self.countryPBF):
-            print "\n* File PBF assente.\nScaricare i dati OSM nazionali, lanciando lo script con l'opizone -d."
-            sys.exit(1)
-        print "\n- Conversione del formato dei dati: PBF --> O5M ..."
-        if os.path.isfile(self.countryO5M):
-            call('mv %s %s' % (self.countryO5M, self.oldCountryO5M), shell=True)
-        command = 'osmconvert %s -B=%s --out-o5m -o=%s' % (self.countryPBF, self.countryPoly, self.countryO5M)
-        call(command, shell=True)
-        print "... done"
-
-    def update_OSM_data(self):
-        """Update OSM data (O5M format) with osmupdate
-        """
-        print "\n- Aggiornamento dei dati OSM %s con osmupdate ..." % self.country
-        if os.path.isfile(self.countryO5M):
-            call('mv %s %s' % (self.countryO5M, self.oldCountryO5M), shell=True)
-        else:
-            print "File O5M assente, provo a convertire il file PBF..."
-            self.convert_pbf_to_o5m()
-        call('osmupdate -v -B=%s %s %s' % (self.countryPoly, self.oldCountryO5M, self.countryO5M), shell=True)
-        if os.path.isfile(self.countryO5M):
-            print "\n- %s aggiornato, rimuovo file temporaneo %s" % (self.countryO5M, self.oldCountryO5M)
-            call("rm %s" % self.oldCountryO5M, shell=True)
-            return True
-        else:
-            print "\n era già aggiornato, ==> ripristina file %s precedente" % self.country
-            call('mv %s %s' % (self.oldCountryO5M, self.countryO5M), shell=True)
-            return False
-
-    def filter_wikipedia_data_in_OSM_file(self):
-        """Filter from OSM data (O5M format) of the country those with
-           wikipedia tag
-        """
-        if not os.path.isfile(self.countryO5M):
-            print "File O5M assente, provo a convertire il file PBF..."
-            self.convert_pbf_to_o5m()
-        print "\n- Estrai i dati OSM con tag wikipedia"
-        command = 'osmfilter %s --keep="wikipedia*=*" --keep-tags="all wikipedia*=*" --drop-version --ignore-dependencies -o=%s' % (self.countryO5M, self.wOSMFile)
-        call(command, shell=True)
-
-    def lists_of_titles_in_OSM_or_not(self):
-        """Create a list of already tagged titles, for counting their
-           number
-        """
-        titlesInOSM = []
-        titlesNotInOSM = []
-        for theme in self.themes:
-            theme.check_articles_in_osm()
-            for title in theme.titlesNotInOSM:
-                titlesNotInOSM.append(title)
-            for title in theme.titlesInOSM:
-                titlesInOSM.append(title)
-        titlesInOSM = list(set(titlesInOSM))
-        titlesNotInOSM = list(set(titlesNotInOSM))
-        return titlesInOSM, titlesNotInOSM
 
 
 ### Not mappable items and false positive tags #########################
