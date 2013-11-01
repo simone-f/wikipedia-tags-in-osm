@@ -91,7 +91,7 @@ class App:
         os.chdir(os.path.dirname(sys.argv[0]))
 
         #Configurations
-        self.version = "v0.1.3"
+        self.version = "v0.2"
         #From 'config' file
         themesAndCatsNames = self.read_config()
         # OSM data

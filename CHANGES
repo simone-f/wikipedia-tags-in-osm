@@ -1,3 +1,12 @@
+v0.2
+====
+- Add "add-tags" (Kolossos tool) links for categories whose articles are not completely tagged yet
+- Add JOSM remote links to zoom to the coordinates of articles not already tagged in OSM, but of whom Wikipedia knows the position
+- Show an icon as warning for articles already tagged in OSM, which haven't the Wikipedia Coord template
+- Show the tagging progress with coloured progress bars
+- Show what kind of OSM object correspond to each tagged article (n = node, w = way, r = relation),
+to discover cases where an area is mapped with a single node instead of a closed way
+
 v0.1.3
 ======
 - Rename "not mappable" occurences to "non mappable"
