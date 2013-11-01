@@ -187,7 +187,8 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         #    Category().articles = [Article(), ...]
         #categories without catscan data
         self.categoriesWithoutData = []
-        self.themes = Themes(self, themesAndCatsNames).themesList
+        allThemes = Themes(self, themesAndCatsNames)
+        self.themes = allThemes.themesList
 
         #Organize data in regions, for a different visualization
         #self.regions = [Region()]
@@ -209,7 +210,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         for theme in self.themes:
             for category in theme.categories:
                 category.check_articles_in_osm()
-        self.titlesInOSM, self.titlesNotInOSM = self.lists_of_titles_in_OSM_or_not()
+        self.titlesInOSM, self.titlesNotInOSM = allThemes.lists_of_titles_in_OSM_or_not()
 
         #Ask to Wikipedia which articles have/have not Coord template.
         #Articles with article.hasTemplate == False will be marked on web pages.

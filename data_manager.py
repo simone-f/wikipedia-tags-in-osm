@@ -33,6 +33,22 @@ class Themes:
             categoriesNames = sorted(themesAndCatsNames[themeName])
             self.themesList.append(Theme(app, themeName, categoriesNames))
 
+    def lists_of_titles_in_OSM_or_not(self):
+        """Create two lists with the titles of tagged / non tagged
+           articles, to count their numbers
+        """
+        titlesInOSM = []
+        titlesNotInOSM = []
+        for theme in self.themesList:
+            theme.check_articles_in_osm()
+            for title in theme.titlesNotInOSM:
+                titlesNotInOSM.append(title)
+            for title in theme.titlesInOSM:
+                titlesInOSM.append(title)
+        titlesInOSM = list(set(titlesInOSM))
+        titlesNotInOSM = list(set(titlesNotInOSM))
+        return titlesInOSM, titlesNotInOSM
+
 
 class Theme:
     def __init__(self, app, name, categoriesNames):
