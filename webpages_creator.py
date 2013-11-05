@@ -56,10 +56,10 @@ class Helpers:
     def osm_ids_string_for_overpass(self, osmIds):
         """Return an OSM ids string used by Overpass
         """
-        elementTypeAbbr = {"n" : "node", "w" : "way", "r" : "relation"}
+        osmTypeAbbr = {"n" : "node", "w" : "way", "r" : "relation"}
         osmIdsString = ""
         for osmId in osmIds:
-            osmIdsString += '%s(%s);' % (elementTypeAbbr[osmId[0]], osmId[1:])
+            osmIdsString += '%s(%s);' % (osmTypeAbbr[osmId[0]], osmId[1:])
         return osmIdsString
 
     def overpass_query(self, item):
@@ -102,8 +102,8 @@ class Helpers:
         return link
 
     def osm_ids_string(self, item):
-        elementTypeAbbr = {"n" : "node", "w" : "way", "r" : "relation"}
-        elements = {"nodes" : [], "ways" :[], "relations" : []}
+        osmTypeAbbr = {"n" : "node", "w" : "way", "r" : "relation"}
+        links = {"nodes" : [], "ways" :[], "relations" : []}
         if isinstance(item, Article):
             osmIds = item.osmIds
         else:
@@ -111,11 +111,11 @@ class Helpers:
             osmIds = item
         #create links to OSM web pages
         for osmId in osmIds:
-            url = "http://www.openstreetmap.org/browse/%s/%s" % (elementTypeAbbr[osmId[0]], osmId[1:])
+            url = "http://www.openstreetmap.org/browse/%s/%s" % (osmTypeAbbr[osmId[0]], osmId[1:])
             link = self.url_to_link(url, "%s" % "Vedi pagina OSM", osmId[1:])
-            elements[elementTypeAbbr[osmId[0]] + "s"].append(link)
+            links[osmTypeAbbr[osmId[0]] + "s"].append(link)
         osmIdsString = ""
-        for elementsType, linksList in elements.iteritems():
+        for osmType, linksList in links.iteritems():
             if len(linksList) > 0:
                 if osmIdsString != "":
                     osmIdsString += "<br>"
@@ -123,13 +123,13 @@ class Helpers:
                     imgPath = "../img/"
                 else:
                     imgPath = "./img/"
-                img = '<img title="%s" src=%s%s.png>' % (elementsType[:-1], imgPath, elementsType)
+                img = '<img title="%s" src=%s%s.png>' % (osmType[:-1], imgPath, osmType)
                 osmIdsString += "%s %s" % (img, ", ".join(linksList))
         if isinstance(item, Article):
             #put the string into a div
             osmDivId = item.ident
             osmIdsString = '<div id="%s" style="display:none"><br>%s</div>' % (osmDivId, osmIdsString)
-        return elements, osmIdsString
+        return links, osmIdsString
 
     def missing_template_link(self, article):
         title = "Sulla pagina Wikipedia manca il template coord"
@@ -174,13 +174,14 @@ class Helpers:
 
         #Show a div with OSM ids of the article
         #osm ids div
-        elements, osmIdsDiv = self.osm_ids_string(article)
+        osmLinks, osmIdsDiv = self.osm_ids_string(article)
         #link for showing the div
         osmUrl = "javascript:showHideDiv(\'%s\');" % article.ident
         osmLinkTitle = "Vedi pagina OSM"
-        #check which kind of OSM primitive is used for tagging and use the right icon
-        elementsTypesAbbr = [eType[0] for eType in elements if elements[eType] != []]
-        osmLinkImg = "../img/osm_%s.png" % "".join(sorted(elementsTypesAbbr))
+        #check what kinds of OSM primitive are tagged and use the
+        #right icon
+        osmTypeAbbr = [osmType[0] for osmType in osmLinks if osmLinks[osmType] != []]
+        osmLinkImg = "../img/osm_%s.png" % "".join(sorted(osmTypeAbbr))
         osmLink = self.url_to_link(osmUrl, osmLinkTitle, None, osmLinkImg, "", None)
 
         query = self.overpass_query(article)
