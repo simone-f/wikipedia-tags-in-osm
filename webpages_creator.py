@@ -436,7 +436,7 @@ class Homepage(Helpers):
         code += '\n      </table>'
         return code
 
-    def index(self, items, mode):
+    def main_index(self, items, mode):
         """Return html code of a table with themes or regions, to be used
            as main index of the homepage
         """
@@ -468,75 +468,27 @@ class Homepage(Helpers):
             items = self.app.themes
         else:
             items = self.app.regions
-        code = self.index(items, mode)
+        code = self.main_index(items, mode)
         #Indexes with categories in each theme or region
         for itemIdx, item in enumerate(items):
+            #Title
             linkTop = '<a href=#top>&#8593;</a>'
             itemImg = '<img src="./img/%s/%s.png" class="item_img">' % (mode, item.name.lower())
             itemTitle = '%s%s' % (itemImg, item.name.replace("_", " "))
             if mode == "regions":
                 itemTitle = '<a href="./subpages/%s.html" title="Visualizza pagina della regione">%s</a>' % (item.name, itemTitle)
             code += '\n\n    <h3>%s<a id="%s"></a>%s</h3>' % (linkTop, item.name, itemTitle)
-            #categories per theme or per region and their progress
-            code += '\n    <table class="categoriesIndex">'
-            if mode == "themes":
-                subitems = item.categories
-            else:
-                subitems = item.subcategories
-            #table headers
-            headers = [""]
-            addWikipediaCoords = self.app.args.show_link_to_wikipedia_coordinates and self.header_needed(subitems, "wikipediaCoordsNum")
-            addMissingTemplates = self.app.args.show_missing_templates and self.header_needed(subitems, "missingTemplatesNum")
+            #index of categories with progress
+            pageType = "home"
             if itemIdx == 0:
-                headers.append('Numero di articoli<br>taggati / totale')
+                showProgressHeader = True
             else:
-                headers.append('')
-            if addWikipediaCoords:
-                headers.append('<img src="./img/josm_load_and_zoom.png" title="Articoli non taggati ma di cui si conosce la posizione">')
-            if addMissingTemplates:
-                headers.append('<img src="./img/no_template.png" title="Articoli taggati ma senza template Coord in Wikipedia">')
-            if headers != list([""] * len(headers)):
-                code += '\n      <thead>'
-                code += '\n    <tr>'
-                for header in headers:
-                    code += '\n      <th>%s</th>' % header
-                code += '\n    </tr>'
-                code += '\n      </thead>'
-            #table body
-            code += '\n      <tbody>'
-            for catIdx, category in enumerate(subitems):
-                progressClass, progressString = self.progress_strings(category, "allMArticles")
-                code += '\n      <tr>'
-                if mode == "themes":
-                    url = "./subpages/%s.html" % category.name
-                else:
-                    url = "./subpages/%s.html#%s" % (item.name, category.name)
-                code += '\n        <td>- <a href="%s" title="Vedi pagina">%s</a></td>' % (url, category.name.replace("_", " "))
-                code += '\n        <td>'
-                code += '\n          <div class="progress">'
-                code += '\n              <span class="percent">%s / %s</span>' % (len(category.allTitlesInOSM), len(category.allTitles))
-                code += '\n              <div class="bar index_%s" style="width:%d"></div>' % (progressClass, category.progress["allMArticles"]["num"] * 100)
-                code += '\n          </div>'
-                code += '\n        </td>'
-                #number of non tagged articles with Wikipedia coordinates
-                if addWikipediaCoords:
-                    wikipediaCoordsNum = str(category.wikipediaCoordsNum)
-                    if wikipediaCoordsNum == "0":
-                        wikipediaCoordsNum = ""
-                    code += '\n        <td>%s</td>' % wikipediaCoordsNum
-                #number of articles without Coord template
-                if addMissingTemplates:
-                    missingTemplatesNum = str(category.missingTemplatesNum)
-                    if missingTemplatesNum == "0":
-                        missingTemplatesNum = ""
-                    code += '\n        <td>%s</td>' % missingTemplatesNum
-                code += '\n      </tr>'
-            code += '\n      </tbody>'
-            code += '\n    </table>'
+                showProgressHeader = False
+            code += '\n%s' % Index_of_categories(self.app, item, mode, pageType, showProgressHeader).code
         return code
 
 
-### Subpage ###############################################################
+### Subpage ############################################################
 class Subpage(Helpers):
     def __init__(self, app, mode, suffix, item, selectNonMappable):
         """A webpage with data about a main category or a region.
@@ -640,7 +592,7 @@ class Subpage(Helpers):
         code += '\n\n<!-- Index -->'
         if mode == "themes" and item.articles != [] and item.titles == []:
             code += '\n<div class="showHideNonMappable"><a href=\'javascript:showHideNonMappable("%s_index");\' title="Visualizza sottocategorie non mappabili">Mostra non mappabili</a></div>' % item.ident
-        code += '\n%s' % Subpage_index_table(app, item, mode).code
+        code += '\n%s' % Index_of_categories(app, item, mode, pageType="sub").code
 
         # Articles table
         if item.articles != []:
@@ -700,99 +652,6 @@ class Subpage(Helpers):
         code += '\n</div>'
         return code.decode("utf-8")
 
-
-### Categories and regions tables ######################################
-class Subpage_index_table(Helpers):
-    def __init__(self, app, item, mode):
-        """Return html code for the index of a subpage, hence
-           regarding a mainCategory (if by theme) or a region (if by regions)
-        """
-        tableId = ""
-        if mode != "regions" and not item.articlesAreAllMappable:
-            tableId = ' id="%s_index"' % item.ident
-        code = '  <table class="categoriesIndex"%s>' % tableId
-        #table headers
-        headers = ["", ""]
-        addWikipediaCoords = app.args.show_link_to_wikipedia_coordinates and self.header_needed(item.subcategories, "wikipediaCoordsNum")
-        addMissingTemplates = app.args.show_missing_templates and self.header_needed(item.subcategories, "missingTemplatesNum")
-        if addWikipediaCoords:
-            headers.append('<img src="../img/josm_load_and_zoom.png" title="Articoli non taggati ma di cui si conosce la posizione">')
-        if addMissingTemplates:
-            headers.append('<img src="../img/no_template.png" title="Articoli taggati ma senza template Coord in Wikipedia">')
-        if headers != list([""] * len(headers)):
-            code += '\n    <thead>'
-            code += '\n    <tr>'
-            for header in headers:
-                code += '\n      <th>%s</th>' % header
-            code += '\n    </tr>'
-            code += '\n    </thead>'
-        #table body
-        code += '\n    <tbody>'
-        # articles index
-        if item.articles != []:
-            colspan = ""
-            cssclass = ""
-            if item.titles == []:
-                cssclass = ' class="non_mappable"'
-                colspan = 2
-                if app.args.show_link_to_wikipedia_coordinates:
-                    colspan += 1
-                if app.args.show_missing_templates:
-                    colspan += 1
-                colspan = ' colspan="%d"' % colspan
-            code += '\n    <tr>'
-            code += '\n      <td%s%s>- <a href="#Articles">Articoli</a></td>' % (cssclass, colspan)
-            # progress
-            if item.titles != []:
-                progressClass, progressString = self.progress_strings(item, "articles")
-                code += '\n        <td>'
-                code += '\n          <div class="progress">'
-                code += '\n              <span class="percent">%s / %s</span>' % (len(item.titlesInOSM), len(item.titles))
-                code += '\n              <div class="bar index_%s" style="width:%d"></div>' % (progressClass, item.progress["articles"]["num"] * 100)
-                code += '\n          </div>'
-                code += '\n        </td>'
-            code += '\n    </tr>'
-        # subcategories index
-        for subcategory in item.subcategories:
-            cssclass = ""
-            colspan = ""
-            if not subcategory.isMappable:
-                cssclass = ' class="non_mappable"'
-                colspan = 2
-                if app.args.show_link_to_wikipedia_coordinates:
-                    colspan += 1
-                if app.args.show_missing_templates:
-                    colspan += 1
-                colspan = ' colspan="%d"' % colspan
-            code += '\n    <tr>'
-            code += '\n      <td%s%s>- <a href="#%s">%s</a></td>' % (cssclass, colspan, subcategory.name, subcategory.name.replace("_", " "))
-            # progress
-            if subcategory.isMappable:
-                progressClass, progressString = self.progress_strings(subcategory, "allMArticles")
-                code += '\n        <td>'
-                code += '\n          <div class="progress">'
-                code += '\n              <span class="percent">%s / %s</span>' % (len(subcategory.allTitlesInOSM), len(subcategory.allTitles))
-                code += '\n              <div class="bar index_%s" style="width:%d"></div>' % (progressClass, subcategory.progress["allMArticles"]["num"] * 100)
-                code += '\n          </div>'
-                code += '\n        </td>'
-                #number of non tagged articles with Wikipedia coordinates
-                if addWikipediaCoords:
-                    if subcategory.isMappable and subcategory.wikipediaCoordsNum > 0:
-                        wikipediaCoordsNum = str(subcategory.wikipediaCoordsNum)
-                    else:
-                        wikipediaCoordsNum = ""
-                    code += '\n      <td>%s</td>' % wikipediaCoordsNum
-                #number of articles without Coord template
-                if addMissingTemplates:
-                    if subcategory.isMappable and subcategory.missingTemplatesNum > 0:
-                        missingTemplatesNum = str(subcategory.missingTemplatesNum)
-                    else:
-                        missingTemplatesNum = ""
-                    code += '\n      <td>%s</td>' % missingTemplatesNum
-            code += '\n    </tr>'
-        code += '\n    </tbody>'
-        code += '\n  </table>'
-        self.code = code
 
 class Articles_table(Helpers):
     def __init__(self, app, item, selectNonMappable):
@@ -926,6 +785,147 @@ class Category_table(Helpers):
                 code += "\n    <td%s>%s</td>" % (nowrap, links)
             code += "\n  </tr>"
         return code
+
+
+### Index of categories (table) ########################################
+class Index_of_categories(Helpers):
+    def __init__(self, app, item, mode, pageType, showProgressHeader=False):
+        """Return html code of a table with the list of subcategories
+           and their tagging progress.
+
+           This table is used as index in:
+           - homepage (pageType == "home"):
+                -- one table for each theme
+                   mode == "themes", item = Theme
+                   subitems = theme.categories
+                -- one table for each region
+                   mode == "regions", item = Region
+                   subitems = region.categories
+           - subpages (pageType == "sub"):
+                -- one table for the Main category of page
+                   mode == "themes", item = main category
+                   subitems = category.subcategories
+                -- one table for the region
+                   mode == "regions", item = Region
+                   subitems = region.categories
+        """
+        #Prepare variables
+        if mode == "themes":
+            if pageType == "home":
+                subcategories = item.categories
+            else:
+                subcategories = item.subcategories
+        else:
+            subcategories = item.subcategories
+        if mode == "themes" and pageType == "sub" and not item.articlesAreAllMappable:
+            tableId = ' id="%s_index"' % item.ident
+        else:
+            tableId = ""
+        code = '  <table class="categoriesIndex"%s>' % tableId
+        addWikipediaCoords = app.args.show_link_to_wikipedia_coordinates and self.header_needed(subcategories, "wikipediaCoordsNum")
+        addMissingTemplates = app.args.show_missing_templates and self.header_needed(subcategories, "missingTemplatesNum")
+        #table headers
+        headers = ["", ""]
+        if showProgressHeader:
+            headers[1] = 'Numero di articoli<br>taggati / totale'
+        if pageType == "home":
+            imgPath = "./img"
+        else:
+            imgPath = "../img"
+        if addWikipediaCoords:
+            headers.append('<img src="%s" title="Articoli non taggati ma di cui si conosce la posizione">' % os.path.join(imgPath, "josm_load_and_zoom.png"))
+        if addMissingTemplates:
+            headers.append('<img src="%s" title="Articoli taggati ma senza template Coord in Wikipedia">' % os.path.join(imgPath, "no_template.png"))
+        code += '\n    <thead>'
+        code += '\n    <tr>'
+        for header in headers:
+            code += '\n      <th>%s</th>' % header
+        code += '\n    </tr>'
+        code += '\n    </thead>'
+        #table body
+        code += '\n    <tbody>'
+        if pageType == "sub":
+            # articles
+            # row = articles (link) || progress ||  ||
+            if item.articles != []:
+                # name (= "Articles")
+                colspan = ""
+                cssclass = ""
+                if item.titles == []:
+                    cssclass = ' class="non_mappable"'
+                    colspan = 2
+                    if app.args.show_link_to_wikipedia_coordinates:
+                        colspan += 1
+                    if app.args.show_missing_templates:
+                        colspan += 1
+                    colspan = ' colspan="%d"' % colspan
+                code += '\n    <tr>'
+                code += '\n      <td%s%s>- <a href="#Articles">Articoli</a></td>' % (cssclass, colspan)
+                # progress
+                if item.titles != []:
+                    progressClass, progressString = self.progress_strings(item, "articles")
+                    code += '\n        <td>'
+                    code += '\n          <div class="progress">'
+                    code += '\n              <span class="percent">%s / %s</span>' % (len(item.titlesInOSM), len(item.titles))
+                    code += '\n              <div class="bar index_%s" style="width:%d"></div>' % (progressClass, item.progress["articles"]["num"] * 100)
+                    code += '\n          </div>'
+                    code += '\n        </td>'
+                code += '\n    </tr>'
+        # subcategories
+        # row = category name (link) || progress || wikipedia coords num || missing wikipedia templates
+        for subcategory in subcategories:
+            # name
+            if subcategory.isMappable:
+                cssClass = ""
+                colspan = ""
+            else:
+                cssClass = ' class="non_mappable"'
+                colspan = 2
+                if app.args.show_link_to_wikipedia_coordinates:
+                    colspan += 1
+                if app.args.show_missing_templates:
+                    colspan += 1
+                colspan = ' colspan="%d"' % colspan
+            code += '\n    <tr>'
+            if pageType == "home":
+                if mode == "themes":
+                    url = "./subpages/%s.html" % subcategory.name
+                else:
+                    url = "./subpages/%s.html#%s" % (item.name, subcategory.name)
+            else:
+                url = "#%s" % subcategory.name
+            if pageType == "home":
+                title = ' title="Vedi pagina"'
+            else:
+                title = ""
+            code += '\n      <td%s%s>- <a href="%s"%s>%s</a></td>' % (cssClass, colspan, url, title, subcategory.name.replace("_", " "))
+            # progress
+            if subcategory.isMappable:
+                progressClass, progressString = self.progress_strings(subcategory, "allMArticles")
+                code += '\n        <td>'
+                code += '\n          <div class="progress">'
+                code += '\n              <span class="percent">%s / %s</span>' % (len(subcategory.allTitlesInOSM), len(subcategory.allTitles))
+                code += '\n              <div class="bar index_%s" style="width:%d"></div>' % (progressClass, subcategory.progress["allMArticles"]["num"] * 100)
+                code += '\n          </div>'
+                code += '\n        </td>'
+                #number of non tagged articles with Wikipedia coordinates
+                if addWikipediaCoords:
+                    if subcategory.isMappable and subcategory.wikipediaCoordsNum > 0:
+                        wikipediaCoordsNum = str(subcategory.wikipediaCoordsNum)
+                    else:
+                        wikipediaCoordsNum = ""
+                    code += '\n      <td>%s</td>' % wikipediaCoordsNum
+                #number of articles without Coord template
+                if addMissingTemplates:
+                    if subcategory.isMappable and subcategory.missingTemplatesNum > 0:
+                        missingTemplatesNum = str(subcategory.missingTemplatesNum)
+                    else:
+                        missingTemplatesNum = ""
+                    code += '\n      <td>%s</td>' % missingTemplatesNum
+            code += '\n    </tr>'
+        code += '\n    </tbody>'
+        code += '\n  </table>'
+        self.code = code
 
 
 ### ErrorsPage #########################################################
