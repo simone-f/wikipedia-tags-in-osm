@@ -91,42 +91,7 @@ class App:
         os.chdir(os.path.dirname(sys.argv[0]))
 
         #Configurations
-        self.version = "v0.2"
-        #From 'config' file
         themesAndCatsNames = self.read_config()
-        # OSM data
-        self.countryPBF = os.path.join(self.OSMDIR, "%s-latest.osm.pbf" % self.country)
-        self.oldCountryPBF = os.path.join(self.OSMDIR, "%s.osm.pbf" % self.country)
-        self.countryO5M = os.path.join(self.OSMDIR, "%s-latest.o5m" % self.country)
-        self.oldCountryO5M = os.path.join(self.OSMDIR, "%s.o5m" % self.country)
-        # OSM data with wikipedia tag
-        self.wOSMFile = os.path.join("data", "OSM", "Wikipedia-data-in-OSM.osm")
-        # OSM data of foreign coountries
-        self.FOREIGNOSMDIR = "/tmp/"
-        # Wikipedia categories data, downloaded from catscan
-        self.CATSCANDIR = os.path.join("data", "wikipedia", "catscan")
-        # lists of categories and articles that should be ignored
-        # (not geographic content)
-        self.NONMAPPABLE = os.path.join("data", "wikipedia", "non_mappable")
-        # conversions foreign articles titles - preferred language articles
-        self.WIKIPEDIAANSWERS = os.path.join("data", "wikipedia", "answers")
-        self.WIKIPEDIAANSWER = os.path.join(self.WIKIPEDIAANSWERS, "answer")
-        # directory with webpages
-        self.HTMLDIR = 'html'
-        if not os.path.exists(os.path.join(self.HTMLDIR, "subpages")):
-            os.makedirs(os.path.join(self.HTMLDIR, "subpages"))
-        statsDir = os.path.join("data", "stats")
-        if not os.path.exists(statsDir):
-            os.makedirs(statsDir)
-        logsDir = os.path.join("data", "logs")
-        if not os.path.exists(logsDir):
-            os.makedirs(logsDir)
-        self.MISSINGTEMPLATESDIR = os.path.join("data", "wikipedia", "missing_templates")
-        if not os.path.exists(self.MISSINGTEMPLATESDIR):
-            os.makedirs(self.MISSINGTEMPLATESDIR)
-        self.TEMPLATESSTATUSFILE = os.path.join(self.MISSINGTEMPLATESDIR, "missing_templates.csv")
-        self.homePageTitle = "Articoli Wikipedia etichettabili in OSM"
-        self.UPDATETIME = time.strftime("%b %d, ore %H", time.localtime())
 
 
 ### Manage OpenStreetMap data ##########################################
@@ -278,8 +243,14 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         print "\nDone."
 
 
-### Configuration from config file #####################################
+### Configurations #####################################################
     def read_config(self):
+        """Setup configurations
+        """
+        # Program version
+        self.version = "v0.2"
+
+        #Read configuration from file
         configparser = ConfigParser.RawConfigParser()
         configparser.optionxform=str
         fp = open("config")
@@ -309,8 +280,42 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         #debugging
         self.print_categories_to_text_files = configparser.get("debug", "print categories to text files")
         self.clickable_cells = configparser.get("debug", "clickable cells")
+
+        # OSM data
+        self.countryPBF = os.path.join(self.OSMDIR, "%s-latest.osm.pbf" % self.country)
+        self.oldCountryPBF = os.path.join(self.OSMDIR, "%s.osm.pbf" % self.country)
+        self.countryO5M = os.path.join(self.OSMDIR, "%s-latest.o5m" % self.country)
+        self.oldCountryO5M = os.path.join(self.OSMDIR, "%s.o5m" % self.country)
+        # OSM data with wikipedia tag
+        self.wOSMFile = os.path.join("data", "OSM", "Wikipedia-data-in-OSM.osm")
+        # OSM data of foreign coountries
+        self.FOREIGNOSMDIR = "/tmp/"
+        # Wikipedia categories data, downloaded from catscan
+        self.CATSCANDIR = os.path.join("data", "wikipedia", "catscan")
+        # lists of categories and articles that should be ignored
+        # (not geographic content)
+        self.NONMAPPABLE = os.path.join("data", "wikipedia", "non_mappable")
+        # conversions foreign articles titles - preferred language articles
+        self.WIKIPEDIAANSWERS = os.path.join("data", "wikipedia", "answers")
+        self.WIKIPEDIAANSWER = os.path.join(self.WIKIPEDIAANSWERS, "answer")
+        # directory with webpages
+        self.HTMLDIR = 'html'
+        self.make_dir(os.path.join(self.HTMLDIR, "subpages"))
+        self.homePageTitle = "Articoli Wikipedia etichettabili in OSM"
+        self.UPDATETIME = time.strftime("%b %d, ore %H", time.localtime())
+        statsDir = os.path.join("data", "stats")
+        self.make_dir(statsDir)
+        self.make_dir(os.path.join("data", "logs"))
+        self.MISSINGTEMPLATESDIR = os.path.join("data", "wikipedia", "missing_templates")
+        self.make_dir(self.MISSINGTEMPLATESDIR)
+        self.TEMPLATESSTATUSFILE = os.path.join(self.MISSINGTEMPLATESDIR, "missing_templates.csv")
         return themesAndCatsNames
 
+    def make_dir(self, path):
+        """Create a directory if it does not already exist
+        """
+        if not os.path.exists(path):
+            os.makedirs(path)
 
 ### Not mappable items and false positive tags #########################
     def read_non_mappable_items(self):
