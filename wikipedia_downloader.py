@@ -24,6 +24,7 @@
 
 
 import os
+import sys
 import urllib
 import urllib2
 import csv
@@ -225,7 +226,7 @@ def add_wikipedia_coordinates(app):
     #If Wikipedia knows the position of an article not already tagged
     #in OSM add the attribute wikipediaCoords to the article
     coordsFile = os.path.join(os.path.join("data", "wikipedia", "wikipedia_%s_coordinates.csv" % app.WIKIPEDIALANG))
-    if not os.path.isfile(coordsFile):
+    if not os.path.isfile(coordsFile) or os.stat(coordsFile).st_size == 0:
         #download the file with Wikipedia coordinates if missing
         download_and_filter_wikipedia_coordinates(app)
     app.titlesCoords = {}
@@ -248,15 +249,35 @@ def download_and_filter_wikipedia_coordinates(app):
     """Download and filter file with Wikipedia coordinates, provided by
        user Kolossos
     """
+    inFile = os.path.join("data", "wikipedia", "new_C.gz")
+    coordsFile = os.path.join("data", "wikipedia", "wikipedia_%s_coordinates.csv" % app.WIKIPEDIALANG)
+    remove_file(inFile)
+    remove_file(coordsFile)
     #download
     url = "http://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world/new_C.gz"
-    print "\n* Il file con le coordinate Wikipedia non è presente e sarà scaricato."
-    print "  File provided by user Kolossos:", url
-    inFile = os.path.join("data", "wikipedia", "new_C.gz")
-    #call('wget -c "%s" -O %s' % (url, inFile), shell=True)
-    coordsFile = os.path.join("data", "wikipedia", "wikipedia_%s_coordinates.csv" % app.WIKIPEDIALANG)
+    print "\n* Il file con le coordinate Wikipedia non è presente e verrà scaricato."
+    print "  File provided by user Kolossos:\n", url
+    downloadCmd = 'wget "%s" -O %s' % (url, inFile)
+    print downloadCmd
+    call(downloadCmd, shell=True)
+    check_file_exists(inFile)
     #filter coordinates of articles in WIKIPEDIALANG
-    print "  filtra coordinate in %s ..." % app.WIKIPEDIALANG
-    call('zgrep ^%s "%s" | cut -f2,3,4 > %s' % (app.WIKIPEDIALANG, inFile, coordsFile), shell=True)
-    print "  rimuovi il file non più necessario: %s" % inFile
-    call('rm "%s"' % inFile, shell=True)
+    print "\n  filtra coordinate in %s ..." % app.WIKIPEDIALANG
+    filterCmd = 'zgrep ^%s "%s" | cut -f2,3,4 > %s' % (app.WIKIPEDIALANG, inFile, coordsFile)
+    print filterCmd
+    call(filterCmd, shell=True)
+    check_file_exists(coordsFile)
+    print "\n  rimuovi il file non più necessario: %s" % inFile
+    remove_file(inFile)
+
+def remove_file(fileName):
+    if os.path.isfile(fileName):
+        call('rm "%s"' % fileName, shell=True)
+
+def check_file_exists(fileName):
+    if not os.path.isfile(fileName):
+        print "\n* File non trovato:\n%s" % fileName
+        sys.exit(1)
+    elif os.stat(fileName).st_size == 0:
+        print "\n* File vuoto:\n%s" % fileName
+        sys.exit(1)
