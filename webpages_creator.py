@@ -343,7 +343,6 @@ class Homepage(Helpers):
         code += '\n        <li><a href="http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia" target="_blank">Plugin Wikipedia</a> per <a href="http://wiki.openstreetmap.org/wiki/IT:JOSM" target="_blank">JOSM</a>.</li>'
         code += '\n        <li><a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a>, si può usare questo servizio anche cliccando sulle icone <img src="./img/add-tags.png"> presenti in queste pagine.'
         code += '\n      </ul>'
-        code += '\n      </ul>'
         code += '\n      <h2>Difetti nelle liste</h2>'
         code += '\n      <ul>'
         code += '\n        <li> Articoli o categorie <b>non mappabili</b>, ad es. "es. Dipinti nel Museo Tal Dei Tali", possono essere rimossi dalla pagina, se segnalati (vedi mail).</li>'
@@ -442,21 +441,18 @@ class Homepage(Helpers):
         """
         code = '\n    <table id="home_index">'
         code += '\n      <tr>'
-        i = 0
-        for n, item in enumerate(items):
-            iconFile = "./img/%s/%s.png" % (mode, item.name.lower())
-            if os.path.isfile(os.path.join(self.app.HTMLDIR, iconFile)):
-                icon = '<img src=%s>' % iconFile
-            else:
-                icon = ""
-            code += '\n        <td><a href="#%s">%s%s</a></td>' % (item.name, icon, item.name.replace("_", " "))
-            i += 1
-            if i == 5:
-                code += '\n      </tr>'
-                if n != len(items) - 1:
-                    code += '\n      <tr>'
-                i = 0
-        code += '\n      </tr>'
+        columns = 5
+        rows = [items[i:i+columns] for i in range(0, len(items), columns)]
+        for row in rows:
+            code += '\n      <tr>'
+            for item in row:
+                iconFile = "./img/%s/%s.png" % (mode, item.name.lower())
+                if os.path.isfile(os.path.join(self.app.HTMLDIR, iconFile)):
+                    icon = '<img src=%s>' % iconFile
+                else:
+                    icon = ""
+                code += '\n        <td><a href="#%s">%s%s</a></td>' % (item.name, icon, item.name.replace("_", " "))
+            code += '\n      </tr>'
         code += '\n    </table>'
         return code
 
