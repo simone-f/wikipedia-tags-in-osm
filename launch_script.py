@@ -248,7 +248,7 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         """Setup configurations
         """
         # Program version
-        self.version = "v0.2"
+        self.version = "v0.2.1"
 
         #Read configuration from file
         configparser = ConfigParser.RawConfigParser()

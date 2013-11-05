@@ -1,3 +1,8 @@
+v0.2.1
+======
+- Fix the downloading of Wikipedia coordinates
+- Minor changes
+
 v0.2
 ====
 - Add "add-tags" (Kolossos tool) links for categories whose articles are not completely tagged yet
