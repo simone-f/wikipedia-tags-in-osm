@@ -1,7 +1,8 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 #
-#  Copyright 2013 Simone F. <groppo8@gmail.com>
+#  Copyright (c) 2013 - Fondazione Bruno Kessler. 
+#  Autore: Cristian Consonni <consonni@fbk.eu>
 #
 #  This file is part of wikipedia-tags-in-osm.
 #  wikipedia-tags-in-osm is free software: you can redistribute it and/or modify
@@ -178,21 +179,6 @@ def infer_names(mw, articles):
         job.get()
 
     mw.queue.put('kill')
-
-# def infer_names(pool, queue, articles, fn):
-
-#     watcher = pool.apply_async(listener, (queue, fn))
-
-#     jobs = []
-#     for a in articles:
-#         job = pool.apply_async(call_nuts4nuts, (a, queue))
-#         jobs.append(job)
-
-
-#     for job in jobs: 
-#         job.get()
-
-#     queue.put('kill')
 
 def infer_coordinates_with_nuts4nuts(app):
     """ 
