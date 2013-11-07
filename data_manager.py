@@ -25,7 +25,6 @@ from copy import deepcopy
 import operator
 import urllib
 
-
 class Themes:
     def __init__(self, app, themesAndCatsNames):
         self.themesList = []
@@ -343,10 +342,43 @@ class Category:
         self.wikipediaCoordsNum = len(titlesWithCoords)
 
     def check_article_coords_in_wikipedia(self, article):
-        if article.isMappable and not article.inOSM and article.name in self.app.titlesCoords:
-            article.wikipediaCoords = self.app.titlesCoords[article.name]
-            self.app.titlesInProjectWithCoords.append(article.name)
+        scan_file = open(os.path.join("data", "nuts4nuts", "articles_to_scan.txt"), "a+")
 
+        if article.isMappable and not article.inOSM:
+            if article.name in self.app.titlesCoords:
+                article.wikipediaCoords = self.app.titlesCoords[article.name]
+                article.wikipediaCoordsSource = 'Template:Coord'
+                self.app.titlesInProjectWithCoords.append(article.name)
+            else:
+                scan_file.write(article.name.encode('utf-8') + '\n')
+
+        scan_file.close()
+
+    def check_articles_coords_from_nuts4nuts(self):
+        """Add coordinates to those articles that are not yet in OSM but
+           whose coordinates are known by Wikipedia
+        """
+        for article in self.articles:
+            self.check_article_coords_from_nuts4nuts(article)
+        for subcategory in self.subcategories:
+            if subcategory.isMappable:
+                subcategory.check_articles_coords_from_nuts4nuts()
+        titlesWithCoords = [article.name for article in self.allArticles if hasattr(article, "wikipediaCoords")]
+        titlesWithCoords = list(set(titlesWithCoords))
+        if hasattr(self, "wikipediaCoordsNum"):
+            self.wikipediaCoordsNum += len(titlesWithCoords)
+        else:
+            self.wikipediaCoordsNum = len(titlesWithCoords)
+
+    def check_article_coords_from_nuts4nuts(self, article):
+        if article.isMappable and not article.inOSM \
+            and article.name in self.app.titlesNutsCoords:
+            if hasattr(article, "wikipediaCoords"):
+                article.wikipediaCoords += self.app.titlesNutsCoords[article.name]
+            else:
+                article.wikipediaCoords = self.app.titlesNutsCoords[article.name]
+            article.wikipediaCoordsSource = 'Nuts4Nuts'
+            self.app.coordsFromNuts4Nuts.append(article.name)
 
 ### print category info ################################################
     def print_info(self):

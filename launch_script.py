@@ -42,7 +42,7 @@ import osm_downloader as OSM
 from data_manager import Themes, Regions
 from webpages_creator import Creator
 import wikipedia_downloader
-
+import nuts4nuts_infer
 
 class App:
     def __init__(self):
@@ -65,6 +65,8 @@ class App:
         parser.add_argument("-t", "--show_missing_templates", help="Segnala gli articoli senza template Coord",
                             action="store_true")
         parser.add_argument("-c", "--show_link_to_wikipedia_coordinates", help="Se un articolo non taggato ha delle coordinate su Wikipedia, mostra un link per zoomare sulla sua posizione con JOSM",
+                            action="store_true")
+        parser.add_argument("-n", "--infer_coordinates_from_wikipedia", help="Usa Nuts4Nuts per cercare le coordinate di un articolo non taggato e senza coordinate su Wikipedia",
                             action="store_true")
         group.add_argument("-p", "--print_categories_list", help="Analizza i dati e stampa la lista delle categorie nel progetto.",
                             action="store_true")
@@ -194,6 +196,10 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         if self.args.show_link_to_wikipedia_coordinates:
             print "\n- Controlla di quali articoli non taggati Wikipedia conosce già la posizione"
             wikipedia_downloader.add_wikipedia_coordinates(self)
+
+        if self.args.infer_coordinates_from_wikipedia:
+            print "\n- Usa Nuts4Nuts per inferire la posizione di alcuni articoli"
+            nuts4nuts_infer.infer_coordinates_with_nuts4nuts(self)
 
         #For debugging
         # print info about a specific category
