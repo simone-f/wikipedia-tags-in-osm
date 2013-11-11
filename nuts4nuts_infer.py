@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 #
-#  Copyright (c) 2013 - Fondazione Bruno Kessler. 
+#  Copyright (c) 2013 - Fondazione Bruno Kessler.
 #  Autore: Cristian Consonni <consonni@fbk.eu>
 #
 #  This file is part of wikipedia-tags-in-osm.
@@ -42,7 +42,7 @@ class GeonamesError(Exception):
     """
     pass
 
-def geolocate_place(place_name):
+def geolocate_place(placeName):
     """
     Retrieves the (lon, lat) coordinates of a place, by
     querying the geonames web service.
@@ -50,7 +50,7 @@ def geolocate_place(place_name):
 
     params = urllib.urlencode({
         'username': GEONAMES_USER,
-        'q': place_name.encode('utf-8'),
+        'q': placeName.encode('utf-8'),
         'maxRows': 1,
     })
 
@@ -63,21 +63,21 @@ def geolocate_place(place_name):
 
     if response:
         if response.ok:
-            resp_json = response.json()
+            respJson = response.json()
 
-            if resp_json.get('geonames', None) is None:
+            if respJson.get('geonames', None) is None:
                 # geonames returned an unexpect answer, here's an example error:
-                raise GeonamesError(resp_json['status']['message'])
+                raise GeonamesError(respJson['status']['message'])
 
-            resp_data = None
+            respData = None
             try:
-                resp_data = response.json()['geonames'][0]
+                respData = response.json()['geonames'][0]
             except:
                 pass
 
             loc = None
-            if resp_data:
-                loc = [float(resp_data['lat']), float(resp_data['lng'])]
+            if respData:
+                loc = [float(respData['lat']), float(respData['lng'])]
 
             return loc
 
@@ -117,31 +117,31 @@ class MultiWorker(object):
         self.pool.join()
 
 
-def call_nuts4nuts(article_name, q=None, outfile=None):
+def call_nuts4nuts(articleName, q=None, outfile=None):
     url = 'http://nuts4nutsrecon.spaziodati.eu/reconcile'
-    
+
     query = {
-        'q0': {'query': article_name}
+        'q0': {'query': articleName}
     }
 
     params = urllib.urlencode({
         'queries': json.dumps(query)
     })
 
-    print 'requesting {}'.format(article_name)
+    print 'requesting {}'.format(articleName)
 
     req = None
     try:
         req = requests.get(url, params=params)
     except requests.exceptions.ConnectionError:
-       pass 
+       pass
 
 
     if req:
         print 'req.ok: {}'.format(req.ok)
         if not req.ok:
             req.raise_for_status()
-    
+
         res = None
         try:
             res = req.json()['q0']['result']
@@ -157,14 +157,14 @@ def call_nuts4nuts(article_name, q=None, outfile=None):
 
         print loc
         if loc:
-            output = {'article': article_name, 'coords': loc}
+            output = {'article': articleName, 'coords': loc}
             if q:
                 print output
                 q.put(output)
             else:
                 with open(outfile, 'a+') as f:
                     f.write(str(output) + '\n')
-                    f.flush()                
+                    f.flush()
 
 def infer_names(mw, articles):
 
@@ -175,24 +175,24 @@ def infer_names(mw, articles):
         job = mw.pool.apply_async(call_nuts4nuts, (a, mw.queue))
         jobs.append(job)
 
-    for job in jobs: 
+    for job in jobs:
         job.get()
 
     mw.queue.put('kill')
 
 def infer_coordinates_with_nuts4nuts(app):
-    """ 
+    """
     Use Nuts4Nuts and Dandelion by SpazioDati to infer the position of
     a Wikipedia article from his templates and his abstract
     """
 
-    app.titlesNutsCoords = {}    
+    app.titlesNutsCoords = {}
 
     inFile = open(os.path.join("data", "nuts4nuts", "articles_to_scan.txt"), "r")
     articles = [line.strip() for line in inFile.readlines()]
     inFile.close()
-    
-    nutsCoordsFile = os.path.join("data", "nuts4nuts", "nuts4nuts_%s_coords.txt" 
+
+    nutsCoordsFile = os.path.join("data", "nuts4nuts", "nuts4nuts_%s_coords.txt"
                         % app.WIKIPEDIALANG)
 
     mw = MultiWorker(cpus, nutsCoordsFile)
@@ -221,7 +221,7 @@ def infer_coordinates_with_nuts4nuts(app):
 
 if __name__ == '__main__':
 
-    infilename = os.path.join("data", 
+    infilename = os.path.join("data",
                               "nuts4nuts",
                               "articles_to_scan.txt"
                              )
@@ -240,11 +240,11 @@ if __name__ == '__main__':
     with open(nutsCoordsFile, 'r') as f:
         data = [ast.literal_eval(line.strip()) for line in f.readlines()]
 
-    already_scanned = frozenset([d['article'] for d in data])
-    print ' already scanned: %d' %len(already_scanned)
+    alreadyScanned = frozenset([d['article'] for d in data])
+    print ' already scanned: %d' %len(alreadyScanned)
 
-    articles_to_scan = list(articles - already_scanned)
-    print ' to scan: %d' %len(articles_to_scan)
+    articlesToScan = list(articles - alreadyScanned)
+    print ' to scan: %d' %len(articlesToScan)
 
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
@@ -257,7 +257,7 @@ if __name__ == '__main__':
     mw = MultiWorker(cpus, nutsCoordsFile)
 
     try:
-        infer_names(mw, articles_to_scan)
+        infer_names(mw, articlesToScan)
         mw.close_multiprocess()
 
     except KeyboardInterrupt:

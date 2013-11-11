@@ -342,21 +342,21 @@ class Category:
         self.wikipediaCoordsNum = len(titlesWithCoords)
 
     def check_article_coords_in_wikipedia(self, article):
-        scan_file = open(os.path.join("data", "nuts4nuts", "articles_to_scan.txt"), "a+")
-
+        scanFile = open(os.path.join("data", "nuts4nuts", "articles_to_scan.txt"), "a+")
         if article.isMappable and not article.inOSM:
+            #Check if Wikipedia coordinates are known (from new_C.gz)
             if article.name in self.app.titlesCoords:
                 article.wikipediaCoords = self.app.titlesCoords[article.name]
                 article.wikipediaCoordsSource = 'Template:Coord'
-                self.app.titlesInProjectWithCoords.append(article.name)
+                self.app.titlesWithCoordsFromWikipedia.append(article.name)
             else:
-                scan_file.write(article.name.encode('utf-8') + '\n')
-
-        scan_file.close()
+                #create list of titles without coordinates, needed by Nuts4Nuts
+                scanFile.write(article.name.encode('utf-8') + '\n')
+        scanFile.close()
 
     def check_articles_coords_from_nuts4nuts(self):
         """Add coordinates to those articles that are not yet in OSM but
-           whose coordinates are known by Wikipedia
+           whose coordinates are infered from Wikipedia with Nuts4Nuts
         """
         for article in self.articles:
             self.check_article_coords_from_nuts4nuts(article)
@@ -373,10 +373,7 @@ class Category:
     def check_article_coords_from_nuts4nuts(self, article):
         if article.isMappable and not article.inOSM \
             and article.name in self.app.titlesNutsCoords:
-            if hasattr(article, "wikipediaCoords"):
-                article.wikipediaCoords += self.app.titlesNutsCoords[article.name]
-            else:
-                article.wikipediaCoords = self.app.titlesNutsCoords[article.name]
+            article.wikipediaCoords = self.app.titlesNutsCoords[article.name]
             article.wikipediaCoordsSource = 'Nuts4Nuts'
             self.app.coordsFromNuts4Nuts.append(article.name)
 
