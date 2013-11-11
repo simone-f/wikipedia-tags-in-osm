@@ -209,6 +209,8 @@ class Helpers:
         if hasattr(article, "wikipediaCoords"):
             #the article is not tagged but Wikipedia knows its coordinates
             img = "../img/josm_load_and_zoom.png"
+            if article.wikipediaCoordsSource == 'Nuts4Nuts':
+                img = "../img/josm_load_and_zoom_blue.png"
             code = self.josm_link("load_and_zoom", article.wikipediaCoords, img)
         else:
             code = ""
