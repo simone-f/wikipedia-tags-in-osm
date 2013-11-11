@@ -41,6 +41,7 @@ Starting from a list of Wikipedia categories, written by the user in the 'config
 * osmfilter
 * wget
 * zgrep, cut (if using --show_link_to_wikipedia_coordinates)
+* python-requests (if using --infer_coordinates_from_wikipedia)
 
 [osmconvert/update/filter](http://wiki.openstreetmap.org/wiki/Osmconvert) tools (from Marqqs) can be downloaded and installed with:
 
@@ -78,19 +79,27 @@ next time, just update the previously downloaded OSM data to the last minute (th
 
         launch_script.py --create_webpages
 
-3. (Optional) Point 3 + mark on the webpages the articles without Coord template on Wikipedia:
+####Other options
+* (Optional) Point 3 + mark on the webpages the articles without Coord template on Wikipedia:
 
-        launch_script.py --show_missing_templates  --create_webpages
+         launch_script.py --show_missing_templates  --create_webpages
         
-4. (Optional) Point 3 + show JOSM link for zooming to the position of a non already tagged article, known by Wikipedia:
+* (Optional) Point 3 + show JOSM link for zooming to the position of a non already tagged article, known by Wikipedia:
 
-       launch_script.py --show_link_to_wikipedia_coordinates  --create_webpages
+         launch_script.py --show_link_to_wikipedia_coordinates  --create_webpages
+       
+* (Optional) Point 3 + show JOSM link for zooming to the position of a non already tagged article, whose coordinates have been infered with [Nuts4Nuts](https://github.com/SpazioDati/Nuts4Nuts)(see below for more info)
+
+         launch_script.py --infer_coordinates_from_wikipedia  --create_webpages
 
 ##Notes
 ###Non mappable categories or articles
 Add the names of *non mappable* categories or articles (for example "Paintings in the X Museum") to the file './data/wikipedia/non_mappable'. The script will set them as invisible in webpages.
 
 If you need to add many names to 'non_mappable' file, set the option 'clickable_cells = true' in config file and create webpages again.<br>Now, by clicking on tables cells, a string of names will be automatically created on top of the page, ready to be copied and pasted to './data/wikipedia/non_mappable' file.
+
+###Infer coordinates with Nuts4Nuts
+The first time the script is run with the option -n it infers the coordinates of Wikipedia articles without a geographic position. The coordinates are saved to the file 'data/nuts4nuts/nuts4nuts_LANG_coords.txt'. Since this can take a long time it is better to create the file on its own, by running 'python nuts4nuts_infer.py'. This script can be interrupted to scan more articles a little at a time.
 
 ###Workarounds
 ####Tagged articles not detected by the script

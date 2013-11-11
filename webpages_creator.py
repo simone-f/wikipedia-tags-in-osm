@@ -647,6 +647,7 @@ class Subpage(Helpers):
         code += '\n    <tr><td><img src="../img/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td></tr>'
         code += '\n    <tr><td><img src="../img/no_template.png"></td><td>All\'articolo su Wikipedia manca il <a href="https://it.wikipedia.org/wiki/Template%3ACoord" target="_blank">template Coord</a>. Clicca su un\'icona per ulteriori informazioni</td></tr>'
         code += '\n    <tr><td><img src="../img/josm_load_and_zoom.png"></td><td>L\'articolo non è taggato ma Wikipedia ne conosce la posizione. Clicca sull\'icona per aprire JOSM alla posizione conosciuta e trovare più facilmente l\'oggetto da taggare</td></tr>'
+        code += '\n    <tr><td><img src="../img/josm_load_and_zoom_blue.png"></td><td>L\'articolo non è taggato ma ne è stata calcolata la posizione approssimata tramite i contenuti dell\'articolo e <a href="https://github.com/SpazioDati/Nuts4Nuts" target="_blank">Nuts4Nuts</a>. Clicca sull\'icona per aprire JOSM alla posizione conosciuta e trovare più facilmente l\'oggetto da taggare</td></tr>'
         code += '\n  </table>'
         code += '\n</div>'
         return code.decode("utf-8")
