@@ -104,7 +104,7 @@ class MultiWorker(object):
         self.pool = mp.Pool(cpus, init_worker)
         self.outfile = outfile
         self.logger = mp.log_to_stderr()
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.INFO)
 
     def close_multiprocess(self):
         del self.queue
@@ -159,7 +159,7 @@ def call_nuts4nuts(articleName, q=None, outfile=None):
         if loc:
             output = {'article': articleName, 'coords': loc}
             if q:
-                print output
+                #print output
                 q.put(output)
             else:
                 with open(outfile, 'a+') as f:
@@ -195,10 +195,9 @@ def infer_coordinates_with_nuts4nuts(app):
     nutsCoordsFile = os.path.join("data", "nuts4nuts", "nuts4nuts_%s_coords.txt"
                         % app.WIKIPEDIALANG)
 
-    mw = MultiWorker(cpus, nutsCoordsFile)
-
     if not os.path.isfile(nutsCoordsFile) or \
             os.stat(nutsCoordsFile).st_size == 0:
+        mw = MultiWorker(cpus, nutsCoordsFile)
         infer_names(mw, articles)
 
     with open(nutsCoordsFile, 'r') as f:
@@ -247,10 +246,10 @@ if __name__ == '__main__':
     print ' to scan: %d' %len(articlesToScan)
 
     logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
 
     console = logging.StreamHandler()
-    console.setLevel(logging.DEBUG)
+    console.setLevel(logging.INFO)
 
     logger.addHandler(console)
 
