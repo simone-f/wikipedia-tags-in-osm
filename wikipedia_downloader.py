@@ -229,6 +229,7 @@ def add_wikipedia_coordinates(app):
     if not os.path.isfile(coordsFile) or os.stat(coordsFile).st_size == 0:
         #download the file with Wikipedia coordinates if missing
         download_and_filter_wikipedia_coordinates(app)
+    #coords from Wikipedia = {article title : [lat, lon],...}
     app.titlesCoords = {}
     #read coords
     inFile = open(coordsFile, "r")

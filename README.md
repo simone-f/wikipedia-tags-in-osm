@@ -16,11 +16,13 @@ Updated webpages for Italy can be found [here](http://geodati.fmach.it/gfoss_geo
 
 ##Development
 Author: Simone F. <groppo8@gmail.com>, [OSM Wiki](http://wiki.openstreetmap.org/wiki/User:Groppo/)
-
+Contributors: Luca Delucchi, Cristian Consonni
 Code: Python, GPLv3
 
 ###Credits and attributions
-Services used or linked from this program: [WIWOSM](http://wiki.openstreetmap.org/wiki/WIWOSM) (master, Kolossos), [CatScan](http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php) (Duesentrieb), MediaWiki [API](https://www.mediawiki.org/wiki/API:Main_page), [add-tags](http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags) (Kolossos), [Wikipedia coordinates](https://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world), [OverpassTurbo](http://overpass-turbo.eu/) (tyr.asd)
+Services linked from the pages: [WIWOSM](http://wiki.openstreetmap.org/wiki/WIWOSM) (master, Kolossos), [add-tags](http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags) (Kolossos), [OverpassTurbo](http://overpass-turbo.eu/) (tyr.asd)
+
+Services used by the program: [CatScan](http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php) (Duesentrieb), MediaWiki [API](https://www.mediawiki.org/wiki/API:Main_page), [Wikipedia coordinates](https://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world), [Nuts4Nuts](http://nuts4nutsrecon.spaziodati.eu/), [quick_intersection](http://tools.wmflabs.org/catscan2/quick_intersection.php) (Magnus Manske)
 
 * themes icons are from [Maki](https://github.com/mapbox/maki), License BSD
 * regions icons are from [araldicacivica.it](http://www.araldicacivica.it), License [CC BY-NC-ND 3.0](http://creativecommons.org/licenses/by-nc-nd/3.0/it/)

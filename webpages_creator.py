@@ -355,10 +355,20 @@ class Homepage(Helpers):
         code += '\n        <li> Articoli o sottocategorie appartenenti a più categorie possono ripetersi più volte in una stessa pagina (i conteggi ne tengono conto).</li>'
         code += '\n      </ul>'
         code += '\n      <h2>Programma per generare le pagine</h2>'
-        code += '\n      <p>Codice: <a href="https://github.com/simone-f/wikipedia-tags-in-osm" target="_blank">wikipedia-tags-in-osm %s</a> (GPLv3)<br>Autore: <a href="mailto:groppo8@gmail.com">Simone F.</a></p>' % self.app.version
+        code += '\n      <p>Codice: <a href="https://github.com/simone-f/wikipedia-tags-in-osm" target="_blank">wikipedia-tags-in-osm %s</a> (GPLv3)\
+<br>Autore: <a href="mailto:groppo8@gmail.com">Simone F.</a></p>' % self.app.version
+        code += '\n      <p>Contributors: Luca Delucchi, CristianCantoro</p>'
         code += '\n      <p><br>Riconoscimenti ed attribuzioni:</p>'
-        code += '\n      <p>Servizi usati o linkati da queste pagine: <a href="http://wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a>(master, Kolossos), <a href="http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php" target="_blank">CatScan</a> (Duesentrieb), <a href="http://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world/">Wikipedia coordinates</a>(Kolossos), <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a> (Kolossos), <a href="http://overpass-turbo.eu/" target="_blank">OverpassTurbo</a> (tyr.asd).</p>'
-        code += '\n      <p>Icone dei temi: <a href="https://github.com/mapbox/maki" target="_blank" target="_blank">Maki</a> (BSD)<br>'
+        code += '\n      <p>Servizi linkati da queste pagine: \
+<a href="http://wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (master, Kolossos), \
+<a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a> (Kolossos), \
+<a href="http://overpass-turbo.eu/" target="_blank">OverpassTurbo</a> (tyr.asd).</p>'
+        code += '\n      <p>Servizi usati per creare le pagine: \
+<a href="http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php" target="_blank">CatScan</a> (Duesentrieb), \
+<a href="http://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world/">Wikipedia coordinates</a> (Kolossos), \
+<a href="http://nuts4nutsrecon.spaziodati.eu/">Nuts4Nuts</a>, \
+<a href="http://tools.wmflabs.org/catscan2/quick_intersection.php">quick_intersection</a> (Magnus Manske).</p>'
+        code += '\n      <p>Icone dei temi: <a href="https://github.com/mapbox/maki" target="_blank"">Maki</a> (BSD)<br>'
         code += '\n      Stemmi regionali: <a href="http://www.araldicacivica.it" target="_blank">www.araldicacivica.it</a> (<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/it/">CC BY-NC-ND 3.0</a>)<br>'
         code += '\n      Icone di nodi, way, relazioni ed Overpass Turbo da <a href="http://wiki.openstreetmap.org/">Wiki OSM</a>.</p>'
         code += '\n    </div>'
