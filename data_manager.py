@@ -500,7 +500,9 @@ class Article:
 
     def setMappable(self, mainCategory, parentCategory):
         if not parentCategory.isMappable or \
-mainCategory.name in self.app.nonMappable and self.name in self.app.nonMappable[mainCategory.name]["articles"]:
+mainCategory.name in self.app.nonMappable and \
+(self.name in self.app.nonMappable[mainCategory.name]["articles"] or \
+self.name in self.app.nonMappable[mainCategory.name]["redirects"]):
             #print "not mappable article", self.name
             self.isMappable = False
         else:

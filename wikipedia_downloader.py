@@ -281,3 +281,76 @@ def check_file_exists(fileName):
     elif os.stat(fileName).st_size == 0:
         print "\n* File vuoto:\n%s" % fileName
         sys.exit(1)
+
+
+### Download from Wikipedia the lists of redirects #####################
+def find_redirects(app):
+    """Download from http://tools.wmflabs.org/catscan2/quick_intersection.php
+       informations about the articles, find redirects and write them to:
+       data/wikipedia/redirects
+       Then, yhey can be manually copied and pasted to non_mappable file
+    """
+    print "\n- Scarica informazioni sugli articoli e leggi quali di questi sono redirects"
+    #self.download_redirects_info()
+
+    #Read redirects from files
+    redirects = {}
+    for theme in app.themes:
+        for category in theme.categories:
+            fileName = os.path.join("data", "wikipedia", "redirects", "%s.json" % category.name)
+            jsonFileIn = open(fileName)
+            data = json.load(jsonFileIn)
+            jsonFileIn.close()
+            pages = data["pages"]
+            for page in pages:
+                if page["page_is_redirect"] == "1":
+                    if category.name not in redirects:
+                        redirects[category.name] = []
+                    redirects[category.name].append(page["page_title"])
+
+    #Save titles to data/wikipedia/redirects/redirects, from where they
+    #can be mannually copied to non_mappable file
+    fileName = os.path.join("data", "wikipedia", "redirects", "redirects")
+    outFile = open(fileName, "w")
+    for categoryName, titles in redirects.iteritems():
+        outFile.write("\n\n[%s]\nredirects = " % categoryName.encode("utf-8"))
+        outFile.write("|".join([t.replace("_", " ").encode("utf-8") for t in titles]))
+    outFile.close()
+    print "  La lista di redirects è stata scritta in %s per essere coppiata in non_mappable" % fileName
+
+    i = 0
+    print "REDIRECTS"
+    for categoryName, titles in redirects.iteritems():
+        print "\n=%s=" % categoryName.encode("utf-8")
+        for title in titles:
+            i += 1
+            print title
+    print "\nTot: %d" % i
+
+    print "La lista di redirects è stata scritta in %s per essere coppiata in non_mappable" % fileName
+
+def download_redirects_info(self):
+    """Download json files with info about the articles of each category
+    """
+    for theme in app.themes:
+        for category in theme.categories:
+            print category.name.replace("_", " ").encode("utf-8")
+            url = 'http://tools.wmflabs.org/catscan2/quick_intersection.php?'
+            url += 'lang=%s' % app.WIKIPEDIALANG
+            url += '&project=wikipedia'
+            url += '&cats=%s' % urllib.quote_plus(category.name.encode("utf-8"))
+            url += '&ns=0&depth=-1&max=30000&start=0&format=json&callback='
+            #answer = raw_input("\n  Download json with articles of categories?\n%s\n[y/N]" % url)
+            answer = "y"
+            if answer in ("y", "Y"):
+                try:
+                    urllib2.urlopen(url)
+                except:
+                    print "\n* a problem occurred during downloading"
+                else:
+                    fileName = os.path.join("data", "wikipedia", "redirects", "%s.json" % category.name)
+                    if os.path.isfile(fileName):
+                        call("rm %s" % fileName, shell=True)
+                    fileOut = open(fileName, "w")
+                    fileOut.write(wikipediaAnswer.read())
+                    fileOut.close()

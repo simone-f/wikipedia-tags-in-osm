@@ -68,6 +68,8 @@ class App:
                             action="store_true")
         parser.add_argument("-n", "--infer_coordinates_from_wikipedia", help="Usa Nuts4Nuts per cercare le coordinate di un articolo non taggato e senza coordinate su Wikipedia",
                             action="store_true")
+        parser.add_argument("-r", "--update_redirects", help="Controlla gli articoli delle liste che sono redirects e crea un file con la loro lista per poterli aggiungere manualmente tra i non mappabili, perché non supportati da WIWOSM",
+                            action="store_true")
         group.add_argument("-p", "--print_categories_list", help="Analizza i dati e stampa la lista delle categorie nel progetto.",
                             action="store_true")
         #Create webpages
@@ -84,6 +86,7 @@ class App:
         self.args = parser.parse_args()
         if self.args.category_info or self.args.category_info\
            or self.args.create_webpages or self.args.print_categories_list\
+           or self.args.update_redirects\
            or self.args.show_missing_templates:
             self.args.analyze = True
 
@@ -202,6 +205,11 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             print "\n- Usa Nuts4Nuts per inferire la posizione di alcuni articoli"
             nuts4nuts_infer.infer_coordinates_with_nuts4nuts(self)
 
+        #Download from Wikipedia the lists of redirects and create a file
+        #so that they can then be manually copied to non_mappable file
+        if self.args.update_redirects:
+            wikipedia_downloader.find_redirects(self)
+
         #For debugging
         # print info about a specific category
         if self.args.category_info:
@@ -319,6 +327,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         self.MISSINGTEMPLATESDIR = os.path.join("data", "wikipedia", "missing_templates")
         self.make_dir(self.MISSINGTEMPLATESDIR)
         self.TEMPLATESSTATUSFILE = os.path.join(self.MISSINGTEMPLATESDIR, "missing_templates.csv")
+        self.make_dir(os.path.join("data", "wikipedia", "redirects"))
         return themesAndCatsNames
 
     def make_dir(self, path):
@@ -414,14 +423,17 @@ non verrà mostrata. I tags di oggi sono stati salvati (data/OSM/tags.csv)."
            "Opere nel Castello Sforzesco‎"...
         """
         print "\n- Leggi le liste di articoli e categorie da ignorare perché non mappabili, dal 'file ./data/wikipedia/non_mappable'"
-        #nonMappable = {category : {"subcategories" : [], "articles" : []}, ...}
+        #nonMappable = {category name :
+        #                               {"subcategories" : [],
+        #                                "articles"      : []}
+        #                                "redirects"     : [], ...}
         nonMappableParser = ConfigParser.RawConfigParser()
         nonMappableParser.read(self.NONMAPPABLE)
         nonMappable = {}
         for section in nonMappableParser.sections():
             categoryName = section.replace(" ", "_").decode("utf-8")
             nonMappable[categoryName] = {}
-            for elementType in ("subcategories", "articles"):
+            for elementType in ("subcategories", "articles", "redirects"):
                 nonMappableString = nonMappableParser.get(section, elementType)
                 nonMappableList = nonMappableString.split("|")
                 nonMappable[categoryName][elementType] = [item.replace(" ", "_").decode("utf-8") for item in nonMappableList]
