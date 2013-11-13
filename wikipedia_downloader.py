@@ -291,7 +291,7 @@ def find_redirects(app):
        Then, yhey can be manually copied and pasted to non_mappable file
     """
     print "\n- Scarica informazioni sugli articoli e leggi quali di questi sono redirects"
-    #self.download_redirects_info()
+    self.download_redirects_info()
 
     #Read redirects from files
     redirects = {}
