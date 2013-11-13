@@ -44,7 +44,7 @@ class ParseOSMData():
         self.falsePositiveTags = self.read_false_positive()
 
         #Parse OSM file and extract tags and osmIds
-        self.allTags, tagsAndOsmids = self.parse_osm_file()
+        self.allTags, self.tagsData = self.parse_osm_file()
 
         #Extract articles titles from tags
         #create dictionaries with data like {title : osmIds}
@@ -52,7 +52,7 @@ class ParseOSMData():
         self.wrongTags = {}     #wrong tags (lang is missing or url not from Wikipedia)
         self.badTags = {}       #warnings: tagged with a url instead of article title or upper lang
         self.foreignTitles = {} #articles tagged in foreign language
-        dicts = self.extract_titles_from_tags(tagsAndOsmids)
+        dicts = self.extract_titles_from_tags()
         n = 0
         for lang, titles in self.foreignTitles.iteritems():
             n += len(titles)
@@ -100,7 +100,7 @@ class ParseOSMData():
            tags are used
         """
         allTags = []
-        tagsAndOsmids = {}
+        tagsData = {}
         tags = []
         for event, element in etree.iterparse(self.app.wOSMFile, events=("end",)):
             #OSM element with Wikipedia tag.
@@ -120,18 +120,20 @@ class ParseOSMData():
             if element.tag in ("node", "way", "relation"):
                 #end of OSM object
                 osmId = element.tag[0] + element.get("id")
+                user = element.get("user")
                 for tag in tags:
-                    if tag not in tagsAndOsmids:
-                        tagsAndOsmids[tag] = []
-                    tagsAndOsmids[tag].append(osmId)
+                    if tag not in tagsData:
+                        tagsData[tag] = {"osmIds" : [], "users" : []}
+                    tagsData[tag]["osmIds"].append(osmId)
+                    tagsData[tag]["users"].append(user)
                 #print element.tag, osmId, allObjects[osmId]
                 tags = []       # reset tags
             element.clear()
-        #print "\nOSM objects with wikipedia tags: ", len(tagsAndOsmids)
-        #print "\nwikipedia tags number: ", len(tagsAndOsmids)
-        return allTags, tagsAndOsmids
+        #print "\nOSM objects with wikipedia tags: ", len(tagsData)
+        #print "\nwikipedia tags number: ", len(tagsData)
+        return allTags, tagsData
 
-    def extract_titles_from_tags(self, tagsAndOsmids):
+    def extract_titles_from_tags(self):
         """Extract form OSM tags the title of an arrticle and the
            osm ids of the objects using it
         """
@@ -158,7 +160,8 @@ class ParseOSMData():
                  "wForeignlang_"    : {},
                  "langMissing"      : {}}
 
-        for tag, osmIds in tagsAndOsmids.iteritems():
+        for tag, tagData in self.tagsData.iteritems():
+            osmIds = tagData["osmIds"]
             #for (key, value) in tags:
             (key, value) = tag
             tagString = "%s=%s" % (key, value)

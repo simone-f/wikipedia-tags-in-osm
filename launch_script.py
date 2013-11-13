@@ -126,6 +126,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             parseOSMData = ParseOSMData(self)
             #list of Wikipedia tags in OSM
             self.tagsInOSM = parseOSMData.allTags
+            self.tagsData = parseOSMData.tagsData
             #list of tagged Wikipedia articles
             self.taggedTitles = parseOSMData.titles
             #tags with errors
@@ -216,16 +217,19 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         #Read and update stats with the number of tagged articles
         self.dates, self.days = self.read_past_stats()
         download_other_countries = False
-        todayDate, today = self.read_new_stats(download_other_countries)
+        self.todayDate, today = self.read_new_stats(download_other_countries)
         self.days.append(today)
-        self.dates.append(todayDate)
-        if len(self.dates) > 1 and todayDate == self.dates[-2]:
-            #If this is the second analysis of the day,
-            #overwrite old statistics of today
-            del self.dates[-2]
-            del self.days[-2]
-            print "\n Questa è la seconda volta che i dati vengono analizzati oggi. \
-Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei conteggi."
+        self.dates.append(self.todayDate)
+        if len(self.dates) > 1 and self.todayDate == self.dates[-2]:
+                #This is the second analysis of the day,
+                #overwrite previous statistics
+                del self.dates[-2]
+                del self.days[-2]
+                print "\n Questa è la seconda volta che i dati vengono analizzati oggi. \
+    Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei conteggi."
+
+        #Count tags added by each user
+        self.check_mappers_activity()
 
         #Create webpages
         if self.args.create_webpages:
@@ -322,6 +326,85 @@ Il numero di articoli taggati sostituisce quelli precedenti nella tabella dei co
         """
         if not os.path.exists(path):
             os.makedirs(path)
+
+### Mappers ############################################################
+    def check_mappers_activity(self, isFirstAnalysisOfTheDay):
+        """Find which users have added Wikipedia tags from the previous
+           run, and count the tags
+        """
+        print "\n- Trova i nomi di mappatori che hanno aggiunto tag dall'ultima rilevazione"
+        newTags = self.tagsInOSM
+        usersDict = {}
+        tagsFileName = os.path.join("data", "OSM", "tags.csv")
+        if not os.path.isfile(tagsFileName):
+            dates = [self.todayDate]
+            tagsLists = [newTags]
+        else:
+            #read old tags
+            inFile  = open(tagsFileName, "rb")
+            reader = csv.reader(inFile, delimiter = '\t')
+            for i, row in enumerate(reader):
+                if i == 0:
+                    dates = row
+                    tagsLists = [[] for d in dates]
+                    continue
+                for dayNum in range(len(dates)):
+                    tagsLists[dayNum].append(row[dayNum].decode("utf-8"))
+            inFile.close()
+            if len(dates) == 1 and dates[-1] == self.todayDate:
+                tagsLists = [newTags]
+                print " Per mostrare la lista dei mappatori è necessario \
+confrontare i tags con quelli di un giorno precedente. Fino a quel momento la lista di mappatori \
+non verrà mostrata. I tags di oggi sono stati salvati (data/OSM/tags.csv)."
+            else:
+                if (len(dates) == 1 and dates[-1] != self.todayDate) or\
+                   (len(dates) == 2 and dates[-1] == self.todayDate):
+                    oldTags = tagsLists[0]
+                    oldDate = dates[0]
+                elif len(dates) == 2 and dates[-1] != self.todayDate:
+                    oldTags = tagsLists[1]
+                    oldDate = dates[1]
+                usersDict = self.count_tags_per_user(oldTags, newTags)
+                dates = [oldDate, self.todayDate]
+                tagsLists = [oldTags, newTags]
+
+        #Save updated tags list
+        rowsNum = max([len(tagsList) for tagsList in tagsLists])
+        rows = []
+        for i in range(rowsNum):
+            row = []
+            for tagsList in tagsLists:
+                if i > len(tagsList) - 1:
+                    row.append("")
+                else:
+                    row.append(tagsList[i].encode("utf-8"))
+            rows.append(row)
+        outFile = open(tagsFileName, 'wb')
+        writer = csv.writer(outFile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
+        writer.writerow(dates)
+        for row in rows:
+            writer.writerow(row)
+        outFile.close()
+
+        if usersDict == {}:
+            self.users = []
+        else:
+            self.users = sorted(usersDict.items(), key=lambda x: x[1], reverse=True)
+            print "Mapper | Numero tag"
+            for user, tagsNum in self.users:
+                print user, "|", tagsNum
+
+    def count_tags_per_user(self, oldTags, newTags):
+        usersDict = {}
+        for tag in newTags:
+            if tag not in oldTags:
+                tagUsers = self.tagsData[tuple(tag.split("="))]["users"]
+                print tag, tagUsers
+                for user in tagUsers:
+                    if user not in usersDict:
+                        usersDict[user] = 0
+                    usersDict[user] += 1
+        return usersDict
 
 ### Not mappable items and false positive tags #########################
     def read_non_mappable_items(self):

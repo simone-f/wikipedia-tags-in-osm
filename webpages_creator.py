@@ -331,6 +331,8 @@ class Homepage(Helpers):
         code += '\n    <p><a id="description" href="javascript:showHideDiv(\'info\');"><img src="./img/info.png" class="infoImg"> Informazioni e conteggi</a> | <a href="errors.html" title="Visualizza tag sospetti">Tag sospetti</a></p>'
         #Info
         code += '\n    <div id="info" style="display:none">'
+        if self.app.users != []:
+            code += self.users_table()
         code += self.stats_table()
         code += '\n      <h2></h2>'
         code += '\n      <ul>'
@@ -436,6 +438,20 @@ class Homepage(Helpers):
                 code += '\n          <td>%s%s</td>' % (value, differenceStr)
             code += '\n        </tr>'
         code += '\n      </table>'
+        return code
+
+    def users_table(self):
+        """Return html code of a table with the mappers which added
+           tags from the previous run of the program
+        """
+        code = '\n      <div id="users">'
+        code += '\n      <table id="users">'
+        code += '\n        <tr><th>Mapper</th><th>Tag</th></tr>'
+        for user, tagsNumber in self.app.users:
+            mapperLink = '<a href="http://www.openstreetmap.org/user/%s/">%s</a>' % (urllib.quote_plus(user.encode("utf-8")), user)
+            code += '\n        <tr><td>%s</td><td>%s</td></tr>' % (mapperLink, tagsNumber)
+        code += '\n      </table>'
+        code += '\n      </div>'
         return code
 
     def main_index(self, items, mode):
