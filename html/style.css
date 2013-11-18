@@ -75,6 +75,8 @@ div#info {
     margin-top : 1em;
     padding: 1em 1em 1em 1em;
     border: 1px #bbbbbb solid;
+	overflow: auto;
+	width: 100%;
 }
 div#info h2,
 div#info ul,
@@ -88,6 +90,9 @@ div#info ul,
 div#info p {
     margin : 0em;
 }
+div#users {
+float:right;
+}
 
 table {
     border-collapse: collapse;
@@ -98,11 +103,16 @@ table th, table td {
     padding: 0.2em 0.4em;
 }
 
-table#stats td {
+table#stats td,
+table#users td {
     text-align : right;
     font-size: 80%;
 }
-table#stats td:nth-child(1), table#stats th:nth-child(1){
+table#users td:first-child {
+    text-align : left;
+}
+table#stats td:nth-child(1),
+table#stats th:nth-child(1){
     text-align : left;
     vertical-align: middle;
 }

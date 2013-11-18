@@ -129,8 +129,8 @@ class ParseOSMData():
                 #print element.tag, osmId, allObjects[osmId]
                 tags = []       # reset tags
             element.clear()
-        #print "\nOSM objects with wikipedia tags: ", len(tagsData)
-        #print "\nwikipedia tags number: ", len(tagsData)
+        #print "\nWikipedia tags number (with duplicate): ", len(allTags)
+        #print "\nwikipedia tags number (no duplicate): ", len(tagsData)
         return allTags, tagsData
 
     def extract_titles_from_tags(self):
