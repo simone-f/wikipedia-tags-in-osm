@@ -30,6 +30,8 @@ import urllib2
 import csv
 import json
 from subprocess import call
+import ConfigParser
+import time
 
 
 ### Manage catscan data ################################################
@@ -292,7 +294,7 @@ def find_redirects(app):
        Then, yhey can be manually copied and pasted to non_mappable file
     """
     print "\n- Scarica informazioni sugli articoli e leggi quali di questi sono redirects"
-    self.download_redirects_info()
+    download_redirects_info(app)
 
     #Read redirects from files
     redirects = {}
@@ -330,7 +332,7 @@ def find_redirects(app):
 
     print "La lista di redirects è stata scritta in %s per essere coppiata in non_mappable" % fileName
 
-def download_redirects_info(self):
+def download_redirects_info(app):
     """Download json files with info about the articles of each category
     """
     for theme in app.themes:
@@ -345,7 +347,7 @@ def download_redirects_info(self):
             answer = "y"
             if answer in ("y", "Y"):
                 try:
-                    urllib2.urlopen(url)
+                    response = urllib2.urlopen(url)
                 except:
                     print "\n* a problem occurred during downloading"
                 else:
@@ -353,5 +355,5 @@ def download_redirects_info(self):
                     if os.path.isfile(fileName):
                         call("rm %s" % fileName, shell=True)
                     fileOut = open(fileName, "w")
-                    fileOut.write(wikipediaAnswer.read())
+                    fileOut.write(response.read())
                     fileOut.close()

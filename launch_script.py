@@ -31,8 +31,6 @@ import os
 import time
 from subprocess import call
 import csv
-import urllib
-import urllib2
 import ConfigParser
 import sys
 
