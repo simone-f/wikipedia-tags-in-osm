@@ -230,8 +230,8 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         self.days.append(today)
         self.dates.append(self.todayDate)
         if len(self.dates) > 1 and self.todayDate == self.dates[-2]:
-                #This is the second analysis of the day,
-                #overwrite previous statistics
+                #This is the second analysis of today.
+                #Overwrite the previous statistics
                 del self.dates[-2]
                 del self.days[-2]
                 print "\n Questa è la seconda volta che i dati vengono analizzati oggi. \
@@ -249,8 +249,8 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         if self.args.create_webpages and self.args.save_stats:
             answer = "y"
         else:
-            answer = raw_input("\n- Salvo il numero di articoli mappati/da mappare in ./data/stats/stats.csv?\n[y/n]\n")
-        if answer == "y":
+            answer = raw_input("\n- Salvo il numero di articoli mappati/da mappare in ./data/stats/stats.csv?\n[y/N]\n")
+        if answer in ("y", "Y"):
             self.save_stats_to_csv()
         else:
             print "\nI nuovi conteggi non vengono salvati."

@@ -341,7 +341,7 @@ class Homepage(Helpers):
         code += '\n      </ul>'
         code += '\n      <h2>Come</h2>'
         code += '\n      <ul>'
-        code += '\n        <li>Aggiungere all\'oggetto in OSM il tag <b>"wikipedia=it:Titolo dell\'articolo"</b>, lasciando gli spazi tra le parole.<br>Basta <b>una sola lingua</b>, se l\'articolo è già taggato in una lingua straniera non occorre aggiungere qulla italiana (vedi <a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank"> eccezioni</a> sul Wiki di OSM).</li>'
+        code += '\n        <li>Aggiungere all\'oggetto in OSM il tag <b>"wikipedia=it:Titolo dell\'articolo"</b>, lasciando gli spazi tra le parole.<br>Basta <b>una sola lingua</b>, se l\'articolo è già taggato in una lingua straniera non occorre aggiungere quella italiana (vedi <a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank"> eccezioni</a> sul Wiki di OSM).</li>'
         code += '\n      </ul>'
         code += '\n      <h2>Strumenti utili per aggiungere tag</h2>'
         code += '\n      <ul>'
@@ -876,7 +876,7 @@ class Index_of_categories(Helpers):
             # articles
             # row = articles (link) || progress ||  ||
             if item.articles != []:
-                # name (= "Articles")
+                # (name = "Articles")
                 colspan = ""
                 cssclass = ""
                 if item.titles == []:

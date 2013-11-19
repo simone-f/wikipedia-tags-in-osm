@@ -134,8 +134,8 @@ class ParseOSMData():
         return allTags, tagsData
 
     def extract_titles_from_tags(self):
-        """Extract form OSM tags the title of an arrticle and the
-           osm ids of the objects using it
+        """Extract from the OSM tags the titles of articles and the
+           OSM ids of the objects
         """
         prefLang = self.app.WIKIPEDIALANG
         #dicts = {"w_lang"           : {} wikipedia = lang:title,
@@ -341,7 +341,7 @@ class ParseOSMData():
         for language, titles in titlesPerLang.iteritems():
             if language not in stringsPerLang:
                 stringsPerLang[language] = []
-            for fiftyTitles in [titles[i:i+50] for i in range(0, len(titles), 50)]:
+            for fiftyTitles in [sorted(titles[i:i+50]) for i in range(0, len(titles), 50)]:
                 titlesString = "|".join(fiftyTitles).replace("_", " ")
                 stringsPerLang[language].append(titlesString)
             print "  %d articles must be translated from %s" % (len(titles), language)
@@ -441,17 +441,18 @@ class ParseOSMData():
            foreign lang -- foreign title -- title in preferred language
         """
         converted = {}
-        filename = "%s/conversions.csv" % self.app.WIKIPEDIAANSWERS
-        ifile  = open(filename, "r")
-        reader = csv.reader(ifile, delimiter='\t')
-        for row in reader:
-            language, foreignTitle, title = row
-            foreignTitle = foreignTitle.decode("utf-8")
-            title = title.decode("utf-8")
-            if language not in converted:
-                converted[language] = {}
-            converted[language][foreignTitle] = title
-        ifile.close()
+        fileName = os.path.join(self.app.WIKIPEDIAANSWERS, "conversions.csv")
+        if os.path.isfile(fileName):
+            inFile  = open(fileName, "r")
+            reader = csv.reader(inFile, delimiter='\t')
+            for row in reader:
+                language, foreignTitle, title = row
+                foreignTitle = foreignTitle.decode("utf-8")
+                title = title.decode("utf-8")
+                if language not in converted:
+                    converted[language] = {}
+                converted[language][foreignTitle] = title
+            inFile.close()
         #self.print_translations(converted)
         return converted
 
@@ -464,15 +465,16 @@ class ParseOSMData():
 
     def save_updated_conversions(self):
         print "\n- Salvataggio del file con le traduzioni"
-        call("cp '%s/conversions.csv' '%s/old_conversions.csv'" % (self.app.WIKIPEDIAANSWERS, self.app.WIKIPEDIAANSWERS), shell=True)
-        filename = "%s/conversions.csv" % self.app.WIKIPEDIAANSWERS
-        file_out = open(filename, "w")
-        writer = csv.writer(file_out, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
+        fileName = os.path.join(self.app.WIKIPEDIAANSWERS, "conversions.csv")
+        oldFileName = os.path.join(self.app.WIKIPEDIAANSWERS, "old_conversions.csv")
+        call("cp '%s' '%s'" % (fileName, oldFileName), shell=True)
+        fileOut = open(fileName, "w")
+        writer = csv.writer(fileOut, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
         n = 0
         for language, data in self.converted.iteritems():
             for foreignTitle, preferredTitle in data.iteritems():
                 row = [language, foreignTitle.encode("utf-8"), preferredTitle.encode("utf-8")]
                 writer.writerow(row)
                 n += 1
-        file_out.close()
-        print "  %d titoli di articoli tradotti nella lingua preferita e salvati in %s" % (n, filename)
+        fileOut.close()
+        print "  %d titoli di articoli tradotti nella lingua preferita e salvati in %s" % (n, fileName)

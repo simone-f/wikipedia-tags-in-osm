@@ -252,7 +252,7 @@ class Category:
         return categoriesdata, isClean
 
     def print_category_tree_to_file(self):
-        """Save category tree to a text file (for debugging)
+        """Save the category tree to a text file (for debugging)
         """
         text = self.create_category_graph("", True)
         dict_file = open(os.path.join("data", "logs", "%s_dict.txt" % self.name), "w")
@@ -260,8 +260,8 @@ class Category:
         dict_file.close()
 
     def check_articles_in_osm(self):
-        """Add to articles and categories info regarding it's status
-           in OSM (it is tagged or not)
+        """Add to articles and categories informations regarding their
+           status in OSM (if they are tagged or not)
         """
         for subcategory in self.subcategories:
             if subcategory.isMappable:
@@ -381,13 +381,13 @@ class Category:
     def print_info(self):
         """Print info about this category (for debugging)
         """
-        print "\nName: ", self.name.replace("_", " ")
+        print "\nName: %s" % self.name.replace("_", " ").encode("utf-8")
         print "Mappable subcategories (%d):" % len(self.subcategories)
         for subcat in self.subcategories:
-            print "             ", subcat.name.replace("_", " ")
-        print "Tagged articles:", subcat.progress["allMArticles"]["string"], "(", subcat.progress["allMArticles"]["num"], "%)"
+            print "             %s" % subcat.name.replace("_", " ").encode("utf-8")
+        print "Tagged articles: %s (%d)" % (self.progress["allMArticles"]["string"],
+                                            self.progress["allMArticles"]["num"])
         print "Graph:"
-        self.categoryGraph = ""
         categoryGraph = self.create_category_graph("", True)
         print categoryGraph
 
