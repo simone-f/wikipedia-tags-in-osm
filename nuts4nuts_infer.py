@@ -117,7 +117,7 @@ class MultiWorker(object):
         self.pool.join()
 
 
-def call_nuts4nuts(articleName, q=None, outfile=None):
+def call_nuts4nuts(i, articleName, q=None, outfile=None):
     url = 'http://nuts4nutsrecon.spaziodati.eu/reconcile'
 
     query = {
@@ -128,6 +128,7 @@ def call_nuts4nuts(articleName, q=None, outfile=None):
         'queries': json.dumps(query)
     })
 
+    print "\n", i
     print 'requesting {}'.format(articleName)
 
     req = None
@@ -171,8 +172,8 @@ def infer_names(mw, articles):
     watcher = mw.pool.apply_async(listener, (mw.queue, mw.outfile))
 
     jobs = []
-    for a in articles:
-        job = mw.pool.apply_async(call_nuts4nuts, (a, mw.queue))
+    for i, a in enumerate(articles):
+        job = mw.pool.apply_async(call_nuts4nuts, (i, a, mw.queue))
         jobs.append(job)
 
     for job in jobs:
@@ -236,14 +237,19 @@ if __name__ == '__main__':
                                   "nuts4nuts_it_coords.txt"
                                  )
 
-    with open(nutsCoordsFile, 'r') as f:
-        data = [ast.literal_eval(line.strip()) for line in f.readlines()]
+    if not os.path.isfile(nutsCoordsFile) or \
+        os.stat(nutsCoordsFile).st_size == 0:
+        data = []
+    else:
+        with open(nutsCoordsFile, 'r') as f:
+            data = [ast.literal_eval(line.strip()) for line in f.readlines()]
 
     alreadyScanned = frozenset([d['article'] for d in data])
     print ' already scanned: %d' %len(alreadyScanned)
 
     articlesToScan = list(articles - alreadyScanned)
     print ' to scan: %d' %len(articlesToScan)
+    print
 
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
