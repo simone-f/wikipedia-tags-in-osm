@@ -52,7 +52,7 @@ def check_catscan_data(app, themesAndCatsNames):
     #download catscan data of missing categories
     for themeName, categoriesNames in needInfo.iteritems():
         for categoryName in categoriesNames:
-            result = download_a_new_category(themeName, categoryName)
+            result = download_a_new_category(app, themeName, categoryName)
             if not result:
                 themesAndCatsNames[themeName].remove(categoryName)
     return themesAndCatsNames
@@ -63,8 +63,9 @@ def download_a_new_category(app, themeName, categoryName):
        and save it to: CATSCANDIR/theme name/category name.csv
     """
     print "\n- Scarico (da catscan) la lista di sottocategorie ed articoli di una nuova categoria Wikipedia"
-    response = raw_input("\n- Scarico dati categoria %s da catscan?\n[y|n]" % categoryName.encode("utf-8"))
-    if response != "y":
+    #response = raw_input("\n- Scarico dati categoria %s da catscan?\n[y/N]" % categoryName.encode("utf-8"))
+    response = "y"
+    if response not in ("y", "Y"):
         return False
     print "\ndownloading category info from catscan..."
 
