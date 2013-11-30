@@ -242,12 +242,11 @@ def add_wikipedia_coordinates(app):
         title, lat, lon = row
         app.titlesCoords[title.replace(" ", "_").decode("utf-8")] = [float(lat), float(lon)]
     inFile.close()
-    app.titlesWithCoordsFromWikipedia = []
+    app.titlesWithCoordsFromWikipedia = {}
     #add wikipediaCoords attribute to articles
     for theme in app.themes:
         for category in theme.categories:
             category.check_articles_coords_in_wikipedia()
-    app.titlesWithCoordsFromWikipedia = list(set(app.titlesWithCoordsFromWikipedia))
     print "  articoli:", len(app.titlesWithCoordsFromWikipedia)
 
 

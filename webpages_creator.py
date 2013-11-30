@@ -239,10 +239,11 @@ class Creator():
         selectNonMappable = True if app.clickable_cells == "true" else False
         self.homepages = []
         #Create homepage
-        modes = ("themes", "regions")
+        modes = ["themes", "regions"]
+        if app.args.show_link_to_wikipedia_coordinates:
+            modes.append("map")
         for modeNumber, mode in enumerate(modes):
-            modeInfo = (modeNumber, mode)
-            self.homepages.append(Homepage(app, modeInfo).code)
+            self.homepages.append(Homepage(app, (modeNumber, mode)).code)
 
         #Create categories pages
         for theme in app.themes:
@@ -302,28 +303,51 @@ class Homepage(Helpers):
         modesNames = ["Temi", "Regioni"]
         modesTitles = ["Visualizza categorie per tema",
                        "Visualizza categorie per regione"]
+        if app.args.show_link_to_wikipedia_coordinates:
+            modesNames.append("Mappa")
+            modesTitles.append("Visualizza mappa con articoli da taggare")
         self.app = app
         code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>'
+        #Head
         code += '\n<html>\n  <head>'
         code += '\n    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">'
         code += '\n    <title>Articoli di Wikipedia mappabili in OSM</title>'
         if self.app.args.bitly:
             stylecss = "http://bit.ly/1brC3Kk"
         else:
-            stylecss = "style.css"
+            stylecss = os.path.join("css", "style.css")
         code += '\n    <link rel="stylesheet" type="text/css" href="%s">' % stylecss
-        code += '\n      <script type="text/javascript" charset="utf-8">'
-        code += '\n        function showHideDiv(elementid){'
-        code += '\n          if (document.getElementById(elementid).style.display == "none"){'
-        code += '\n              document.getElementById(elementid).style.display = "";'
-        code += '\n              }'
-        code += '\n          else {'
-        code += '\n              document.getElementById(elementid).style.display = "none";'
-        code += '\n              }'
-        code += '\n          }'
-        code += '\n      </script>'
+        code += '\n    <script type="text/javascript" charset="utf-8">'
+        code += '\n      function showHideDiv(elementid){'
+        code += '\n        if (document.getElementById(elementid).style.display == "none"){'
+        code += '\n            document.getElementById(elementid).style.display = "";'
+        code += '\n            }'
+        code += '\n        else {'
+        code += '\n            document.getElementById(elementid).style.display = "none";'
+        code += '\n            }'
+        code += '\n        }'
+        code += '\n    </script>'
+        if app.args.show_link_to_wikipedia_coordinates:
+            code += '\n    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />'
+            code += '\n    <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.ie.css" /><![endif]-->'
+            code += '\n    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>'
+            code += '\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">'
+            code += '\n    <!-- MarkerCluster CSS and JS -->'
+            code += '\n    <link rel="stylesheet" href="./css/screen.css" />'
+            code += '\n    <link rel="stylesheet" href="./css/MarkerCluster.css" />'
+            code += '\n    <link rel="stylesheet" href="./css/MarkerCluster.Default.css" />'
+            code += '\n    <!--[if lte IE 8]><link rel="stylesheet" href="../dist/MarkerCluster.Default.ie.css" /><![endif]-->'
+            code += '\n    <script src="js/leaflet.markercluster-src.js"></script>'
+            code += '\n    <!-- Labelling CSS and JS -->'
+            code += '\n    <link rel="stylesheet" href="./css/leaflet.label.css" />'
+            code += '\n    <script src="./js/leaflet.label.js"></script>'
+            code += '\n    <script src="./GeoJSON/coords.js" type="text/javascript"></script>'
         code += '\n  </head>'
-        code += '\n<body>'
+        #Body
+        if app.args.show_link_to_wikipedia_coordinates:
+            code += '\n<body onload="init()">'
+        else:
+            code += '\n<body>'
         code += '\n  <div id="update_time">Aggiornamento: %s</div>' % self.app.UPDATETIME
         code += '\n  <div id="header">'
         code += '\n    <h1><a id="top"></a>Articoli Wikipedia mappabili in OSM</h1>'
@@ -373,7 +397,7 @@ class Homepage(Helpers):
         code += '\n      Stemmi regionali: <a href="http://www.araldicacivica.it" target="_blank">www.araldicacivica.it</a> (<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/it/">CC BY-NC-ND 3.0</a>)<br>'
         code += '\n      Icone di nodi, way, relazioni ed Overpass Turbo da <a href="http://wiki.openstreetmap.org/">Wiki OSM</a>.</p>'
         code += '\n    </div>'
-        #Tabs: themes|regions
+        #Tabs: themes|regions|map
         code += '\n    <div id="tabs">'
         code += '\n      <ul>'
         for n, modeName in enumerate(modesNames):
@@ -389,7 +413,7 @@ class Homepage(Helpers):
         code += '\n    </div>'
         code += '\n  </div>'
         code += '\n  <div id="content">'
-        code += self.themes_and_regions_tabs(mode).encode("utf-8")
+        code += self.homepage_tab(mode).encode("utf-8")
         code += '\n  </div>'
         code += '\n</body>\n</html>'
         self.code = code
@@ -467,6 +491,43 @@ class Homepage(Helpers):
         code += '\n      </div>'
         return code
 
+    def homepage_tab(self, mode):
+        """Return html code of homepage tabs: themes and regions
+        """
+        #Main index table with icons of themes or regions
+        if mode in ("themes", "regions"):
+            if mode == "themes":
+                items = self.app.themes
+            else:
+                items = self.app.regions
+            code = self.main_index(items, mode)
+            #Indexes with categories in each theme or region
+            for itemIdx, item in enumerate(items):
+                #Title
+                linkTop = '<a href=#top>&#8593;</a>'
+                itemImg = '<img src="./img/%s/%s.png" class="item_img">' % (mode, item.name.lower())
+                itemTitle = '%s%s' % (itemImg, item.name.replace("_", " "))
+                if mode == "regions":
+                    itemTitle = '<a href="./subpages/%s.html" title="Visualizza pagina della regione">%s</a>' % (item.name, itemTitle)
+                code += '\n\n    <h3>%s<a id="%s"></a>%s</h3>' % (linkTop, item.name, itemTitle)
+                #index of categories with progress
+                pageType = "home"
+                if itemIdx == 0:
+                    showProgressHeader = True
+                else:
+                    showProgressHeader = False
+                code += '\n%s' % IndexOfCategories(self.app, item, mode, pageType, showProgressHeader).code
+        elif mode == "map":
+            intro = u'<b>Clicca</b> su un articolo per visitarne la pagina o mapparlo/taggarlo con JOSM (coordinate da Wikipedia).<br>\
+Se un articolo non è mappabile in OSM, ad es. il luogo in cui si è svolto un evento storico, segnalalo come tale, affinché venga rimosso (vedi "Informazioni e conteggi").'
+            code = '\n    <div id="map_intro">'
+            code += '\n      <p>%s</p>' % intro
+            code += '\n    </div>'
+            code += '\n    <div id="map"></div>'
+            code += '\n   <script src="./js/map.js" type="text/javascript"></script>'
+            code += '\n   <!-- <div class="overlay">Articoli da taggare: <script type="application/x-javascript">document.write(coords.features.length);</script></div> -->'
+        return code
+
     def main_index(self, items, mode):
         """Return html code of a table with themes or regions, to be used
            as main index of the homepage
@@ -488,33 +549,6 @@ class Homepage(Helpers):
         code += '\n    </table>'
         return code
 
-    def themes_and_regions_tabs(self, mode):
-        """Return html code of homepage tabs: themes and regions
-        """
-        #Main index table with icons of themes or regions
-        if mode == "themes":
-            items = self.app.themes
-        else:
-            items = self.app.regions
-        code = self.main_index(items, mode)
-        #Indexes with categories in each theme or region
-        for itemIdx, item in enumerate(items):
-            #Title
-            linkTop = '<a href=#top>&#8593;</a>'
-            itemImg = '<img src="./img/%s/%s.png" class="item_img">' % (mode, item.name.lower())
-            itemTitle = '%s%s' % (itemImg, item.name.replace("_", " "))
-            if mode == "regions":
-                itemTitle = '<a href="./subpages/%s.html" title="Visualizza pagina della regione">%s</a>' % (item.name, itemTitle)
-            code += '\n\n    <h3>%s<a id="%s"></a>%s</h3>' % (linkTop, item.name, itemTitle)
-            #index of categories with progress
-            pageType = "home"
-            if itemIdx == 0:
-                showProgressHeader = True
-            else:
-                showProgressHeader = False
-            code += '\n%s' % IndexOfCategories(self.app, item, mode, pageType, showProgressHeader).code
-        return code
-
 
 ### Subpage ############################################################
 class Subpage(Helpers):
@@ -526,8 +560,8 @@ class Subpage(Helpers):
         code += '\n<html>\n    <head>'
         code += '\n        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">'
         code += '\n        <title>%s</title>' % self.app.homePageTitle
-        code += '\n        <link rel="stylesheet" type="text/css" href="../style.css">'
-        code += '\n        <script type="text/javascript" src="../jquery-1.10.2.min.js"></script>'
+        code += '\n        <link rel="stylesheet" type="text/css" href="../css/style.css">'
+        code += '\n        <script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>'
         code += '\n        <script>'
         code += '\n         $(document).ready(function(){});'
         code += '\n            function showHideNonMappable (elementid){'
@@ -839,7 +873,7 @@ class IndexOfCategories(Helpers):
                    mode == "regions", item = Region
                    subitems = region.categories
         """
-        #Prepare variables
+        #Initialize variables
         if mode == "themes":
             if pageType == "home":
                 subcategories = item.categories
@@ -968,7 +1002,7 @@ class ErrorsPage(Helpers):
         code += '\n<html>\n  <head>'
         code += '\n    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">'
         code += '\n    <title>Articoli di Wikipedia mappabili in OSM</title>'
-        code += '\n    <link rel="stylesheet" type="text/css" href="style.css">'
+        code += '\n    <link rel="stylesheet" type="text/css" href="./css/style.css">'
         code += '\n  </head>'
         code += '\n<body>'
         code += '\n\n<!-- Header -->'

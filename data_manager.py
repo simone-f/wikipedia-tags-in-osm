@@ -350,7 +350,7 @@ class Category:
             if article.name in self.app.titlesCoords:
                 article.wikipediaCoords = self.app.titlesCoords[article.name]
                 article.wikipediaCoordsSource = 'Template:Coord'
-                self.app.titlesWithCoordsFromWikipedia.append(article.name)
+                self.app.titlesWithCoordsFromWikipedia[article.name] = article.wikipediaCoords
             else:
                 #create list of titles without coordinates, needed by Nuts4Nuts
                 scanFile.write(article.name.encode('utf-8') + '\n')

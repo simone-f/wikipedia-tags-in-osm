@@ -33,6 +33,7 @@ from subprocess import call
 import csv
 import ConfigParser
 import sys
+import json
 
 #local imports
 from osm_parser import ParseOSMData
@@ -211,6 +212,8 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         if self.args.show_link_to_wikipedia_coordinates:
             print "\n- Controlla di quali articoli non taggati Wikipedia conosce già la posizione"
             wikipedia_downloader.add_wikipedia_coordinates(self)
+            #Save GeoJSON file with titles and coordinates known by Wikipedia
+            self.save_titles_with_coords_geojson()
 
         if self.args.infer_coordinates_from_wikipedia:
             print "\n- Usa Nuts4Nuts per inferire la posizione di alcuni articoli"
@@ -259,7 +262,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         if self.args.create_webpages and self.args.save_stats:
             answer = "y"
         else:
-            answer = raw_input("\n- Salvo il numero di articoli mappati/da mappare in ./data/stats/stats.csv?\n[y/N]\n")
+            answer = raw_input("\n- Salvo il numero di articoli mappati/da mappare in './data/stats/stats.csv'?\n  [y/N]\n")
         if answer in ("y", "Y"):
             self.save_stats_to_csv()
         else:
@@ -270,6 +273,32 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             self.copy_html_files_to_outdir()
 
         print "\nDone."
+
+    def save_titles_with_coords_geojson(self):
+        """Save a GeoJSON file with the coordinates known by Wikipedia.
+           It is used by the "Map" tab in homepage
+        """
+        tree = {"type": "FeatureCollection", "features": []}
+        i = 0
+        for title, coords in self.titlesWithCoordsFromWikipedia.iteritems():
+            if title in self.titlesNotInOSM:
+                i += 1
+                lat, lon = coords
+                feature = {"type": "Feature",
+                           "properties": {"id": str(i),
+                                          "title": title.replace("_", " ").encode("utf-8")
+                                         },
+                           "geometry": {"type": "Point",
+                                        "coordinates": [lon, lat]
+                                       }
+                          }
+                tree["features"].append(feature)
+        print "  markers: %d" % len(tree["features"])
+        coordsFile = open(os.path.join("html", "GeoJSON", "coords.js"), "w")
+        data = json.dumps(tree)
+        data = "var coords = %s" % data
+        coordsFile.write(data)
+        coordsFile.close()
 
 ### Configurations #####################################################
     def read_config(self):
@@ -329,6 +358,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         # directory with webpages
         self.HTMLDIR = 'html'
         self.make_dir(os.path.join(self.HTMLDIR, "subpages"))
+        self.make_dir(os.path.join(self.HTMLDIR, "GeoJSON"))
         self.homePageTitle = "Articoli Wikipedia etichettabili in OSM"
         self.UPDATETIME = time.strftime("%b %d, ore %H", time.localtime())
         statsDir = os.path.join("data", "stats")

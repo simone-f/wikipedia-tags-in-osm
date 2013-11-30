@@ -1,0 +1,34 @@
+var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+});
+
+var map = L.map('map', {
+    center: [42.391, 13.118],
+    zoom: 6
+}).addLayer(osmLayer);
+
+var markers = new L.MarkerClusterGroup({disableClusteringAtZoom: 12,
+                                        maxClusterRadius : 60});
+var geoJsonLayer = L.geoJson(coords, {
+    onEachFeature: function (feature, layer) {
+        //Label
+        layer.bindLabel(feature.properties.title);
+        //Popup
+        var articleLink = "<a href=\"http://it.wikipedia.org/wiki/" + encodeURI(feature.properties.title) + "\"";
+        articleLink += "title=\"Vedi articolo su Wikipedia\" target='_blank'>" + feature.properties.title + "</a>";
+        var x = feature.geometry.coordinates[0];
+        var y = feature.geometry.coordinates[1];
+        var left = x - 0.0005;
+        var right = x + 0.0005;
+        var top = y + 0.0005;
+        var bottom = y - 0.0005;
+        var josmUrl = "http://localhost:8111/";
+        josmUrl += "load_and_zoom?left=" + left + "&right=" + right + "&top=" + top + "&bottom=" + bottom;
+        var josmLink = "\n<br><a href='" + josmUrl + "' target='_blank' title=\"Zooma in JOSM vicino all'oggetto da taggare\"><img class='articleLinkImg' src='./img/josm_load_and_zoom.png'></a>";
+        var tag = "\n<br><span id='tag_hint'>Apri in JOSM ed aggiungi il tag:<br><i>wikipedia=it:" + feature.properties.title + "</i></span>";
+        text = articleLink + josmLink + tag;
+        layer.bindPopup(text);
+    }
+});
+markers.addLayer(geoJsonLayer);
+map.addLayer(markers);
