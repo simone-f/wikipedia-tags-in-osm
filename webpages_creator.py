@@ -393,7 +393,7 @@ class Homepage(Helpers):
 <a href="http://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world/">Wikipedia coordinates</a> (Kolossos), \
 <a href="http://nuts4nutsrecon.spaziodati.eu/">Nuts4Nuts</a>, \
 <a href="http://tools.wmflabs.org/catscan2/quick_intersection.php">quick_intersection</a> (Magnus Manske).</p>'
-        code += '\n      <p>Icone dei temi: <a href="https://github.com/mapbox/maki" target="_blank"">Maki</a> (BSD)<br>'
+        code += '\n      <p>Icone dei temi: <a href="https://github.com/mapbox/maki" target="_blank">Maki</a> (BSD)<br>'
         code += '\n      Stemmi regionali: <a href="http://www.araldicacivica.it" target="_blank">www.araldicacivica.it</a> (<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/it/">CC BY-NC-ND 3.0</a>)<br>'
         code += '\n      Icone di nodi, way, relazioni ed Overpass Turbo da <a href="http://wiki.openstreetmap.org/">Wiki OSM</a>.</p>'
         code += '\n    </div>'
@@ -481,7 +481,7 @@ class Homepage(Helpers):
         """
         #users = [[user name, tags num], ...]
         users = sorted(self.app.users.items(), key=lambda x: x[1], reverse=True)
-        code = '\n      <div id="users">'
+        code = '\n      <div id="usersdiv">'
         code += '\n      <table id="users">'
         code += '\n        <tr><th>Mapper</th><th>Tag</th></tr>'
         for user, tagsNumber in users:
@@ -504,7 +504,7 @@ class Homepage(Helpers):
             #Indexes with categories in each theme or region
             for itemIdx, item in enumerate(items):
                 #Title
-                linkTop = '<a href=#top>&#8593;</a>'
+                linkTop = '<a href="#top">&#8593;</a>'
                 itemImg = '<img src="./img/%s/%s.png" class="item_img">' % (mode, item.name.lower())
                 itemTitle = '%s%s' % (itemImg, item.name.replace("_", " "))
                 if mode == "regions":
