@@ -43,6 +43,7 @@ from webpages_creator import Creator
 import wikipedia_downloader
 import nuts4nuts_infer
 
+
 class App:
     def __init__(self):
         #Options
@@ -52,35 +53,49 @@ class App:
         parser = argparse.ArgumentParser(description=text)
         group = parser.add_mutually_exclusive_group()
         #Manage OSM data
-        parser.add_argument("-d", "--download_osm", help="Scarica i dati OSM nazionali (da Geofabrik)",
+        parser.add_argument("-d", "--download_osm",
+                            help="Scarica i dati OSM nazionali (da Geofabrik)",
                             action="store_true")
-        parser.add_argument("-u", "--update_osm", help="Aggiorna i dati OSM nazionali scaricati (tramite osmupdate)",
+        parser.add_argument("-u", "--update_osm",
+                            help="Aggiorna i dati OSM nazionali scaricati (tramite osmupdate)",
                             action="store_true")
         #Analyze data from Wikipedia and OSM
-        parser.add_argument("-a", "--analyze", help="Analizza i dati: Wikipedia (sottocategorie ed articoli delle categorie) ed OSM (tag Wikipedia presenti)",
+        parser.add_argument("-a", "--analyze",
+                            help="Analizza i dati: Wikipedia (sottocategorie ed articoli delle categorie) ed OSM (tag Wikipedia presenti)",
                             action="store_true")
-        parser.add_argument("--category_info", help="Analizza i dati e stampa le informazioni su una specifica categoria",
+        parser.add_argument("--category_info",
+                            help="Analizza i dati e stampa le informazioni su una specifica categoria",
                             action="store")
-        parser.add_argument("-t", "--show_missing_templates", help="Segnala gli articoli senza template Coord",
+        parser.add_argument("-t", "--show_missing_templates",
+                            help="Segnala gli articoli senza template Coord",
                             action="store_true")
-        parser.add_argument("-c", "--show_link_to_wikipedia_coordinates", help="Se un articolo non taggato ha delle coordinate su Wikipedia, mostra un link per zoomare sulla sua posizione con JOSM",
+        parser.add_argument("-c", "--show_link_to_wikipedia_coordinates",
+                            help="Se un articolo non taggato ha delle coordinate su Wikipedia, mostra un link per zoomare sulla sua posizione con JOSM",
                             action="store_true")
-        parser.add_argument("-n", "--infer_coordinates_from_wikipedia", help="Usa Nuts4Nuts per cercare le coordinate di un articolo non taggato e senza coordinate su Wikipedia",
+        parser.add_argument("-n", "--infer_coordinates_from_wikipedia",
+                            help="Usa Nuts4Nuts per cercare le coordinate di un articolo non taggato e senza coordinate su Wikipedia",
                             action="store_true")
-        parser.add_argument("-r", "--update_redirects", help="Controlla gli articoli delle liste che sono redirects e crea un file con la loro lista per poterli aggiungere manualmente tra i non mappabili, perché non supportati da WIWOSM",
+        parser.add_argument("-r", "--update_redirects",
+                            help="Controlla gli articoli delle liste che sono redirects e crea un file con la loro lista per poterli aggiungere manualmente tra i non mappabili, perché non supportati da WIWOSM",
                             action="store_true")
-        group.add_argument("-p", "--print_categories_list", help="Analizza i dati e stampa la lista delle categorie nel progetto.",
-                            action="store_true")
+        group.add_argument("-p", "--print_categories_list",
+                           help="Analizza i dati e stampa la lista delle categorie nel progetto.",
+                           action="store_true")
         #Create webpages
-        group.add_argument("-w", "--create_webpages", help="Analizza i dati ed aggiorna le pagine web",
+        group.add_argument("-w", "--create_webpages",
+                           help="Analizza i dati ed aggiorna le pagine web",
+                           action="store_true")
+        parser.add_argument("-s", "--save_stats",
+                            help="Se sono state aggiornate le pagine web, salva il conteggio aggiornato con il numero di articoli taggati (default: chiedi cosa fare).",
                             action="store_true")
-        parser.add_argument("-s", "--save_stats", help="Se sono state aggiornate le pagine web, salva il conteggio aggiornato con il numero di articoli taggati (default: chiedi cosa fare).",
+        parser.add_argument("--nofx",
+                            help="Non aprire le pagine web in Firefox dopo averle aggiornate.",
                             action="store_true")
-        parser.add_argument("--nofx", help="Non aprire le pagine web in Firefox dopo averle aggiornate.",
+        parser.add_argument("--copy",
+                            help="Copia la cartella html nella directory descritta nel file config (es. dir dropbox).",
                             action="store_true")
-        parser.add_argument("--copy", help="Copia la cartella html nella directory descritta nel file config (es. dir dropbox).",
-                            action="store_true")
-        parser.add_argument("--bitly", help="Use bitly links, to count visits to homepage.",
+        parser.add_argument("--bitly",
+                            help="Use bitly links, to count visits to homepage.",
                             action="store_true")
         self.args = parser.parse_args()
         if self.args.category_info or self.args.category_info\
@@ -97,7 +112,6 @@ class App:
         #Configurations
         themesAndCatsNames = self.read_config()
 
-
 ### Manage OpenStreetMap data ##########################################
         #Analyse national OSM data file and create lists of already
         #tagged Wikipedia articles.
@@ -105,11 +119,11 @@ class App:
         #Download/update OSM data
         if self.args.download_osm or self.args.update_osm:
             if self.args.download_osm:
-                OSM.download_OSM_data(self)
+                OSM.download_osm_data(self)
             if self.args.update_osm:
-                status = OSM.update_OSM_data(self)
+                status = OSM.update_osm_data(self)
         if self.args.download_osm or (self.args.update_osm and status):
-            OSM.filter_wikipedia_data_in_OSM_file(self)
+            OSM.filter_wikipedia_data_in_osm_file(self)
         if self.args.update_osm and not status:
             print "I dati OSM erano già aggiornati all'ultimo minuto, o l'aggiornamento con osmupdate è stato interrotto.\
 Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
@@ -119,7 +133,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             sys.exit(1)
         else:
             if not os.path.isfile(self.wOSMFile):
-                OSM.filter_wikipedia_data_in_OSM_file(self)
+                OSM.filter_wikipedia_data_in_osm_file(self)
             #Extract Wikipedia articles tagged in OSM with preferred language.
             #If an article is tagged in a foreign language, ask to Wikpedia
             #what is the corrisponding article of the preferred language, so
@@ -138,7 +152,6 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             #add articles manually flagged as tagged in data/workaround/tagged.csv
             #in case the parser misses them (strange tags)
             self.add_tagged_articles()
-
 
 ### Manage Wikipedia data ##############################################
         #Read from 'non-mappable' file the categories and articles that
@@ -172,7 +185,6 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
                 #"There's nothing left for me to tell you"
                 sys.exit(1)
 
-
 ### Merge OSM info into Wikipedia data #################################
         #Add to Wikipedia categories and articles istances info about
         #their status in OSM: (tagged/not tagged), osm ids and counters
@@ -180,7 +192,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         for theme in self.themes:
             for category in theme.categories:
                 category.check_articles_in_osm()
-        self.titlesInOSM, self.titlesNotInOSM = allThemes.lists_of_titles_in_OSM_or_not()
+        self.titlesInOSM, self.titlesNotInOSM = allThemes.lists_of_titles_in_osm_or_not()
 
         #Ask to Wikipedia which articles have/have not Coord template.
         #Articles with article.hasTemplate == False will be marked on web pages.
@@ -191,7 +203,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             #Set hasTemplate = False to articles without Coord template
             for theme in self.themes:
                 for category in theme.categories:
-                    category.set_hasTemplate_in_articles()
+                    category.set_has_template_in_articles()
 
         #If an article is not already tagged in OSM but Wikipedia knows its
         #position, it is possible to add a link to zoom to that position
@@ -259,7 +271,6 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
 
         print "\nDone."
 
-
 ### Configurations #####################################################
     def read_config(self):
         """Setup configurations
@@ -269,7 +280,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
 
         #Read configuration from file
         configparser = ConfigParser.RawConfigParser()
-        configparser.optionxform=str
+        configparser.optionxform = str
         fp = open("config")
         configparser.readfp(fp)
         fp.close()
@@ -335,7 +346,6 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         if not os.path.exists(path):
             os.makedirs(path)
 
-
 ### Not mappable items and false positive tags #########################
     def read_non_mappable_items(self):
         """Read lists of categories and articles that must be ignored,
@@ -343,7 +353,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
            Wikipedia articles or categories like: "Paintings in the X museum",
            "Opere nel Castello Sforzesco‎"...
         """
-        print "\n- Leggi le liste di articoli e categorie da ignorare perché non mappabili, dal 'file ./data/wikipedia/non_mappable'"
+        print "\n- Leggi le liste di articoli e categorie da ignorare perché non mappabili, dal file './data/wikipedia/non_mappable'"
         #nonMappable = {category name :
         #                               {"subcategories" : [],
         #                                "articles"      : []}
@@ -364,8 +374,8 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         """Read from file "./data/workaround/tagged.csv" articles flagged as tagged
            by hand, in case the parser did not detected them.
         """
-        ifile  = open(os.path.join("data", "workaround", "tagged.csv"), "rb")
-        reader = csv.reader(ifile, delimiter = '\t')
+        ifile = open(os.path.join("data", "workaround", "tagged.csv"), "rb")
+        reader = csv.reader(ifile, delimiter='\t')
         for row in reader:
             if row != [] and row[0][0] != "#":
                 if len(row) == 2:
@@ -374,7 +384,6 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
                     self.taggedTitles[articleName] = osmIds
         ifile.close()
 
-
 ### Print info to terminal #############################################
     def print_category_info(self, categoryName):
         """Print to the terminal informaions about the reqiested category
@@ -382,7 +391,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         catFound = False
         for theme in self.themes:
             for category in theme.categories:
-                if catFound == True:
+                if catFound:
                     break
                 if category.name == categoryName:
                     category.print_info()
@@ -406,7 +415,6 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             for category in theme.categories:
                 print "%d - %s" % (categoryNum, category.name.replace("_", " "))
                 categoryNum += 1
-
 
 ### Statistics #########################################################
     def read_past_stats(self):
@@ -452,7 +460,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         file_in.close()
         tagsInCountry = 0
         for line in lines:
-            line = line.replace(" ","")[:-1]
+            line = line.replace(" ", "")[:-1]
             tagsInCountry += int(line.split("\t")[0])
         return tagsInCountry
 
@@ -460,20 +468,20 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         """Add latest numbers to stats
         """
         todayDate = self.UPDATETIME.split(",")[0]
-        today = {"to do"  : len(self.titlesNotInOSM),
-                 "mapped" : len(self.titlesInOSM),
-                 "total"  : len(self.tagsInOSM)}
+        today = {"to do": len(self.titlesNotInOSM),
+                 "mapped": len(self.titlesInOSM),
+                 "total": len(self.tagsInOSM)}
         #Print tags numbers of other countries
-        if download_other_countries == True:
+        if download_other_countries:
             print "\n- Tags numbers in countries (with duplicate articles"
-            tagsNum = {"italy" : self.tagsInOSM, "spain" : "", "france" : "", "germany" : ""}
+            tagsNum = {"italy": self.tagsInOSM, "spain": "", "france": "", "germany": ""}
             for country in tagsNum:
                 print "\n- %s:" % country
                 if self.country != "italy":
                     #download other countries
                     print "\n downloading..."
                     url = "http://download.geofabrik.de/osm/europe/%s.osm.pbf" % country
-                    call('wget -c %s -O %s.osm.pbf' % (url, country) , shell=True)
+                    call('wget -c %s -O %s.osm.pbf' % (url, country), shell=True)
                     print "\n converting to 05m..."
                     call('osmconvert %s.osm.pbf -o=%s.o5m' % (country, country), shell=True)
                     call('rm %s.osm.pbf' % (country), shell=True)
@@ -492,7 +500,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         oldStatsFile = os.path.join(statsDir, "old_stats.csv")
         if os.path.isfile(oldStatsFile):
             call('mv %s %s' % (statsFile, oldStatsFile), shell=True)
-        ofile  = open(statsFile, "w")
+        ofile = open(statsFile, "w")
         writer = csv.writer(ofile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
         #headers
         header = [" "] + [date for date in self.dates]
@@ -504,7 +512,6 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             values = [status] + [day[status] for day in daysToSave]
             writer.writerow(values)
         ofile.close()
-
 
 ### Copy webpages to a second directory ################################
     def copy_html_files_to_outdir(self):

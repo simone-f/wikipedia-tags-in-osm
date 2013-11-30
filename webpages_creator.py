@@ -25,6 +25,7 @@ import urllib
 from data_manager import Category, Article
 from subprocess import call
 
+
 ### Helpers ############################################################
 class Helpers:
     def progress_strings(self, item, mode):
@@ -46,7 +47,7 @@ class Helpers:
             classe = "done099"
         return classe, progressString
 
-    def wikipediaLink(self, item):
+    def wikipedia_link(self, item):
         text = item.name.replace("_", " ")
         title = "Vedi %s: %s" % (item.typ.lower(), text.replace("\"", "&quot;"))
         cssClass = ' class="wikipedia_link"'
@@ -56,7 +57,7 @@ class Helpers:
     def osm_ids_string_for_overpass(self, osmIds):
         """Return an OSM ids string used by Overpass
         """
-        osmTypeAbbr = {"n" : "node", "w" : "way", "r" : "relation"}
+        osmTypeAbbr = {"n": "node", "w": "way", "r": "relation"}
         osmIdsString = ""
         for osmId in osmIds:
             osmIdsString += '%s(%s);' % (osmTypeAbbr[osmId[0]], osmId[1:])
@@ -102,8 +103,8 @@ class Helpers:
         return link
 
     def osm_ids_string(self, item):
-        osmTypeAbbr = {"n" : "node", "w" : "way", "r" : "relation"}
-        links = {"nodes" : [], "ways" :[], "relations" : []}
+        osmTypeAbbr = {"n": "node", "w": "way", "r": "relation"}
+        links = {"nodes": [], "ways": [], "relations": []}
         if isinstance(item, Article):
             osmIds = item.osmIds
         else:
@@ -223,7 +224,7 @@ class Helpers:
         """
         for subitem in subitems:
             if subitem.isMappable:
-                if getattr(subitem,attributeName) > 0:
+                if getattr(subitem, attributeName) > 0:
                     return True
         return False
 
@@ -246,9 +247,9 @@ class Creator():
         #Create categories pages
         for theme in app.themes:
             for category in theme.categories:
-                category.articles_html = Articles_table(app, category, selectNonMappable).code
+                category.articles_html = ArticlesTable(app, category, selectNonMappable).code
                 for subcategory in category.subcategories:
-                    subcategory.html = Category_table(app, subcategory, selectNonMappable).code
+                    subcategory.html = CategoryTable(app, subcategory, selectNonMappable).code
                 category.html = Subpage(app, "themes", "", category, selectNonMappable).code
 
         #Create regions pages
@@ -429,7 +430,7 @@ class Homepage(Helpers):
                 value = int(day[mode])
                 differenceStr = ""
                 if index > 0:
-                    previousValue = int(days[index-1][mode])
+                    previousValue = int(days[index - 1][mode])
                     difference = int(value) - previousValue
                     if difference != 0:
                         differenceStr = str(difference)
@@ -473,7 +474,7 @@ class Homepage(Helpers):
         code = '\n    <table id="home_index">'
         code += '\n      <tr>'
         columns = 5
-        rows = [items[i:i+columns] for i in range(0, len(items), columns)]
+        rows = [items[i:i + columns] for i in range(0, len(items), columns)]
         for row in rows:
             code += '\n      <tr>'
             for item in row:
@@ -511,7 +512,7 @@ class Homepage(Helpers):
                 showProgressHeader = True
             else:
                 showProgressHeader = False
-            code += '\n%s' % Index_of_categories(self.app, item, mode, pageType, showProgressHeader).code
+            code += '\n%s' % IndexOfCategories(self.app, item, mode, pageType, showProgressHeader).code
         return code
 
 
@@ -594,7 +595,7 @@ class Subpage(Helpers):
         # Title. Main category or region name
         if mode == "themes":
             progressClass, progressString = self.progress_strings(item, "allMArticles")
-            code += '\n<h2><a id="index"></a>%s (%s)</h2>' % (self.wikipediaLink(item), progressString)
+            code += '\n<h2><a id="index"></a>%s (%s)</h2>' % (self.wikipedia_link(item), progressString)
         else:
             #mode == "regions"
             img = '<img src="../img/%s/%s.png" class="item_img">' % (mode, item.name.lower())
@@ -619,7 +620,7 @@ class Subpage(Helpers):
         code += '\n\n<!-- Index -->'
         if mode == "themes" and item.articles != [] and item.titles == []:
             code += '\n<div class="showHideNonMappable"><a href=\'javascript:showHideNonMappable("%s_index");\' title="Visualizza sottocategorie non mappabili">Mostra non mappabili</a></div>' % item.ident
-        code += '\n%s' % Index_of_categories(app, item, mode, pageType="sub").code
+        code += '\n%s' % IndexOfCategories(app, item, mode, pageType="sub").code
 
         # Articles table
         if item.articles != []:
@@ -647,7 +648,7 @@ class Subpage(Helpers):
             code += '\n\n<h3>'
             code += '<a href=#index>&#8593;</a> '
             code += '<a id="%s"></a>' % subcategory.name
-            code += '%s <span class=%s>%s</span>' % (self.wikipediaLink(subcategory), progressClass, progressString)
+            code += '%s <span class=%s>%s</span>' % (self.wikipedia_link(subcategory), progressClass, progressString)
             if not len(subcategory.allTitles) == len(subcategory.allTitlesInOSM):
                 code += " %s" % self.add_tags_link(subcategory)
             code += '%s</h3>' % overpassTurboLink
@@ -681,7 +682,7 @@ class Subpage(Helpers):
         return code.decode("utf-8")
 
 
-class Articles_table(Helpers):
+class ArticlesTable(Helpers):
     def __init__(self, app, item, selectNonMappable):
         """Return an html table with articles of a ctagory
         """
@@ -709,14 +710,15 @@ class Articles_table(Helpers):
             onclick = ""
             if selectNonMappable:
                 onclick = ' onclick="getName(this);"'
-            code += "\n    <td%s%s%s>%s</td>" % (onclick, cssclass, colspan, self.wikipediaLink(article))
+            code += "\n    <td%s%s%s>%s</td>" % (onclick, cssclass, colspan, self.wikipedia_link(article))
             if article.isMappable:
                 code += "\n    <td>%s</td>" % links
             code += "\n  </tr>"
         code += "\n</table>"
         self.code = code
 
-class Category_table(Helpers):
+
+class CategoryTable(Helpers):
     def __init__(self, app, category, selectNonMappable):
         """Return an html table with subcategories (and their articles)
            of a category
@@ -756,7 +758,7 @@ class Category_table(Helpers):
                 colspan = " colspan=%s" % str(colspan)
             else:
                 colspan = ""
-            code += self.addItem(article, isFirstItem, colspan, "")
+            code += self.add_item(article, isFirstItem, colspan, "")
             isFirstItem = False
         #subcategories
         for subcategory in subcategories:
@@ -765,12 +767,12 @@ class Category_table(Helpers):
                 rowspan = " rowspan=%s" % rowsnumber
             else:
                 rowspan = ""
-            code += self.addItem(subcategory, isFirstItem, "", rowspan)
+            code += self.add_item(subcategory, isFirstItem, "", rowspan)
             isFirstItem = False
-            code = self.build_table(code, subcategory, columnsNumber, level+1)
+            code = self.build_table(code, subcategory, columnsNumber, level + 1)
         return code
 
-    def addItem(self, item, isFirstItem, colspan, rowspan):
+    def add_item(self, item, isFirstItem, colspan, rowspan):
         """Add a cell to the table
         """
         code = "\n  <tr>" if not isFirstItem else ""
@@ -788,7 +790,7 @@ class Category_table(Helpers):
             cssClass = ' class="%s"' % " ".join(cssClasses)
         #Category
         if isinstance(item, Category):
-            catData = self.wikipediaLink(item)
+            catData = self.wikipedia_link(item)
             if not len(item.allTitles) == len(item.allTitlesInOSM):
                 #add a link to WIWOSM tool "add-tags"
                 catData += "\n %s" % self.add_tags_link(item)
@@ -800,7 +802,7 @@ class Category_table(Helpers):
             code += "\n    <td%s%s%s>%s</td>" % (onclick, rowspan, cssClass, catData)
         #Article
         if isinstance(item, Article):
-            code += "\n    <td%s%s%s>%s</td>" % (onclick, colspan, cssClass, self.wikipediaLink(item))
+            code += "\n    <td%s%s%s>%s</td>" % (onclick, colspan, cssClass, self.wikipedia_link(item))
             if item.isMappable:
                 #add one more cell with article info (links if tagged)
                 nowrap = ""
@@ -816,7 +818,7 @@ class Category_table(Helpers):
 
 
 ### Index of categories (table) ########################################
-class Index_of_categories(Helpers):
+class IndexOfCategories(Helpers):
     def __init__(self, app, item, mode, pageType, showProgressHeader=False):
         """Return html code of a table with the list of subcategories
            and their tagging progress.

@@ -52,10 +52,11 @@ def check_catscan_data(app, themesAndCatsNames):
     #download catscan data of missing categories
     for themeName, categoriesNames in needInfo.iteritems():
         for categoryName in categoriesNames:
-            result = download_a_new_category(app, themeName, categoryName)
+            result = download_a_new_category(themeName, categoryName)
             if not result:
                 themesAndCatsNames[themeName].remove(categoryName)
     return themesAndCatsNames
+
 
 def download_a_new_category(app, themeName, categoryName):
     """Download data (subcategories and articles) of a new category
@@ -84,14 +85,14 @@ def download_a_new_category(app, themeName, categoryName):
 
     data = urllib2.urlopen(url)
     filename = os.path.join(app.CATSCANDIR, themeName, "%s.csv" % categoryName)
-    csvFile = open(filename,'w')
+    csvFile = open(filename, 'w')
     csvFile.write(data.read())
     csvFile.close()
     print "Dati Wikipedia sulla nuova categoria salvati in:\n%s" % filename
 
     #Remember category date
     configparser = ConfigParser.RawConfigParser()
-    configparser.optionxform=str
+    configparser.optionxform = str
     configparser.read("config")
     categoryDate = time.strftime("%b %d, ore %H", time.localtime())
     configparser.set("catscan dates", categoryName.encode("utf-8"), categoryDate)
@@ -109,14 +110,14 @@ def read_old_templates_status(app):
     templatesStatus = {}
     fileName = app.TEMPLATESSTATUSFILE
     if os.path.isfile(fileName):
-        inFile  = open(fileName, "r")
+        inFile = open(fileName, "r")
         reader = csv.reader(inFile, delimiter='\t')
         for row in reader:
             title, status = row
             title = title.decode("utf-8")
             templatesStatus[title] = status
         inFile.close()
-    print "  Senza template:",  len([i for i in templatesStatus.values() if i == "False"])
+    print "  Senza template:", len([i for i in templatesStatus.values() if i == "False"])
     return templatesStatus
 
 
@@ -129,7 +130,7 @@ def update_templates_status(app):
         if title not in app.templatesStatus or app.templatesStatus[title] == "False":
             unknownStatus.append(title)
     titlesStrings = []
-    for fiftyTitles in [unknownStatus[i:i+50] for i in range(0, len(unknownStatus), 50)]:
+    for fiftyTitles in [unknownStatus[i:i + 50] for i in range(0, len(unknownStatus), 50)]:
         titlesString = "|".join(fiftyTitles)
         titlesStrings.append(titlesString)
     #download
@@ -236,7 +237,7 @@ def add_wikipedia_coordinates(app):
     app.titlesCoords = {}
     #read coords
     inFile = open(coordsFile, "r")
-    reader = csv.reader(inFile, delimiter = '\t')
+    reader = csv.reader(inFile, delimiter='\t')
     for row in reader:
         title, lat, lon = row
         app.titlesCoords[title.replace(" ", "_").decode("utf-8")] = [float(lat), float(lon)]
@@ -248,6 +249,7 @@ def add_wikipedia_coordinates(app):
             category.check_articles_coords_in_wikipedia()
     app.titlesWithCoordsFromWikipedia = list(set(app.titlesWithCoordsFromWikipedia))
     print "  articoli:", len(app.titlesWithCoordsFromWikipedia)
+
 
 def download_and_filter_wikipedia_coordinates(app):
     """Download and filter file with Wikipedia coordinates, provided by
@@ -274,9 +276,11 @@ def download_and_filter_wikipedia_coordinates(app):
     print "\n  rimuovi il file non più necessario: %s" % inFile
     remove_file(inFile)
 
+
 def remove_file(fileName):
     if os.path.isfile(fileName):
         call('rm "%s"' % fileName, shell=True)
+
 
 def check_file_exists(fileName):
     if not os.path.isfile(fileName):
@@ -332,6 +336,7 @@ def find_redirects(app):
     print "\nTot: %d" % i
 
     print "La lista di redirects è stata scritta in %s per essere coppiata in non_mappable" % fileName
+
 
 def download_redirects_info(app):
     """Download json files with info about the articles of each category

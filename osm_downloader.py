@@ -26,7 +26,7 @@ from subprocess import call
 
 
 ### Download/update OSM data ###########################################
-def download_OSM_data(app):
+def download_osm_data(app):
     """Download OSM data from GEOFABRIK, in PBF format
     """
     print "\n- Scarico i dati di OSM Italia da Geofabrik ..."
@@ -35,6 +35,7 @@ def download_OSM_data(app):
     url = "http://download.geofabrik.de/europe/%s-latest.osm.pbf" % app.country
     call("wget -c '%s' -O %s" % (url, app.countryPBF), shell=True)
     convert_pbf_to_o5m(app)
+
 
 def convert_pbf_to_o5m(app):
     """Convert file format PBF --> O5M, necessary for using osmfilter later
@@ -49,7 +50,8 @@ def convert_pbf_to_o5m(app):
     call(command, shell=True)
     print "... done"
 
-def update_OSM_data(app):
+
+def update_osm_data(app):
     """Update OSM data (O5M format) with osmupdate
     """
     print "\n- Aggiornamento dei dati OSM %s con osmupdate ..." % app.country
@@ -68,7 +70,8 @@ def update_OSM_data(app):
         call('mv %s %s' % (app.oldCountryO5M, app.countryO5M), shell=True)
         return False
 
-def filter_wikipedia_data_in_OSM_file(app):
+
+def filter_wikipedia_data_in_osm_file(app):
     """Filter from OSM data (O5M format) of the country those with
        wikipedia tag
     """

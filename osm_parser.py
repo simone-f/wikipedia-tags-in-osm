@@ -27,6 +27,7 @@ import csv
 from subprocess import call
 import os
 
+
 class ParseOSMData():
     def __init__(self, app):
         """ Read an OSM file containing only wikipedia*=* tagged data
@@ -48,10 +49,10 @@ class ParseOSMData():
 
         #Extract articles titles from tags
         #create dictionaries with data like {title : osmIds}
-        self.titles = {}        #articles tagged in preferred the language
-        self.wrongTags = {}     #wrong tags (lang is missing or url not from Wikipedia)
-        self.badTags = {}       #warnings: tagged with a url instead of article title or upper lang
-        self.foreignTitles = {} #articles tagged in foreign language
+        self.titles = {}         # articles tagged in preferred the language
+        self.wrongTags = {}      # wrong tags (lang is missing or url not from Wikipedia)
+        self.badTags = {}        # warnings: tagged with a url instead of article title or upper lang
+        self.foreignTitles = {}  # articles tagged in foreign language
         dicts = self.extract_titles_from_tags()
         n = 0
         for lang, titles in self.foreignTitles.iteritems():
@@ -85,8 +86,8 @@ class ParseOSMData():
            that should not be considered as errors
         """
         tags = []
-        ifile  = open(os.path.join("data", "workaround", "false_positive_tags.csv"), "rb")
-        reader = csv.reader(ifile, delimiter = '\t')
+        ifile = open(os.path.join("data", "workaround", "false_positive_tags.csv"), "rb")
+        reader = csv.reader(ifile, delimiter='\t')
         for row in reader:
             if row != [] and row[0][0] != "#":
                 if len(row) == 1:
@@ -123,7 +124,7 @@ class ParseOSMData():
                 user = element.get("user")
                 for tag in tags:
                     if tag not in tagsData:
-                        tagsData[tag] = {"osmIds" : [], "users" : []}
+                        tagsData[tag] = {"osmIds": [], "users": []}
                     tagsData[tag]["osmIds"].append(osmId)
                     tagsData[tag]["users"].append(user)
                 #print element.tag, osmId, allObjects[osmId]
@@ -138,27 +139,17 @@ class ParseOSMData():
            OSM ids of the objects
         """
         prefLang = self.app.WIKIPEDIALANG
-        #dicts = {"w_lang"           : {} wikipedia = lang:title,
-        #             "w_LANG"                   : {} wikipedia = LANG:title,
-        #             "wLang"            : {} wikipedia:lang = title,
-        #             "wLANG_ "                  : {} wikipedia:LANG = title,
-        #             "w_urlLang"        : {} wikipedia = http(s)://lang.wikipedia.org/title,
-        #             "w_LANGUrl"                : {} wikipedia = http(s)://LANG.wikipedia.org/title,
-        #             "w_urlForeignlang" : {} wikipedia = http(s)://foreign lang.wikipedia.org/title,
-        #             "w_Foreignlang"    : {} wikipedia = foreign lang:title,
-        #             "wForeignlang"     : {} wikipedia = foreign lang:title,
-        #             "langMissing"              : {}} wikipedia = title (lang missing)
-
-        dicts = {"w_lang"           : {},
-                 "w_LANG"           : {},
-                 "wLang_"           : {},
-                 "wLANG_"           : {},
-                 "w_langUrl"        : {},
-                 "w_LANGurl"        : {},
-                 "w_foreignlangUrl" : {},
-                 "w_foreignlang"    : {},
-                 "wForeignlang_"    : {},
-                 "langMissing"      : {}}
+        dicts = {"w_lang"          : {},    # wikipedia = lang:title
+                 "w_LANG"          : {},    # wikipedia = LANG:title
+                 "wLang_"          : {},    # wikipedia:lang = title
+                 "wLANG_"          : {},    # wikipedia:LANG = title
+                 "w_langUrl"       : {},    # wikipedia = http(s)://lang.wikipedia.org/title
+                 "w_LANGurl"       : {},    # wikipedia = http(s)://LANG.wikipedia.org/title
+                 "w_foreignlangUrl": {},    # wikipedia = http(s)://foreign lang.wikipedia.org/title
+                 "w_foreignlang"   : {},    # wikipedia = foreign lang:title
+                 "wForeignlang_"   : {},    # wikipedia:foreign lang = title
+                 "langMissing"     : {}     # wikipedia = title (lang missing)
+                 }
 
         for tag, tagData in self.tagsData.iteritems():
             osmIds = tagData["osmIds"]
@@ -200,7 +191,7 @@ class ParseOSMData():
                         else:
                             ## wikipedia = foreign lang:title
                             self.add_title_to_dict(dicts["w_foreignlang"], "%s:%s" % (language, title), osmIds)
-                            self.add_title_to_foreignTitles(language, title, osmIds)
+                            self.add_title_to_foreign_titles(language, title, osmIds)
                     else:
                         ## wikipedia = url
                         self.add_title_to_dict(self.badTags, tagString, osmIds)
@@ -221,7 +212,7 @@ class ParseOSMData():
                                 else:
                                     ### wikipedia = http://foreign lang.wikipedia.org/*
                                     self.add_title_to_dict(dicts["w_foreignlangUrl"], "%s:%s" % (language, title), osmIds)
-                                    self.add_title_to_foreignTitles(language, title, osmIds)
+                                    self.add_title_to_foreign_titles(language, title, osmIds)
                             else:
                                 ### wrong url, not Wikipedia url --> wrong tag
                                 self.add_title_to_dict(self.wrongTags, tagString, osmIds)
@@ -244,7 +235,7 @@ class ParseOSMData():
                     else:
                         ### wikipedia:foreign lang=title
                         self.add_title_to_dict(dicts["wForeignlang_"], "%s:%s" % (language, title), osmIds)
-                        self.add_title_to_foreignTitles(language, title, osmIds)
+                        self.add_title_to_foreign_titles(language, title, osmIds)
                 else:
                     ## wikipedia:* = *:*
                     if value.find("http") == -1:
@@ -274,13 +265,13 @@ class ParseOSMData():
                                 else:
                                     #### wikipedia = http://foreign lang.wikipedia.org/*
                                     self.add_title_to_dict(dicts["w_foreignlangUrl"], "%s:%s" % (language, title), osmIds)
-                                    self.add_title_to_foreignTitles(language, title, osmIds)
+                                    self.add_title_to_foreign_titles(language, title, osmIds)
                             else:
                                 #### wrong url, not Wikipedia url --> wrong tag
                                 self.add_title_to_dict(self.wrongTags, tagString, osmIds)
         return dicts
 
-    def add_title_to_foreignTitles(self, language, title, osmIds):
+    def add_title_to_foreign_titles(self, language, title, osmIds):
         if language not in self.foreignTitles:
             self.foreignTitles[language] = {}
         self.add_title_to_dict(self.foreignTitles[language], title, osmIds)
@@ -341,7 +332,7 @@ class ParseOSMData():
         for language, titles in titlesPerLang.iteritems():
             if language not in stringsPerLang:
                 stringsPerLang[language] = []
-            for fiftyTitles in [sorted(titles[i:i+50]) for i in range(0, len(titles), 50)]:
+            for fiftyTitles in [sorted(titles[i:i + 50]) for i in range(0, len(titles), 50)]:
                 titlesString = "|".join(fiftyTitles).replace("_", " ")
                 stringsPerLang[language].append(titlesString)
             print "  %d articles must be translated from %s" % (len(titles), language)
@@ -381,7 +372,7 @@ class ParseOSMData():
                 print "\n- nonexistent titles returned from Wikipedia:\n", titles
                 return False
             else:
-                if wikipediaAnswer == None:
+                if wikipediaAnswer is None:
                     print "\n Answer None"
                     titles = [t.replace(" ", "_") for t in titlesString.split("|")]
                     self.add_to_nonexistent(lang, titles)
@@ -399,8 +390,8 @@ class ParseOSMData():
            and preferred language article
         """
         #print "  parsing answer"
-        converted = {}      #{foreign title : translated title, ...}
-        nonexistent = []    #[nonexistent title, ...]
+        converted = {}      # {foreign title : translated title, ...}
+        nonexistent = []    # [nonexistent title, ...]
         for event, element in etree.iterparse(self.app.WIKIPEDIAANSWER, events=("end",)):
             if element.tag == "page":
                 title = element.get("title")
@@ -434,7 +425,6 @@ class ParseOSMData():
             self.converted[language][foreignTitle] = prefTitle
         #print "\n- titles converted to preferred language: %s, (%d)" % (language, len(newconverted))
 
-
 ### Manage CSV file with titles translations ###########################
     def old_converted_titles(self):
         """Read CSV file with the conversions done in the past
@@ -443,7 +433,7 @@ class ParseOSMData():
         converted = {}
         fileName = os.path.join(self.app.WIKIPEDIAANSWERS, "conversions.csv")
         if os.path.isfile(fileName):
-            inFile  = open(fileName, "r")
+            inFile = open(fileName, "r")
             reader = csv.reader(inFile, delimiter='\t')
             for row in reader:
                 language, foreignTitle, title = row
@@ -477,4 +467,4 @@ class ParseOSMData():
                 writer.writerow(row)
                 n += 1
         fileOut.close()
-        print "  %d titoli di articoli tradotti nella lingua preferita e salvati in %s" % (n, fileName)
+        print "  %d titoli di articoli tradotti nella lingua preferita e salvati in '%s'" % (n, fileName)

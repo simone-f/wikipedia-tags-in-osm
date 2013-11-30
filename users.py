@@ -23,6 +23,7 @@
 import os
 import csv
 
+
 ### Mappers ############################################################
 class Users:
     def __init__(self, app):
@@ -73,16 +74,16 @@ salvati (data/OSM/tags.csv)."
         usersFileName = os.path.join("data", "OSM", "users.csv")
         if not os.path.isfile(usersFileName):
             return tagsPerUser
-        inFile  = open(usersFileName, "rb")
-        reader = csv.reader(inFile, delimiter = '\t', quotechar='"', quoting=csv.QUOTE_ALL)
+        inFile = open(usersFileName, "rb")
+        reader = csv.reader(inFile, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
         for i, row in enumerate(reader):
             user = row[0].decode("utf-8")
             totTagsNumber = int(row[1])
             tagsNumber = int(row[2])
             fileDate = row[3]
-            tagsPerUser[user] = {"tot" : totTagsNumber,
-                                 "today" : tagsNumber,
-                                 "today date" : fileDate}
+            tagsPerUser[user] = {"tot": totTagsNumber,
+                                 "today": tagsNumber,
+                                 "today date": fileDate}
         inFile.close()
         return tagsPerUser
 
@@ -90,8 +91,10 @@ salvati (data/OSM/tags.csv)."
         tagsFileName = os.path.join("data", "OSM", "tags.csv")
         if not os.path.isfile(tagsFileName):
             return None, None
-        inFile  = open(tagsFileName, "rb")
-        reader = csv.reader(inFile, delimiter = '\t', quotechar='"', quoting=csv.QUOTE_ALL)
+        inFile = open(tagsFileName, "rb")
+        reader = csv.reader(inFile, delimiter='\t',
+                            quotechar='"',
+                            quoting=csv.QUOTE_ALL)
         for i, row in enumerate(reader):
             if i == 0:
                 dates = row
@@ -147,9 +150,9 @@ salvati (data/OSM/tags.csv)."
         #new users
         for user, todayTagsNum in todayTagsPerUser.iteritems():
             if user not in tagsPerUser:
-                tagsPerUser[user] = {"tot" : 0,
-                                     "today" : todayTagsNum,
-                                     "today date" : app.todayDate}
+                tagsPerUser[user] = {"tot": 0,
+                                     "today": todayTagsNum,
+                                     "today date": app.todayDate}
 
         usersFileName = os.path.join("data", "OSM", "users.csv")
         outFile = open(usersFileName, 'wb')

@@ -42,6 +42,7 @@ class GeonamesError(Exception):
     """
     pass
 
+
 def geolocate_place(placeName):
     """
     Retrieves the (lon, lat) coordinates of a place, by
@@ -81,8 +82,10 @@ def geolocate_place(placeName):
 
             return loc
 
+
 def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
+
 
 def listener(queue, fn):
     '''listens for messages on the q, writes to file. '''
@@ -94,6 +97,7 @@ def listener(queue, fn):
         with open(fn, 'a+') as f:
             f.write(str(m) + '\n')
             f.flush()
+
 
 class MultiWorker(object):
 
@@ -135,8 +139,7 @@ def call_nuts4nuts(i, articleName, q=None, outfile=None):
     try:
         req = requests.get(url, params=params)
     except requests.exceptions.ConnectionError:
-       pass
-
+        pass
 
     if req:
         print 'req.ok: {}'.format(req.ok)
@@ -167,6 +170,7 @@ def call_nuts4nuts(i, articleName, q=None, outfile=None):
                     f.write(str(output) + '\n')
                     f.flush()
 
+
 def infer_names(mw, articles):
 
     watcher = mw.pool.apply_async(listener, (mw.queue, mw.outfile))
@@ -181,6 +185,7 @@ def infer_names(mw, articles):
 
     mw.queue.put('kill')
 
+
 def infer_coordinates_with_nuts4nuts(app):
     """
     Use Nuts4Nuts and Dandelion by SpazioDati to infer the position of
@@ -194,7 +199,7 @@ def infer_coordinates_with_nuts4nuts(app):
     inFile.close()
 
     nutsCoordsFile = os.path.join("data", "nuts4nuts", "nuts4nuts_%s_coords.txt"
-                        % app.WIKIPEDIALANG)
+                                  % app.WIKIPEDIALANG)
 
     if not os.path.isfile(nutsCoordsFile) or \
             os.stat(nutsCoordsFile).st_size == 0:
@@ -230,7 +235,7 @@ if __name__ == '__main__':
     articles = frozenset([line.strip() for line in inFile.readlines()])
     inFile.close()
 
-    print ' total articles: %d' %len(articles)
+    print ' total articles: %d' % len(articles)
 
     nutsCoordsFile = os.path.join("data",
                                   "nuts4nuts",
@@ -238,17 +243,17 @@ if __name__ == '__main__':
                                  )
 
     if not os.path.isfile(nutsCoordsFile) or \
-        os.stat(nutsCoordsFile).st_size == 0:
+       os.stat(nutsCoordsFile).st_size == 0:
         data = []
     else:
         with open(nutsCoordsFile, 'r') as f:
             data = [ast.literal_eval(line.strip()) for line in f.readlines()]
 
     alreadyScanned = frozenset([d['article'] for d in data])
-    print ' already scanned: %d' %len(alreadyScanned)
+    print ' already scanned: %d' % len(alreadyScanned)
 
     articlesToScan = list(articles - alreadyScanned)
-    print ' to scan: %d' %len(articlesToScan)
+    print ' to scan: %d' % len(articlesToScan)
     print
 
     logger = logging.getLogger()

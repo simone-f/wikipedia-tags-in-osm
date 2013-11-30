@@ -25,6 +25,7 @@ from copy import deepcopy
 import operator
 import urllib
 
+
 class Themes:
     def __init__(self, app, themesAndCatsNames):
         self.themesList = []
@@ -32,7 +33,7 @@ class Themes:
             categoriesNames = sorted(themesAndCatsNames[themeName])
             self.themesList.append(Theme(app, themeName, categoriesNames))
 
-    def lists_of_titles_in_OSM_or_not(self):
+    def lists_of_titles_in_osm_or_not(self):
         """Create two lists with the titles of tagged / non tagged
            articles, to count their numbers
         """
@@ -75,10 +76,11 @@ class Theme:
 class Regions:
     def __init__(self, app):
         names = ["Abruzzo", "Basilicata", "Calabria", "Campania",
-        "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria",
-        "Lombardia", "Marche", "Molise", "Piemonte", "Puglia",
-        "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige",
-        "Umbria", "Valle d'Aosta", "Veneto"]
+                 "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio",
+                 "Liguria", "Lombardia", "Marche", "Molise", "Piemonte",
+                 "Puglia", "Sardegna", "Sicilia", "Toscana",
+                 "Trentino-Alto Adige", "Umbria", "Valle d'Aosta",
+                 "Veneto"]
         self.regionsList = []
         for regId, name in enumerate(names):
             region = Region(app, name.replace(" ", "_"), regId)
@@ -160,7 +162,7 @@ class Category:
         for artIdx, articleName in enumerate(categoriesData[categoryName]["articles"]):
             artId = "%s_%d" % (self.ident, artIdx)
             article = Article(app, artId, articleName)
-            article.setMappable(self.mainCategory, self)
+            article.set_mappable(self.mainCategory, self)
             self.articles.append(article)
             self.allArticles.append(article)
             if not article.isMappable:
@@ -198,7 +200,7 @@ class Category:
         """
         #print "\n- Leggi categorie-sottocategorie-articoli"
         #categoriesData =
-        # {cat1 : {subcat1 : None, subcat2 : None, "articles" : ["article1", ...]},
+        # {cat1: {subcat1: None, subcat2: None, "articles": ["article1", ...]},
 
         categoriesData = {}
         filename = "%s" % catscanFile
@@ -219,8 +221,8 @@ class Category:
             for categoryName in categories.split("|"):
                 categoryName = categoryName.decode("utf-8")
                 if categoryName not in categoriesData:
-                    categoriesData[categoryName] = {"articles" : [],
-                                                    "subcategories" : []}
+                    categoriesData[categoryName] = {"articles": [],
+                                                    "subcategories": []}
                 if level == "0":
                     rowType = "articles"
                 else:
@@ -294,11 +296,11 @@ class Category:
         self.progress = {}
         if self.titles != []:
             #print "articles"
-            self.progress["articles"] = {"num" : None, "string" : None}
+            self.progress["articles"] = {"num": None, "string": None}
             self.progress["articles"]["string"], self.progress["articles"]["num"] = self.calculate_tagging_progress(self.titlesInOSM, self.titles)
         # category
         if self.allTitles != []:
-            self.progress["allMArticles"] = {"num" : None, "string" : None}
+            self.progress["allMArticles"] = {"num": None, "string": None}
             self.progress["allMArticles"]["string"], self.progress["allMArticles"]["num"] = self.calculate_tagging_progress(self.allTitlesInOSM, self.allTitles)
 
     def calculate_tagging_progress(self, taggedArticles, allArticles):
@@ -308,17 +310,17 @@ class Category:
         progressNum = float(len(taggedArticles)) / float(len(allArticles))
         return progressString, progressNum
 
-    def set_hasTemplate_in_articles(self):
+    def set_has_template_in_articles(self):
         for article in self.articles:
-            self.set_hasTemplate_in_article(article)
+            self.set_has_template_in_article(article)
         for subcategory in self.subcategories:
             if subcategory.isMappable:
-                subcategory.set_hasTemplate_in_articles()
+                subcategory.set_has_template_in_articles()
         titlesWithoutTemplates = [article.name for article in self.allArticles if hasattr(article, "hasTemplate") and not article.hasTemplate]
         titlesWithoutTemplates = list(set(titlesWithoutTemplates))
         self.missingTemplatesNum = len(titlesWithoutTemplates)
 
-    def set_hasTemplate_in_article(self, article):
+    def set_has_template_in_article(self, article):
         if article.isMappable and article.inOSM and not hasattr(article, "hasTemplate"):
             if article.name not in self.app.templatesStatus:
                 print "* Errore: articolo non presente nel dizionario templatesStatus:", article.name.encode("utf-8")
@@ -371,8 +373,8 @@ class Category:
             self.wikipediaCoordsNum = len(titlesWithCoords)
 
     def check_article_coords_from_nuts4nuts(self, article):
-        if article.isMappable and not article.inOSM \
-            and article.name in self.app.titlesNutsCoords:
+        if article.isMappable and not article.inOSM and \
+           article.name in self.app.titlesNutsCoords:
             article.wikipediaCoords = self.app.titlesNutsCoords[article.name]
             article.wikipediaCoordsSource = 'Nuts4Nuts'
             self.app.coordsFromNuts4Nuts.append(article.name)
@@ -437,7 +439,9 @@ class Category:
             rows += subcategory.create_category_graph(tree, last)
         return rows
 
-    def build_json_tree(self):      #for debugging
+    #Create JSON file with category data, for debugging
+    #or visualization (d3.js)
+    def build_json_tree(self):
         """Build a nested dictionary of category for d3.js, with
            categories and articles as nodes
         """
@@ -447,14 +451,14 @@ class Category:
         children = []
         if self.articles != []:
             for article in self.articles:
-                children.append({"name" : article.name.replace("_", " ")})
+                children.append({"name": article.name.replace("_", " ")})
         for subcategory in self.subcategories:
             subcategoryDict = subcategory.build_json_tree()
             children.append(subcategoryDict)
         tree["children"] = children
         return tree
 
-    def build_json_tree_1(self):      #for debugging
+    def build_json_tree_1(self):
         """Build a nested dictionary of category for d3.js, with
            Categories as node, articles as node attributes
         """
@@ -472,12 +476,13 @@ class Category:
             tree["children"] = children
         return tree
 
-    def write_json_file(self):      #for debugging
+    def write_json_file(self):
         import json
         ifile = open("./outjson.json", "w")
         data = json.dumps(self.build_json_tree(), indent=4)
         ifile.write(data)
         ifile.close()
+
 
 class Article:
     def __init__(self, app, artId, name):
@@ -498,13 +503,12 @@ class Article:
             self.inOSM = False
             self.osmIds = []
 
-    def setMappable(self, mainCategory, parentCategory):
+    def set_mappable(self, mainCategory, parentCategory):
         if not parentCategory.isMappable or \
-mainCategory.name in self.app.nonMappable and \
-(self.name in self.app.nonMappable[mainCategory.name]["articles"] or \
-self.name in self.app.nonMappable[mainCategory.name]["redirects"]):
+                mainCategory.name in self.app.nonMappable and \
+                (self.name in self.app.nonMappable[mainCategory.name]["articles"] or
+                 self.name in self.app.nonMappable[mainCategory.name]["redirects"]):
             #print "not mappable article", self.name
             self.isMappable = False
         else:
             self.isMappable = True
-
