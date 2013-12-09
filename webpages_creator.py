@@ -382,7 +382,7 @@ class Homepage(Helpers):
         code += '\n      <h2>Programma per generare le pagine</h2>'
         code += '\n      <p>Codice: <a href="https://github.com/simone-f/wikipedia-tags-in-osm" target="_blank">wikipedia-tags-in-osm %s</a> (GPLv3)\
 <br>Autore: <a href="mailto:groppo8@gmail.com">Simone F.</a></p>' % self.app.version
-        code += '\n      <p>Contributors: Luca Delucchi, CristianCantoro</p>'
+        code += '\n      <p>Contributors: Luca Delucchi, Cristian Consonni</p>'
         code += '\n      <p><br>Riconoscimenti ed attribuzioni:</p>'
         code += '\n      <p>Servizi linkati da queste pagine: \
 <a href="http://wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (master, Kolossos), \
