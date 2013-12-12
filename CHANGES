@@ -1,3 +1,12 @@
+v0.3
+====
+- Non-tagged articles whose position is know by Wikipedia are shown on a map.
+When a marker is clicked, a popup shows a JOSM remote link through which the user can easily add the Wikipedia tag in OSM.
+- (Contribution by Cristian Consonni) When the coordinates of a non-tagged article is not known by Wikipedia, nuts4nuts_infer.py tries to infer them from the content of the article. New JOSM remote links are added to the tables when these coordinates are found.
+- The script collects the names of the mappers who added tags since the previous day and lists them in a table inside the "Info" div, along with the numbers of added tags added.
+- Fix bug discovered from a report by Daniele Forsi: redirects should be removed from the lists since WIWOSM does not support them.
+A new option "-r" downloads the list of redirects and lets the user to manually add these to the file of non-mappable items.
+
 v0.2.1
 ======
 - Fix the downloading of Wikipedia coordinates
