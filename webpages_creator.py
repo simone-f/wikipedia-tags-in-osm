@@ -518,7 +518,7 @@ class Homepage(Helpers):
                     showProgressHeader = False
                 code += '\n%s' % IndexOfCategories(self.app, item, mode, pageType, showProgressHeader).code
         elif mode == "map":
-            intro = u'<b>Clicca</b> su un articolo per visitarne la pagina o mapparlo/taggarlo con JOSM (coordinate da Wikipedia).<br>\
+            intro = u'<b>Clicca</b> su un articolo per visitarne la pagina o mapparlo/taggarlo tramite il link per JOSM (coordinate da Wikipedia).<br>\
 Se un articolo non è mappabile in OSM, ad es. il luogo in cui si è svolto un evento storico, segnalalo come tale, affinché venga rimosso (vedi "Informazioni e conteggi").'
             code = '\n    <div id="map_intro">'
             code += '\n      <p>%s</p>' % intro

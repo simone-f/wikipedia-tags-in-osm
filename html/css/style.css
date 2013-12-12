@@ -98,7 +98,8 @@ table {
     border-collapse: collapse;
     empty-cells: show;
 }
-table th, table td {
+table th,
+table td {
     border: 1px #bbbbbb solid;
     padding: 0.2em 0.4em;
 }
@@ -338,11 +339,16 @@ div#map {
     width: 100%;
     height:600px;
 }
-.leaflet-popup-content {
-    line-height: 2;
+table.popup td {
+    border: 0px solid;
 }
-#tag_hint {
-    font-size : 90%;
+table.popup tr:nth-child(1),
+table.popup tr:nth-child(2) {
+    text-align : center;
+    font-size: 90%;
+}
+table.popup tr:nth-child(3) {
+    font-size: 65%;
 }
 .overlay {
     position: absolute;

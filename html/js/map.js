@@ -24,9 +24,19 @@ var geoJsonLayer = L.geoJson(coords, {
         var bottom = y - 0.0005;
         var josmUrl = "http://localhost:8111/";
         josmUrl += "load_and_zoom?left=" + left + "&right=" + right + "&top=" + top + "&bottom=" + bottom;
-        var josmLink = "\n<br><a href='" + josmUrl + "' target='_blank' title=\"Zooma in JOSM vicino all'oggetto da taggare\"><img class='articleLinkImg' src='./img/josm_load_and_zoom.png'></a>";
-        var tag = "\n<br><span id='tag_hint'>Apri in JOSM ed aggiungi il tag:<br><i>wikipedia=it:" + feature.properties.title + "</i></span>";
-        text = articleLink + josmLink + tag;
+        var josmLink = "\n<a href='" + josmUrl + "' target='_blank' title=\"Zooma in JOSM vicino all'oggetto da taggare\"><img class='articleLinkImg' src='./img/josm_load_and_zoom.png'></a>";
+        var tag = "\nAggiungi il tag:<br><i>wikipedia=it:" + feature.properties.title + "</i>";
+        var text = "\n<table class='popup'>";
+        text += "\n  <tr>";
+        text += "\n    <td>" + articleLink + "</td>";
+        text += "\n  </tr>";
+        text += "\n  <tr>";
+        text += "\n    <td>" + josmLink + "</td>";
+        text += "\n  </tr>";
+        text += "\n  <tr>";
+        text += "\n    <td>" + tag + "</td>";
+        text += "\n  </tr>";
+        text += "\n</table>";
         layer.bindPopup(text);
     }
 });
