@@ -112,7 +112,7 @@ salvati (data/OSM/tags.csv)."
         newTags = {}
         for tag in updatedTags:
             if tag not in oldTags:
-                tagUsers = app.tagsData[tuple(tag.split("="))]["users"]
+                tagUsers = app.tagsData[(tag.split("=")[0], "=".join(tag.split("=")[1:]))]["users"]
                 newTags[tag] = tagUsers
                 for user in tagUsers:
                     if user not in users:
