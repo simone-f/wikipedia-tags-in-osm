@@ -75,6 +75,7 @@ div#info {
     margin-top : 1em;
     padding: 1em 1em 1em 1em;
     border: 1px #bbbbbb solid;
+    overflow: hidden;
 }
 div#info h2,
 div#info ul,
@@ -338,6 +339,10 @@ div#map_intro {
 div#map {
     width: 100%;
     height:600px;
+}
+
+table.popup {
+    width: 150px;
 }
 table.popup td {
     border: 0px solid;
