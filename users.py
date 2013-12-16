@@ -127,11 +127,11 @@ salvati (data/OSM/tags.csv)."
         """
         print "\n  Nuovi tag || Mappatori"
         for tag, usersList in newTags.iteritems():
-            print tag, "||", usersList
+            print tag.encode("utf-8"), "||", [u.encode("utf-8") for u in usersList]
         print len(newTags)
         print "\n  Mappatori || Numero tag"
         for user, tagsNum in users.iteritems():
-            print user, "||", tagsNum
+            print user.encode("utf-8"), "||", tagsNum
         print len(users)
 
     def save_tags_per_user(self, app, todayTagsPerUser):
