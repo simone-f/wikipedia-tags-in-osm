@@ -29,9 +29,9 @@ import urllib
 class Themes:
     def __init__(self, app, themesAndCatsNames):
         self.themesList = []
-        for themeName in sorted(themesAndCatsNames.keys()):
+        for themeId, themeName in enumerate(sorted(themesAndCatsNames.keys())):
             categoriesNames = sorted(themesAndCatsNames[themeName])
-            self.themesList.append(Theme(app, themeName, categoriesNames))
+            self.themesList.append(Theme(app, themeId, themeName, categoriesNames))
 
     def lists_of_titles_in_osm_or_not(self):
         """Create two lists with the titles of tagged / non tagged
@@ -51,10 +51,11 @@ class Themes:
 
 
 class Theme:
-    def __init__(self, app, name, categoriesNames):
+    def __init__(self, app, themeId, name, categoriesNames):
         self.name = name.capitalize()
         self.categories = []
-        for catId, categoryName in enumerate(categoriesNames):
+        for catIdx, categoryName in enumerate(categoriesNames):
+            catId = "%d_%d" % (themeId, catIdx)
             catscanFile = os.path.join(app.CATSCANDIR, name, "%s.csv" % categoryName)
             category = Category(app, catId, catscanFile, categoryName, True)
             self.categories.append(category)
