@@ -305,7 +305,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         """Setup configurations
         """
         # Program version
-        self.version = "v0.3"
+        self.version = "v0.3.1.1"
 
         #Read configuration from file
         configparser = ConfigParser.RawConfigParser()
