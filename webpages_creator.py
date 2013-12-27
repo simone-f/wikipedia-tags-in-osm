@@ -93,6 +93,17 @@ class Helpers:
         link = self.url_to_link(url, title, None, img)
         return link
 
+    def edit_link(self, data, img, zoom=17, editor='iD'):
+        url = "http://www.openstreetmap.org/edit?"
+        if editor == 'iD':
+            url += 'editor=id'
+        elif editor == 'Potlatch2':
+            url += 'editor=potlatch2'
+        url += '#map=%s/%s/%s' % (zoom, data[0], data[1])
+        title = "Modifica i dati sul browser con %s" % editor
+        link = self.url_to_link(url, title, title, img)
+        return link
+
     def overpass_turbo_link(self, query, cssClass=""):
         url = 'http://overpass-turbo.eu/index.html?Q=%s&R' % urllib.quote_plus(query)
         title = "Visualizza come mappa cliccabile, immagine... (Overpass Turbo)"
@@ -210,9 +221,14 @@ class Helpers:
         if hasattr(article, "wikipediaCoords"):
             #the article is not tagged but Wikipedia knows its coordinates
             img = "../img/josm_load_and_zoom.png"
+            img_id = "../img/id.png"
             if article.wikipediaCoordsSource == 'Nuts4Nuts':
                 img = "../img/josm_load_and_zoom_blue.png"
-            code = self.josm_link("load_and_zoom", article.wikipediaCoords, img)
+                img_id = "../img/id_blue.png"
+            code = self.josm_link("load_and_zoom", article.wikipediaCoords,
+                                  img)
+            code += '\n      %s ' % self.edit_link(article.wikipediaCoords,
+                                                   img_id)
         else:
             code = ""
         return code
