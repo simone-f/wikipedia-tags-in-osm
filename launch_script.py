@@ -73,6 +73,9 @@ class App:
         parser.add_argument("-c", "--show_link_to_wikipedia_coordinates",
                             help="Se un articolo non taggato ha delle coordinate su Wikipedia, mostra un link per zoomare sulla sua posizione con JOSM",
                             action="store_true")
+        parser.add_argument("-o", "--show_coordinates_from_osm",
+                            help="Calcola le coordinate del punto (per i nodi) o del centroide (per way e relations) dell'oggetto",
+                            action="store_true")
         parser.add_argument("-n", "--infer_coordinates_from_wikipedia",
                             help="Usa Nuts4Nuts per cercare le coordinate di un articolo non taggato e senza coordinate su Wikipedia",
                             action="store_true")
@@ -102,7 +105,8 @@ class App:
         if self.args.category_info or self.args.category_info\
            or self.args.create_webpages or self.args.print_categories_list\
            or self.args.update_redirects\
-           or self.args.show_missing_templates:
+           or self.args.show_missing_templates\
+           or self.args.show_coordinates_from_osm:
             self.args.analyze = True
 
         if len(sys.argv) == 1:
@@ -154,6 +158,8 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             #in case the parser misses them (strange tags)
             self.add_tagged_articles()
 
+            print "\n--- Aggiungi le coordinate calcolare da OSM"
+            parseOSMData.get_centroids()
 ### Manage Wikipedia data ##############################################
         #Read from 'non-mappable' file the categories and articles that
         #aren't mappable e.g. "Paintings in the X museum",
@@ -345,6 +351,8 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         self.oldCountryO5M = os.path.join(self.OSMDIR, "%s.o5m" % self.country)
         # OSM data with wikipedia tag
         self.wOSMFile = os.path.join("data", "OSM", "Wikipedia-data-in-OSM.osm")
+        # OSM data SQlite database
+        self.wOSMdb = os.path.join("data", "OSM", "Wikipedia-data-in-OSM.sqlite")
         # OSM data of foreign coountries
         self.FOREIGNOSMDIR = "/tmp/"
         # Wikipedia categories data, downloaded from catscan

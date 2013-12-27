@@ -495,11 +495,52 @@ class Article:
         self.name = name
         self.wikipediaUrl = "http://it.wikipedia.org/wiki/%s" % urllib.quote_plus(self.name.encode("utf-8"))
         self.wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=it&title=%s" % self.name.encode("utf-8")
+        self.OSMcoords = []
+
+
+    def _get_coords_from_osm(self):
+        osm_objs = [self.app.tagsData[k]
+                    for k in self.app.tagsData.keys()
+                    if self.app.tagsData[k]['osmIds'][0] in self.osmIds
+                    ]
+
+        coords = []
+        if len(osm_objs) == 0:
+            print "Errore: coordinate da OSM non trovate per l'oggetto "\
+                  "{}".format(self.name),
+
+            print "con id OSM: {}".format(str(self.osmIds))
+
+        elif len(osm_objs) == 1:
+            coords = osm_objs[0]['coords']
+
+        else:
+            rels = [o['coords']
+                    for o in osm_objs
+                    if o['osmIds'][0][0] == 'r'
+                    ]
+            ways = [o['coords']
+                    for o in osm_objs
+                    if o['osmIds'][0][0] == 'w'
+                    ]
+            nodes = [o['coords']
+                     for o in osm_objs
+                     if o['osmIds'][0][0] == 'n'
+                     ]
+
+            coords = (rels and rels[0]) or \
+                     (ways and ways[0]) or \
+                     (nodes and nodes[0])
+
+        self.OSMcoords.extend(coords)
+
 
     def check_if_in_osm(self):
         if self.name in self.app.taggedTitles:
             self.inOSM = True
             self.osmIds = self.app.taggedTitles[self.name]
+            self._get_coords_from_osm()
+
         else:
             self.inOSM = False
             self.osmIds = []

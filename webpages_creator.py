@@ -146,7 +146,25 @@ class Helpers:
     def missing_template_link(self, article):
         title = "Sulla pagina Wikipedia manca il template coord"
         img = "../img/no_template.png"
-        link = '<span class="missing_template_alert"><img src="%s" title="%s" class="articleLinkImg"></span>' % (img, title)
+        img_tag = '<img src="{src}" title="{title}"'\
+                  ' class="articleLinkImg" />'.format(src=img, title=title)
+        span_tag = '<span class="missing_template_alert" {{data}}>'\
+                   '{img}</span>'.format(img=img_tag)
+
+        if article.OSMcoords:
+            lat = article.OSMcoords[0]
+            lon = article.OSMcoords[1]
+            a_tag = '<a href="../app/login?lat={lat}&lon={lon}">'\
+                    '{{span}}</a>'.format(lat=lat, lon=lon)
+
+            data = 'data-lat="{lat}" data-lon="{lon}"'.format(lat=lat, lon=lon)
+            span_tag = span_tag.format(data=data)
+            link = a_tag.format(span=span_tag)
+
+        else:
+            span_tag = span_tag.format(data='')
+            link = span_tag
+
         return link
 
     def add_tags_link(self, category):
@@ -571,6 +589,7 @@ class Subpage(Helpers):
     def __init__(self, app, mode, suffix, item, selectNonMappable):
         """A webpage with data about a main category or a region.
         """
+
         self.app = app
         code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>'
         code += '\n<html>\n    <head>'

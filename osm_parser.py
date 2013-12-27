@@ -20,12 +20,14 @@
 """Extract lists of Wikipedia articles from wikipedia tags in an OSM file
 """
 
+import os
 from lxml import etree
 import urllib
 import urllib2
 import csv
 from subprocess import call
-import os
+
+from osm_centroids import OSMcentroids
 
 
 class ParseOSMData():
@@ -95,9 +97,59 @@ class ParseOSMData():
         ifile.close()
         return tags
 
+    def save_centroids(self, centroids, osm_type):
+        objs_to_tag = dict([(int(self.tagsData[k]['osmIds'][0][1:]), k)
+                            for k in self.tagsData.keys()
+                            if osm_type in self.tagsData[k]['osmIds'][0]
+                            ])
+
+        for obj_id, coords in centroids.iteritems():
+            if obj_id in objs_to_tag:
+                self.tagsData[objs_to_tag[obj_id]]['coords'].extend(coords)
+
+    def get_centroids(self):
+        centroids = OSMcentroids(self.app.wOSMFile, self.app.wOSMdb)
+
+        if os.path.isfile(self.app.wOSMdb) and not (self.app.args.download_osm or self.app.args.update_osm):
+            print "\n* File del database  SQLite con gli oggetti OSM con tag Wikipedia già presente."
+            print "\n  Utilizzo quel database: %s" % self.app.wOSMdb
+        else:
+            print "\n* File del database SQLite con gli oggetti OSM con tag Wikipedia assente."
+            print "o da aggiornare (il file è da aggiornare se lo script è stato lanciato con l'opzione -d o -u)"
+            print "\n  Import dei dati"
+            centroids.import_data_in_sqlite_db()
+            print "\n  Import dei dati completato"
+
+        print "-- Provo a leggere i centroidi delle way dal database"
+        ways_centroids = centroids.get_ways_centroids()
+
+        if not ways_centroids:
+            print "--- Non ho trovato i centroidi delle way nel database"
+            print "--- Li calcolo ora"
+            centroids.create_ways_centroids()
+            print "-- Provo a leggere i centroidi delle way dal database"
+            ways_centroids = centroids.get_ways_centroids()
+
+        if ways_centroids:
+            print "-- Salvo i centroidi delle way nei dati del tag"
+            self.save_centroids(ways_centroids, "w")
+
+        print "-- Provo a leggere i centroidi delle relations dal database"
+        relations_centroids = centroids.get_relations_centroids()
+
+        if not relations_centroids:
+            print "--- Non ho trovato i centroidi delle relation nel database"
+            print "--- Per calcolarli lanciare lo script osm_coordinates.py"
+            print "    con l'opzione -r"
+            print "--- Il calcolo può durare molto (alcune ore)"
+
+        if relations_centroids:
+            print "-- Salvo i centroidi delle relations nei dati del tag"
+            self.save_centroids(relations_centroids, "r")
+
 #### Parse OSM file ####################################################
     def parse_osm_file(self):
-        """Extract from an OSM file wikipeida tags and OSM id where the
+        """Extract from an OSM file wikipedia tags and OSM id where the
            tags are used
         """
         allTags = []
@@ -124,9 +176,14 @@ class ParseOSMData():
                 user = element.get("user")
                 for tag in tags:
                     if tag not in tagsData:
-                        tagsData[tag] = {"osmIds": [], "users": []}
+                        tagsData[tag] = {"osmIds": [], "users": [], "coords": []}
                     tagsData[tag]["osmIds"].append(osmId)
                     tagsData[tag]["users"].append(user)
+                    if element.tag == 'node':
+                        coords = [float(element.get('lat')),
+                                  float(element.get('lon'))
+                                  ]
+                        tagsData[tag]["coords"].extend(coords)
                 #print element.tag, osmId, allObjects[osmId]
                 tags = []       # reset tags
             element.clear()
