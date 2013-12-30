@@ -100,7 +100,7 @@ class Helpers:
         elif editor == 'Potlatch2':
             url += 'editor=potlatch2'
         url += '#map=%s/%s/%s' % (zoom, data[0], data[1])
-        title = "Modifica i dati sul browser con %s" % editor
+        title = "Zooma col browser, editor %s, vicino all'oggetto da taggare" % editor
         link = self.url_to_link(url, title, title, img)
         return link
 
