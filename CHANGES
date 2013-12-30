@@ -1,3 +1,7 @@
+development version
+===================
+- (Contribution by Luca  Delucchi) New links let the user zoom to the coordinates obtained from Wikipedia with the online editor iD.
+
 v0.3.1.1
 ========
 - Fix bug reported by Aury88: in regional web pages some OSM links are not visible
