@@ -323,7 +323,7 @@ class Homepage(Helpers):
             modesNames.append("Mappa")
             modesTitles.append("Visualizza mappa con articoli da taggare")
         self.app = app
-        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
+        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>'
         #Head
         code += '\n<html>\n  <head>'
         code += '\n    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">'
@@ -572,7 +572,7 @@ class Subpage(Helpers):
         """A webpage with data about a main category or a region.
         """
         self.app = app
-        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
+        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>'
         code += '\n<html>\n    <head>'
         code += '\n        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">'
         code += '\n        <title>%s</title>' % self.app.homePageTitle
@@ -1018,7 +1018,7 @@ class ErrorsPage(Helpers):
         """Errors page
         """
         self.app = app
-        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
+        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>'
         code += '\n<html>\n  <head>'
         code += '\n    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">'
         code += '\n    <title>Articoli di Wikipedia mappabili in OSM</title>'
