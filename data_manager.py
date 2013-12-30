@@ -55,7 +55,7 @@ class Theme:
         self.name = name.capitalize()
         self.categories = []
         for catIdx, categoryName in enumerate(categoriesNames):
-            catId = "%d_%d" % (themeId, catIdx)
+            catId = "t%d_%d" % (themeId, catIdx)
             catscanFile = os.path.join(app.CATSCANDIR, name, "%s.csv" % categoryName)
             category = Category(app, catId, catscanFile, categoryName, True)
             self.categories.append(category)

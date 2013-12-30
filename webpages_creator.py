@@ -88,7 +88,7 @@ class Helpers:
             right = data[1] + 0.0005
             top = data[0] + 0.0005
             bottom = data[0] - 0.0005
-            url += "load_and_zoom?left=%f&right=%f&top=%f&bottom=%f" % tuple((left, right, top, bottom))
+            url += "load_and_zoom?left=%f&amp;right=%f&amp;top=%f&amp;bottom=%f" % tuple((left, right, top, bottom))
             title = "Zooma in JOSM vicino all'oggetto da taggare"
         link = self.url_to_link(url, title, None, img)
         return link
@@ -105,7 +105,7 @@ class Helpers:
         return link
 
     def overpass_turbo_link(self, query, cssClass=""):
-        url = 'http://overpass-turbo.eu/index.html?Q=%s&R' % urllib.quote_plus(query)
+        url = 'http://overpass-turbo.eu/index.html?Q=%s&amp;R' % urllib.quote_plus(query)
         title = "Visualizza come mappa cliccabile, immagine... (Overpass Turbo)"
         img = "../img/Overpass-turbo.png"
         if cssClass != "":
@@ -135,7 +135,7 @@ class Helpers:
                     imgPath = "../img/"
                 else:
                     imgPath = "./img/"
-                img = '<img title="%s" src=%s%s.png>' % (osmType[:-1], imgPath, osmType)
+                img = '<img title="%s" src="%s%s.png">' % (osmType[:-1], imgPath, osmType)
                 osmIdsString += "%s %s" % (img, ", ".join(linksList))
         if isinstance(item, Article):
             #put the string into a div
@@ -152,9 +152,9 @@ class Helpers:
     def add_tags_link(self, category):
         url = "http://toolserver.org/~kolossos/osm-add-tags/index.php?"
         url += "lang=it"
-        url += "&bbox=%s" % self.app.COUNTRYBBOX
-        url += "&cat=%s" % urllib.quote_plus(category.name.encode("utf-8"))
-        url += "&key=*&value=*&basedeep=10&types=*&request=Submit&iwl=yes"
+        url += "&amp;bbox=%s" % self.app.COUNTRYBBOX
+        url += "&amp;cat=%s" % urllib.quote_plus(category.name.encode("utf-8"))
+        url += "&amp;key=*&amp;value=*&amp;basedeep=10&amp;types=*&amp;request=Submit&amp;iwl=yes"
         title = "Cerca oggetti ed aggiungi tag (WIWOSM add-tags)"
         img = "../img/add-tags.png"
         link = self.url_to_link(url, title, None, img)
@@ -179,7 +179,7 @@ class Helpers:
            services
         """
         #WIWOSM link
-        wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=%s&title=%s" % (app.WIKIPEDIALANG, article.name)
+        wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=%s&amp;title=%s" % (app.WIKIPEDIALANG, article.name)
         wiwosmTitle = "Vedi mappa Wikipedia (WIWOSM)"
         wiwosmImg = "../img/wiwosm.png"
         wiwosmLink = self.url_to_link(wiwosmUrl, wiwosmTitle, None, wiwosmImg)
@@ -323,7 +323,7 @@ class Homepage(Helpers):
             modesNames.append("Mappa")
             modesTitles.append("Visualizza mappa con articoli da taggare")
         self.app = app
-        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>'
+        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
         #Head
         code += '\n<html>\n  <head>'
         code += '\n    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">'
@@ -346,18 +346,18 @@ class Homepage(Helpers):
         if app.args.show_link_to_wikipedia_coordinates:
             code += '\n    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />'
             code += '\n    <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.ie.css" /><![endif]-->'
-            code += '\n    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>'
+            code += '\n    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>'
             code += '\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">'
             code += '\n    <!-- MarkerCluster CSS and JS -->'
             code += '\n    <link rel="stylesheet" href="./css/screen.css" />'
             code += '\n    <link rel="stylesheet" href="./css/MarkerCluster.css" />'
             code += '\n    <link rel="stylesheet" href="./css/MarkerCluster.Default.css" />'
             code += '\n    <!--[if lte IE 8]><link rel="stylesheet" href="../dist/MarkerCluster.Default.ie.css" /><![endif]-->'
-            code += '\n    <script src="js/leaflet.markercluster-src.js"></script>'
+            code += '\n    <script type="text/javascript"  src="js/leaflet.markercluster-src.js"></script>'
             code += '\n    <!-- Labelling CSS and JS -->'
             code += '\n    <link rel="stylesheet" href="./css/leaflet.label.css" />'
-            code += '\n    <script src="./js/leaflet.label.js"></script>'
-            code += '\n    <script src="./GeoJSON/coords.js" type="text/javascript"></script>'
+            code += '\n    <script type="text/javascript" src="./js/leaflet.label.js"></script>'
+            code += '\n    <script type="text/javascript" src="./GeoJSON/coords.js"></script>'
         code += '\n  </head>'
         #Body
         if app.args.show_link_to_wikipedia_coordinates:
@@ -377,7 +377,7 @@ class Homepage(Helpers):
         code += self.stats_table()
         code += '\n      <h2></h2>'
         code += '\n      <ul>'
-        code += '\n        <li>Gli oggetti taggati compaiono in Wikipedia <a href="http://toolserver.org/~kolossos/openlayers/kml-on-ol.php?lang=it&uselang=de&params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&title=Colosseom&zoom=18&lat=41.89&lon=12.49284&layers=B00000FTTTF">su una mappa</a> (progetto <a href="http://wiki.openstreetmap.org/wiki/WIWOSM" target="_blank">WIWOSM</a>).</li>'
+        code += '\n        <li>Gli oggetti taggati compaiono in Wikipedia <a href="http://toolserver.org/~kolossos/openlayers/kml-on-ol.php?lang=it&amp;uselang=de&amp;params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&amp;title=Colosseom&amp;zoom=18&amp;lat=41.89&amp;lon=12.49284&amp;layers=B00000FTTTF">su una mappa</a> (progetto <a href="http://wiki.openstreetmap.org/wiki/WIWOSM" target="_blank">WIWOSM</a>).</li>'
         code += '\n        <li>La presenza di questi tag migliora i risultati delle ricerche eseguite su www.openstreetmap.org (Nominatim).</li>'
         code += '\n      </ul>'
         code += '\n      <h2>Come</h2>'
@@ -540,7 +540,7 @@ Se un articolo non è mappabile in OSM, ad es. il luogo in cui si è svolto un e
             code += '\n      <p>%s</p>' % intro
             code += '\n    </div>'
             code += '\n    <div id="map"></div>'
-            code += '\n   <script src="./js/map.js" type="text/javascript"></script>'
+            code += '\n   <script type="text/javascript" src="./js/map.js"></script>'
             code += '\n   <!-- <div class="overlay">Articoli da taggare: <script type="application/x-javascript">document.write(coords.features.length);</script></div> -->'
         return code
 
@@ -557,7 +557,7 @@ Se un articolo non è mappabile in OSM, ad es. il luogo in cui si è svolto un e
             for item in row:
                 iconFile = "./img/%s/%s.png" % (mode, item.name.lower())
                 if os.path.isfile(os.path.join(self.app.HTMLDIR, iconFile)):
-                    icon = '<img src=%s>' % iconFile
+                    icon = '<img src="%s">' % iconFile
                 else:
                     icon = ""
                 code += '\n        <td><a href="#%s">%s%s</a></td>' % (item.name, icon, item.name.replace("_", " "))
@@ -572,7 +572,7 @@ class Subpage(Helpers):
         """A webpage with data about a main category or a region.
         """
         self.app = app
-        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>'
+        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
         code += '\n<html>\n    <head>'
         code += '\n        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">'
         code += '\n        <title>%s</title>' % self.app.homePageTitle
@@ -678,7 +678,7 @@ class Subpage(Helpers):
             articlesProgressString = ""
             if item.titles != []:
                 articlesProgressClass, articlesProgressString = self.progress_strings(item, "articles")
-            code += '\n\n<h3><a href=#index>&#8593;</a> <a id="Articles"></a>Articoli %s</h3>' % articlesProgressString
+            code += '\n\n<h3><a href="#index">&#8593;</a> <a id="Articles"></a>Articoli %s</h3>' % articlesProgressString
             divId = "%s_articles" % item.ident
             if not item.articlesAreAllMappable:
                 code += '\n<div class="showHideNonMappable"><a href=\'javascript:showHideNonMappable("%s");\' title="Visualizza articoli non mappabili">Mostra non mappabili</a></div>' % divId
@@ -696,7 +696,7 @@ class Subpage(Helpers):
             else:
                 overpassTurboLink = ""
             code += '\n\n<h3>'
-            code += '<a href=#index>&#8593;</a> '
+            code += '<a href="#index">&#8593;</a> '
             code += '<a id="%s"></a>' % subcategory.name
             code += '%s <span class=%s>%s</span>' % (self.wikipedia_link(subcategory), progressClass, progressString)
             if not len(subcategory.allTitles) == len(subcategory.allTitlesInOSM):
@@ -1018,7 +1018,7 @@ class ErrorsPage(Helpers):
         """Errors page
         """
         self.app = app
-        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>'
+        code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'
         code += '\n<html>\n  <head>'
         code += '\n    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">'
         code += '\n    <title>Articoli di Wikipedia mappabili in OSM</title>'
