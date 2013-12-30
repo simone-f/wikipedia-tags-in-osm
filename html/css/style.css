@@ -5,6 +5,10 @@ body {
     margin-bottom : 1.5em;
 }
 
+/*Fix for IE*/
+a img {
+    border: 0;
+}
 a:link {text-decoration:none;}               /* unvisited link */
 a:visited {text-decoration:none;}            /* visited link */
 a:hover {text-decoration:underline;}         /* mouse over link */
