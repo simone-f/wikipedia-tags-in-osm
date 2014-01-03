@@ -1,7 +1,10 @@
 #! /usr/bin/python
 # -*- coding: utf-8 -*-
 #
-#  Copyright 2013 Cristian Consonni <consonni@fbk.eu>
+#  Copyright 2013 Fondazione Bruno Kessler
+#  Author: <consonni@fbk.eu>
+#  This work has been funded by Fondazione Bruano Kessler (Trento, Italy)
+#  under projects T2DataExchange and LOD4STAT
 #
 #  This file is part of wikipedia-tags-in-osm.
 #  wikipedia-tags-in-osm is free software: you can redistribute it and/or
