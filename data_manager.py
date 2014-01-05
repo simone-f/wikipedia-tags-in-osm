@@ -496,7 +496,38 @@ class Article:
         self.wikipediaUrl = "http://it.wikipedia.org/wiki/%s" % urllib.quote_plus(self.name.encode("utf-8"))
         self.wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=it&title=%s" % self.name.encode("utf-8")
         self.OSMcoords = []
+        self.OSMdim = 0
 
+    def _get_dim_from_osm(self):
+        osm_objs = [self.app.tagsData[k]
+                    for k in self.app.tagsData.keys()
+                    if self.app.tagsData[k]['osmIds'][0] in self.osmIds
+                    ]
+
+        dim = 0
+        if len(osm_objs) == 0:
+            print "Errore: dimensione dell'oggetto da OSM non trovate "\
+                  "per {}".format(self.name),
+
+            print "con id OSM: {}".format(str(self.osmIds))
+
+        elif len(osm_objs) == 1:
+            dim = osm_objs[0]['dim']
+
+        else:
+            rels = [o['dim']
+                    for o in osm_objs
+                    if o['osmIds'][0][0] == 'r'
+                    ]
+            ways = [o['dim']
+                    for o in osm_objs
+                    if o['osmIds'][0][0] == 'w'
+                    ]
+
+            dim = (rels and rels[0]) or \
+                  (ways and ways[0])
+
+        self.OSMdim = dim
 
     def _get_coords_from_osm(self):
         osm_objs = [self.app.tagsData[k]
@@ -540,6 +571,7 @@ class Article:
             self.inOSM = True
             self.osmIds = self.app.taggedTitles[self.name]
             self._get_coords_from_osm()
+            self._get_dim_from_osm()
 
         else:
             self.inOSM = False

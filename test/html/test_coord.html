@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <title>Test js</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./js/wtosm.js"></script>
+    <script>
+      function display_coords(lat, lon, name)
+      {
+        var msg = 'Display coordinates of ' + name + ':';
+        msg += '\nlat: ' + lat + ';';
+        msg += '\nlon: ' + lon + ';';
+        alert(msg);
+
+        var res = coords_deg2dms_cp(lat, lon);
+
+        coord = res.lat.d + '°' + res.lat.m + "'" + res.lat.s + '"' + res.lat.cp + ' ';
+        coord += res.lon.d + '°' + res.lon.m + "'" + res.lon.s + '"' + res.lon.cp;
+        document.getElementById("demo-" + name).innerHTML = coord;
+
+      }
+    </script>
+  </head>
+
+<body>
+  <h1>Test js coordinate</h1>
+    <h2>Coordinate di Berlino</h2>
+    deg: (52.518611, 13.408056)<br />
+    atteso: 52°31'07"N 13°24'29"E'<br />
+    <button onclick="display_coords(52.518611, 13.408056, 'Berlino')">Berlino</button>
+    <span id="demo-Berlino"></span>
+
+    
+    <h2>Coordinate di Washington D.C.</h2>
+    deg: (38.895111, -77.036667)<br />
+    atteso: 38°53'42"N 77°02'12"W'<br />
+    <button onclick="display_coords(38.895111, -77.036667, 'Washington')">Washington D.C.</button>
+    <span id="demo-Washington"></span>
+    
+    <h2>Coordinate di Santiago del Cile</h2>
+    deg: (-33.437833, -70.650333)<br />
+    atteso: 33°26'16"S 70°39'01"W'<br />
+    <button onclick="display_coords(-33.437833, -70.650333, 'Santiago')">Santiago del Cile</button>
+    <span id="demo-Santiago"></span>
+
+</body>
+</html>

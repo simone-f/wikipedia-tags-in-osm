@@ -144,20 +144,30 @@ class Helpers:
         return links, osmIdsString
 
     def missing_template_link(self, article):
-        title = "Sulla pagina Wikipedia manca il template coord"
-        img = "../img/no_template.png"
+        img_title = "Sulla pagina Wikipedia manca il template coord"
+        img_src = "../img/no_template.png"
         img_tag = '<img src="{src}" title="{title}"'\
-                  ' class="articleLinkImg" />'.format(src=img, title=title)
+                  ' class="articleLinkImg" />'.format(src=img_src, 
+                                                      title=img_title)
         span_tag = '<span class="missing_template_alert" {{data}}>'\
                    '{img}</span>'.format(img=img_tag)
 
         if article.OSMcoords:
             lat = article.OSMcoords[0]
             lon = article.OSMcoords[1]
+            dim = article.OSMdim
+            wikipedia_title = urllib.quote_plus(article.name.encode("utf-8"))
+
             a_tag = '<a href="../app/login?lat={lat}&lon={lon}">'\
                     '{{span}}</a>'.format(lat=lat, lon=lon)
 
-            data = 'data-lat="{lat}" data-lon="{lon}"'.format(lat=lat, lon=lon)
+            data = 'data-lat="{lat}" data-lon="{lon}" '\
+                   'data-dim="{dim}" '\
+                   'data-wikipedia="{title}"'.format(lat=lat,
+                                                     lon=lon,
+                                                     dim=dim,
+                                                     title=wikipedia_title)
+
             span_tag = span_tag.format(data=data)
             link = a_tag.format(span=span_tag)
 

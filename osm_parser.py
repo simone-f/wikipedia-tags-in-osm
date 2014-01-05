@@ -107,6 +107,16 @@ class ParseOSMData():
             if obj_id in objs_to_tag:
                 self.tagsData[objs_to_tag[obj_id]]['coords'].extend(coords)
 
+    def save_dimensions(self, dimensions, osm_type):
+        objs_to_tag = dict([(int(self.tagsData[k]['osmIds'][0][1:]), k)
+                            for k in self.tagsData.keys()
+                            if osm_type in self.tagsData[k]['osmIds'][0]
+                            ])
+
+        for obj_id, dim in dimensions.iteritems():
+            if obj_id in objs_to_tag:
+                self.tagsData[objs_to_tag[obj_id]]['dim'] = dim
+
     def get_centroids(self):
         centroids = OSMcentroids(self.app.wOSMFile, self.app.wOSMdb)
 
@@ -130,9 +140,13 @@ class ParseOSMData():
             print "-- Provo a leggere i centroidi delle way dal database"
             ways_centroids = centroids.get_ways_centroids()
 
+
         if ways_centroids:
             print "-- Salvo i centroidi delle way nei dati del tag"
             self.save_centroids(ways_centroids, "w")
+
+            ways_dimensions = centroids.get_ways_dimensions()
+            self.save_dimensions(ways_dimensions, "w")
 
         print "-- Provo a leggere i centroidi delle relations dal database"
         relations_centroids = centroids.get_relations_centroids()
@@ -146,6 +160,9 @@ class ParseOSMData():
         if relations_centroids:
             print "-- Salvo i centroidi delle relations nei dati del tag"
             self.save_centroids(relations_centroids, "r")
+
+            relations_dimensions = centroids.get_relations_dimensions()
+            self.save_dimensions(relations_dimensions, "r")
 
 #### Parse OSM file ####################################################
     def parse_osm_file(self):
@@ -176,7 +193,11 @@ class ParseOSMData():
                 user = element.get("user")
                 for tag in tags:
                     if tag not in tagsData:
-                        tagsData[tag] = {"osmIds": [], "users": [], "coords": []}
+                        tagsData[tag] = {"osmIds": [],
+                                         "users": [],
+                                         "coords": [],
+                                         "dim": 0
+                                         }
                     tagsData[tag]["osmIds"].append(osmId)
                     tagsData[tag]["users"].append(user)
                     if element.tag == 'node':

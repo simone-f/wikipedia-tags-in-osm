@@ -93,7 +93,31 @@ class OSMcentroids(object):
     def create_ways_centroids(self):
         query = """CREATE TABLE osm_ways_centroids
                    AS SELECT way_id,
-                             AsText(Centroid(ST_Collect(Geometry))) as geom
+                             AsText(Centroid(ST_Collect(Geometry))) as centr,
+                             AsText(
+                                MakePoint(MbrMinX(ST_Collect(Geometry)),
+                                          MbrMinY(ST_Collect(Geometry)),
+                                          4326
+                                          )
+                                ) as p1,
+                             AsText(
+                                 MakePoint(MbrMaxX(ST_Collect(Geometry)),
+                                           MbrMaxY(ST_Collect(Geometry)),
+                                           4326
+                                           )
+                                 ) as p2,
+                             GeodesicLength(
+                                 MakeLine(
+                                     MakePoint(MbrMinX(ST_Collect(Geometry)),
+                                               MbrMinY(ST_Collect(Geometry)),
+                                               4326
+                                               ),
+                                     MakePoint(MbrMaxX(ST_Collect(Geometry)),
+                                               MbrMaxY(ST_Collect(Geometry)),
+                                               4326
+                                               )
+                                     )
+                                 ) as dist
                       FROM osm_way_refs AS w
                       JOIN osm_nodes AS n
                       ON w.node_id = n.node_id
@@ -121,7 +145,7 @@ class OSMcentroids(object):
     def create_relations_centroids(self):
         con = spatialite.connect(self.wOSMdb)
 
-        query = """CREATE TEMP TABLE osm_relations_centroids_source
+        query = """CREATE TABLE osm_relations_centroids_source
                    AS SELECT rel_id, type, ref, Geometry
                    FROM osm_relation_refs AS rr
                    JOIN (SELECT way_id, w.node_id, Geometry
@@ -144,7 +168,31 @@ class OSMcentroids(object):
 
         query = """CREATE TABLE osm_relations_centroids
                    AS SELECT rel_id,
-                             AsText(Centroid(ST_Collect(Geometry))) as geom
+                             AsText(Centroid(ST_Collect(Geometry))) as centr,
+                             AsText(
+                                MakePoint(MbrMinX(ST_Collect(Geometry)),
+                                          MbrMinY(ST_Collect(Geometry)),
+                                          4326
+                                          )
+                                ) as p1,
+                             AsText(
+                                 MakePoint(MbrMaxX(ST_Collect(Geometry)),
+                                           MbrMaxY(ST_Collect(Geometry)),
+                                           4326
+                                           )
+                                 ) as p2,
+                             GeodesicLength(
+                                 MakeLine(
+                                     MakePoint(MbrMinX(ST_Collect(Geometry)),
+                                               MbrMinY(ST_Collect(Geometry)),
+                                               4326
+                                               ),
+                                     MakePoint(MbrMaxX(ST_Collect(Geometry)),
+                                               MbrMaxY(ST_Collect(Geometry)),
+                                               4326
+                                               )
+                                     )
+                                 ) as dist
                    FROM osm_relations_centroids_source
                    GROUP BY rel_id
                 """
@@ -164,6 +212,11 @@ class OSMcentroids(object):
             print "Failed execution of query:\n%s" % query
             print error
             print "Nessuna tabella creata"
+        finally:
+            with con:
+                cur = con.cursor()
+            cur.execute("DROP TABLE osm_relations_centroids_source")
+            print "Drop TEMP table osm_relations_centroids_source"
 
     def _get_coords_from_wkt(self, cur):
         centroids = {}
@@ -178,7 +231,7 @@ class OSMcentroids(object):
         return centroids
 
     def get_relations_centroids(self):
-        query = """SELECT rel_id, geom
+        query = """SELECT rel_id, centr
                    FROM osm_relations_centroids
                 """
 
@@ -187,13 +240,39 @@ class OSMcentroids(object):
         return self._get_coords_from_wkt(cur)
 
     def get_ways_centroids(self):
-        query = """SELECT way_id, geom
+        query = """SELECT way_id, centr
                    FROM osm_ways_centroids
                 """
 
         cur = self._query_wrapper(query)
 
         return self._get_coords_from_wkt(cur)
+
+    def _get_dims(self, cur):
+        dims = {}
+        if cur:
+            for obj_id, dist in cur:
+                dims[obj_id] = int(round(dist))
+
+        return dims
+
+    def get_relations_dimensions(self):
+        query = """SELECT rel_id, dist
+                   FROM osm_relations_centroids
+                """
+
+        cur = self._query_wrapper(query)
+
+        return self._get_dims(cur)
+
+    def get_ways_dimensions(self):
+        query = """SELECT way_id, dist
+                   FROM osm_ways_centroids
+                """
+
+        cur = self._query_wrapper(query)
+
+        return self._get_dims(cur)
 
     def drop_table(self, table_name):
         con = spatialite.connect(self.wOSMdb)
