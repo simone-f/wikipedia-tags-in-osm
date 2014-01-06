@@ -124,6 +124,12 @@ class ParseOSMData():
             print "\n* File del database  SQLite con gli oggetti OSM con tag Wikipedia già presente."
             print "\n  Utilizzo quel database: %s" % self.app.wOSMdb
         else:
+            try:
+                centroids.drop_database()
+                print "Drop old database"
+            except:
+                pass
+
             print "\n* File del database SQLite con gli oggetti OSM con tag Wikipedia assente."
             print "o da aggiornare (il file è da aggiornare se lo script è stato lanciato con l'opzione -d o -u)"
             print "\n  Import dei dati"
