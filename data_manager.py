@@ -507,7 +507,7 @@ class Article:
         dim = 0
         if len(osm_objs) == 0:
             print "Errore: dimensione dell'oggetto da OSM non trovate "\
-                  "per {}".format(self.name),
+                  "per {}".format(self.name.encode("utf-8")),
 
             print "con id OSM: {}".format(str(self.osmIds))
 
@@ -538,7 +538,7 @@ class Article:
         coords = []
         if len(osm_objs) == 0:
             print "Errore: coordinate da OSM non trovate per l'oggetto "\
-                  "{}".format(self.name),
+                  "{}".format(self.name.encode("utf-8")),
 
             print "con id OSM: {}".format(str(self.osmIds))
 
