@@ -498,6 +498,17 @@ class Article:
         self.OSMcoords = []
         self.OSMdim = 0
 
+    def check_if_in_osm(self):
+        if self.name in self.app.taggedTitles:
+            self.inOSM = True
+            self.osmIds = self.app.taggedTitles[self.name]
+            self._get_coords_from_osm()
+            self._get_dim_from_osm()
+
+        else:
+            self.inOSM = False
+            self.osmIds = []
+
     def _get_dim_from_osm(self):
         osm_objs = [self.app.tagsData[k]
                     for k in self.app.tagsData.keys()
@@ -564,18 +575,6 @@ class Article:
                      (nodes and nodes[0])
 
         self.OSMcoords.extend(coords)
-
-
-    def check_if_in_osm(self):
-        if self.name in self.app.taggedTitles:
-            self.inOSM = True
-            self.osmIds = self.app.taggedTitles[self.name]
-            self._get_coords_from_osm()
-            self._get_dim_from_osm()
-
-        else:
-            self.inOSM = False
-            self.osmIds = []
 
     def set_mappable(self, mainCategory, parentCategory):
         if not parentCategory.isMappable or \
