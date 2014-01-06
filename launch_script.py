@@ -158,8 +158,10 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
             #in case the parser misses them (strange tags)
             self.add_tagged_articles()
 
-            print "\n--- Aggiungi le coordinate calcolare da OSM"
-            parseOSMData.get_centroids()
+            if self.args.show_coordinates_from_osm:
+                print "\n--- Aggiungi le coordinate calcolare da OSM"
+                parseOSMData.get_centroids()
+
 ### Manage Wikipedia data ##############################################
         #Read from 'non-mappable' file the categories and articles that
         #aren't mappable e.g. "Paintings in the X museum",
