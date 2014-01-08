@@ -351,6 +351,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         self.oldCountryPBF = os.path.join(self.OSMDIR, "%s.osm.pbf" % self.country)
         self.countryO5M = os.path.join(self.OSMDIR, "%s-latest.o5m" % self.country)
         self.oldCountryO5M = os.path.join(self.OSMDIR, "%s.o5m" % self.country)
+        self.osmObjs = {}
         # OSM data with wikipedia tag
         self.wOSMFile = os.path.join("data", "OSM", "Wikipedia-data-in-OSM.osm")
         # OSM data SQlite database

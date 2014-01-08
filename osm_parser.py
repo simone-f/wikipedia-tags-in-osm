@@ -97,25 +97,17 @@ class ParseOSMData():
         ifile.close()
         return tags
 
-    def save_centroids(self, centroids, osm_type):
-        objs_to_tag = dict([(int(self.tagsData[k]['osmIds'][0][1:]), k)
-                            for k in self.tagsData.keys()
-                            if osm_type in self.tagsData[k]['osmIds'][0]
-                            ])
+    def save_centroids(self, centroids, osmType):
+        for osmIdNoType, coords in centroids.iteritems():
+            osmId = osmType + str(osmIdNoType)
+            if osmId in self.app.osmObjs:
+                self.app.osmObjs[osmId]["coords"] = coords
 
-        for obj_id, coords in centroids.iteritems():
-            if obj_id in objs_to_tag:
-                self.tagsData[objs_to_tag[obj_id]]['coords'].extend(coords)
-
-    def save_dimensions(self, dimensions, osm_type):
-        objs_to_tag = dict([(int(self.tagsData[k]['osmIds'][0][1:]), k)
-                            for k in self.tagsData.keys()
-                            if osm_type in self.tagsData[k]['osmIds'][0]
-                            ])
-
-        for obj_id, dim in dimensions.iteritems():
-            if obj_id in objs_to_tag:
-                self.tagsData[objs_to_tag[obj_id]]['dim'] = dim
+    def save_dimensions(self, dimensions, osmType):
+        for osmIdNoType, dim in dimensions.iteritems():
+            osmId = osmType + str(osmIdNoType)
+            if osmId in self.app.osmObjs:
+                self.app.osmObjs[osmId]["dim"] = dim
 
     def get_centroids(self):
         centroids = OSMcentroids(self.app.wOSMFile, self.app.wOSMdb)
@@ -137,38 +129,38 @@ class ParseOSMData():
             print "\n  Import dei dati completato"
 
         print "-- Provo a leggere i centroidi delle way dal database"
-        ways_centroids = centroids.get_ways_centroids()
+        waysCentroids = centroids.get_ways_centroids()
 
-        if not ways_centroids:
+        if not waysCentroids:
             print "--- Non ho trovato i centroidi delle way nel database"
             print "--- Li calcolo ora"
             centroids.create_ways_centroids()
             print "-- Provo a leggere i centroidi delle way dal database"
-            ways_centroids = centroids.get_ways_centroids()
+            waysCentroids = centroids.get_ways_centroids()
 
 
-        if ways_centroids:
+        if waysCentroids:
             print "-- Salvo i centroidi delle way nei dati del tag"
-            self.save_centroids(ways_centroids, "w")
+            self.save_centroids(waysCentroids, "w")
 
-            ways_dimensions = centroids.get_ways_dimensions()
-            self.save_dimensions(ways_dimensions, "w")
+            waysDimensions = centroids.get_ways_dimensions()
+            self.save_dimensions(waysDimensions, "w")
 
         print "-- Provo a leggere i centroidi delle relations dal database"
-        relations_centroids = centroids.get_relations_centroids()
+        relationsCentroids = centroids.get_relations_centroids()
 
-        if not relations_centroids:
+        if not relationsCentroids:
             print "--- Non ho trovato i centroidi delle relation nel database"
             print "--- Per calcolarli lanciare lo script osm_coordinates.py"
             print "    con l'opzione -r"
             print "--- Il calcolo può durare molto (alcune ore)"
 
-        if relations_centroids:
+        if relationsCentroids:
             print "-- Salvo i centroidi delle relations nei dati del tag"
-            self.save_centroids(relations_centroids, "r")
+            self.save_centroids(relationsCentroids, "r")
 
-            relations_dimensions = centroids.get_relations_dimensions()
-            self.save_dimensions(relations_dimensions, "r")
+            relationsDimensions = centroids.get_relations_dimensions()
+            self.save_dimensions(relationsDimensions, "r")
 
 #### Parse OSM file ####################################################
     def parse_osm_file(self):
@@ -195,24 +187,24 @@ class ParseOSMData():
                 allTags.append(tagString)
             if element.tag in ("node", "way", "relation"):
                 #end of OSM object
-                osmId = element.tag[0] + element.get("id")
-                user = element.get("user")
-                for tag in tags:
-                    if tag not in tagsData:
-                        tagsData[tag] = {"osmIds": [],
-                                         "users": [],
-                                         "coords": [],
-                                         "dim": 0
-                                         }
-                    tagsData[tag]["osmIds"].append(osmId)
-                    tagsData[tag]["users"].append(user)
-                    if element.tag == 'node':
-                        coords = [float(element.get('lat')),
-                                  float(element.get('lon'))
-                                  ]
-                        tagsData[tag]["coords"].extend(coords)
-                #print element.tag, osmId, allObjects[osmId]
-                tags = []       # reset tags
+                if tags != []:
+                    osmId = element.tag[0] + element.get("id")
+                    if osmId not in self.app.osmObjs:
+                        coords = []
+                        if element.tag == 'node':
+                            coords = [float(element.get('lat')),
+                                      float(element.get('lon'))]
+                        self.app.osmObjs[osmId] = {"coords": coords,
+                                                   "dim": 0}
+                    user = element.get("user")
+                    for tag in tags:
+                        if tag not in tagsData:
+                            tagsData[tag] = {"osmIds": [],
+                                             "users": []}
+                        tagsData[tag]["osmIds"].append(osmId)
+                        tagsData[tag]["users"].append(user)
+                    #print element.tag, osmId, allObjects[osmId]
+                    tags = []       # reset tags
             element.clear()
         #print "\nWikipedia tags number (with duplicate): ", len(allTags)
         #print "\nwikipedia tags number (no duplicate): ", len(tagsData)

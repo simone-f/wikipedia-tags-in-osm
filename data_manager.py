@@ -510,69 +510,38 @@ class Article:
             self.osmIds = []
 
     def _get_dim_from_osm(self):
-        osm_objs = [self.app.tagsData[k]
-                    for k in self.app.tagsData.keys()
-                    if self.app.tagsData[k]['osmIds'][0] in self.osmIds
-                    ]
+        """Get article dimension from the bbox of the OSM object.
+           If more objects are tagged choose the first relation,
+           way or node.
+        """
+        objsDims = {"r": [], "w": []}
+        for osmId in self.osmIds:
+            if osmId in self.app.osmObjs and not osmId.startswith("n"):
+                objDim = self.app.osmObjs[osmId]["dim"]
+                objsDims[osmId[0]].append(objDim)
 
-        dim = 0
-        if len(osm_objs) == 0:
-            print "Errore: dimensione dell'oggetto da OSM non trovate "\
-                  "per {}".format(self.name.encode("utf-8")),
-
-            print "con id OSM: {}".format(str(self.osmIds))
-
-        elif len(osm_objs) == 1:
-            dim = osm_objs[0]['dim']
-
-        else:
-            rels = [o['dim']
-                    for o in osm_objs
-                    if o['osmIds'][0][0] == 'r'
-                    ]
-            ways = [o['dim']
-                    for o in osm_objs
-                    if o['osmIds'][0][0] == 'w'
-                    ]
-
-            dim = (rels and rels[0]) or \
-                  (ways and ways[0])
+        dim = (objsDims["r"] and objsDims["r"][0]) or \
+              (objsDims["w"] and objsDims["w"][0])
+        if dim == []:
+            dim = 0
 
         self.OSMdim = dim
 
     def _get_coords_from_osm(self):
-        osm_objs = [self.app.tagsData[k]
-                    for k in self.app.tagsData.keys()
-                    if self.app.tagsData[k]['osmIds'][0] in self.osmIds
-                    ]
-
+        """Get article coordinates from the centroid of the OSM object.
+           If more objects are tagged choose the first relation,
+           way or node.
+        """
         coords = []
-        if len(osm_objs) == 0:
-            print "Errore: coordinate da OSM non trovate per l'oggetto "\
-                  "{}".format(self.name.encode("utf-8")),
+        objsCoords = {"r": [], "w": [], "n": []}
+        for osmId in self.osmIds:
+            if osmId in self.app.osmObjs:
+                objCoord = self.app.osmObjs[osmId]["coords"]
+                objsCoords[osmId[0]].append(objCoord)
 
-            print "con id OSM: {}".format(str(self.osmIds))
-
-        elif len(osm_objs) == 1:
-            coords = osm_objs[0]['coords']
-
-        else:
-            rels = [o['coords']
-                    for o in osm_objs
-                    if o['osmIds'][0][0] == 'r'
-                    ]
-            ways = [o['coords']
-                    for o in osm_objs
-                    if o['osmIds'][0][0] == 'w'
-                    ]
-            nodes = [o['coords']
-                     for o in osm_objs
-                     if o['osmIds'][0][0] == 'n'
-                     ]
-
-            coords = (rels and rels[0]) or \
-                     (ways and ways[0]) or \
-                     (nodes and nodes[0])
+        coords = (objsCoords["r"] and objsCoords["r"][0]) or \
+                 (objsCoords["w"] and objsCoords["w"][0]) or \
+                 (objsCoords["n"] and objsCoords["n"][0])
 
         self.OSMcoords.extend(coords)
 
