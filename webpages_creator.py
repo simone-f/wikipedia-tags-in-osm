@@ -382,7 +382,9 @@ class Homepage(Helpers):
         code += '\n      </ul>'
         code += '\n      <h2>Come</h2>'
         code += '\n      <ul>'
-        code += '\n        <li>Aggiungere all\'oggetto in OSM il tag <b>"wikipedia=it:Titolo dell\'articolo"</b>, lasciando gli spazi tra le parole.<br>Basta <b>una sola lingua</b>, se l\'articolo è già taggato in una lingua straniera non occorre aggiungere quella italiana (vedi <a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank"> eccezioni</a> sul Wiki di OSM).</li>'
+        code += '\n        <li>Aggiungere all\'oggetto in OSM il tag <b>"wikipedia=it:Titolo dell\'articolo"</b>, lasciando gli spazi tra le parole.'
+        code += '\n        <br>Basta <b>una sola lingua</b>, se l\'articolo è già taggato in una lingua straniera non occorre aggiungere quella italiana (vedi <a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank"> eccezioni</a> sul Wiki di OSM).</li>'
+        code += '\n        <li><b>Video tutorial</b> che mostrano come aggiungere i tag tramite l\'editor online iD, dalle <a href="https://www.youtube.com/watch?v=lCJOvFk8sTc&feature=youtu.be&hd=1" target="_blank">tabelle</a> e dalla <a href="https://www.youtube.com/watch?v=_2ouZ7jK5TE" target="_blank">mappa</a>.</li>'
         code += '\n      </ul>'
         code += '\n      <h2>Strumenti utili per aggiungere tag</h2>'
         code += '\n      <ul>'
@@ -399,7 +401,8 @@ class Homepage(Helpers):
         code += '\n      <p>Codice: <a href="https://github.com/simone-f/wikipedia-tags-in-osm" target="_blank">wikipedia-tags-in-osm %s</a> (GPLv3)\
 <br>Autore: <a href="mailto:groppo8@gmail.com">Simone F.</a></p>' % self.app.version
         code += '\n      <p>Contributors: Luca Delucchi, Cristian Consonni</p>'
-        code += '\n      <p><br>Riconoscimenti ed attribuzioni:</p>'
+        code += '\n      <p><br>Riconoscimenti ed attribuzioni.</p>'
+        code += '\n      <p>Grazie a chi ha segnalato gli articoli non mappabili (i nomi sono nei commit) e ad Andrea Borruso, per i video tutorial su iD.</p>'
         code += '\n      <p>Servizi linkati da queste pagine: \
 <a href="http://wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (master, Kolossos), \
 <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a> (Kolossos), \
