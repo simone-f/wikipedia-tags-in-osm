@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 #  Copyright 2013 Fondazione Bruno Kessler
@@ -24,16 +24,15 @@
 
 import argparse
 import os
-import pyspatialite
-from pyspatialite import dbapi2 as spatialite
+from pysqlite2 import dbapi2 as spatialite
 from subprocess import Popen, PIPE, call
 
 
 class OSMcentroids(object):
-
-    def __init__(self, wOSMFile, wOSMdb, args=None):
+    def __init__(self, wOSMFile, wOSMdb, libspatialitePath, args=None):
         self.wOSMFile = wOSMFile
         self.wOSMdb = wOSMdb
+        self.libspatialitePath = libspatialitePath
 
         if args is not None:
             self.args = args
@@ -78,10 +77,12 @@ class OSMcentroids(object):
 
     def _query_wrapper(self, query):
         con = spatialite.connect(self.wOSMdb)
-
+        con.enable_load_extension(True)
         try:
             with con:
                 cur = con.cursor()
+            cmd = "SELECT load_extension('%s');" % self.libspatialitePath
+            cur.execute(cmd)
             cur.execute(query)
         except spatialite.OperationalError as error:
             print "Failed execution of query:\n%s" % query
@@ -327,6 +328,13 @@ def main():
                                                  ),
                             action="store"
                             )
+        parser.add_argument("-p", "--libspatialite_path",
+                            help='Percorso di libspatialite [default: '
+                                 'libspatialite]',
+                            dest="libspatialitePath",
+                            default="libspatialite",
+                            action="store"
+                            )
         parser.add_argument("-f", "--osm_file",
                             help='Nome del file con i dati OSM (creato con '
                                  'osmfilter) [default: '
@@ -365,9 +373,12 @@ def main():
                             action="store_true")
 
         args = parser.parse_args()
-        print args
+        #print args
 
-        osm = OSMcentroids(args.wOSMFile, args.wOSMdb, args)
+        osm = OSMcentroids(args.wOSMFile,
+                           args.wOSMdb,
+                           args.libspatialitePath,
+                           args)
 
 if __name__ == '__main__':
     main()

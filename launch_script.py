@@ -356,6 +356,8 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         self.wOSMFile = os.path.join("data", "OSM", "Wikipedia-data-in-OSM.osm")
         # OSM data SQlite database
         self.wOSMdb = os.path.join("data", "OSM", "Wikipedia-data-in-OSM.sqlite")
+        # libspatialite path
+        self.libspatialitePath = configparser.get("general", "libspatialite-path")
         # OSM data of foreign coountries
         self.FOREIGNOSMDIR = "/tmp/"
         # Wikipedia categories data, downloaded from catscan

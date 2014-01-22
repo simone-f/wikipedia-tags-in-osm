@@ -67,21 +67,34 @@ $(document).ready(function () {
                 var lon = input.attr( 'data-lon' );
                 var dim = input.attr( 'data-dim' );
 
-                var res = coords_deg2dms_cp(lat, lon);
+                var msg =''
 
-                var msg = "Alla voce in Wikipedia manca il testo per mostrare le coordinate e la mappa OSM (il template Coord)."
+                if( (typeof lat === 'undefined') ||
+                    (typeof lon === 'undefined') ||
+                    (typeof dim === 'undefined') ) {
+
+                    msg = "All'articolo in Wikipedia manca il testo per mostrare le coordinate e la mappa OSM (il template Coord).";
+                    msg += "\n\nAggiungi in cima alla pagina il seguente codice, completando le coordinate:";
+                    msg += "\n\n{{coord|lat (gradi decimali)|N|long (gradi decimali)|E|display=title}}";
+                    msg += "\n\nPuoi copiare le coordinate da JOSM: scaricando l\'oggetto e cliccando nel riquadro in basso a sinistra.";
+                }
+                else {
+                    var res = coords_deg2dms_cp(lat, lon);
+
+                    msg = "Alla voce in Wikipedia manca il testo per mostrare le coordinate e la mappa OSM (il template Coord)."
                     msg += "\n\nAggiungi in cima alla pagina il seguente codice:";
 
-                var tmpl_lat = res.lat.d + "|" + res.lat.m + "|" + res.lat.s + "|" + res.lat.cp;
-                var tmpl_lon = res.lon.d + "|" + res.lon.m + "|" + res.lon.s + "|" + res.lon.cp;
+                    var tmpl_lat = res.lat.d + "|" + res.lat.m + "|" + res.lat.s + "|" + res.lat.cp;
+                    var tmpl_lon = res.lon.d + "|" + res.lon.m + "|" + res.lon.s + "|" + res.lon.cp;
 
-                var tmpl_dim = '';
+                    var tmpl_dim = '';
 
-                    if ( dim > 0 ) {
-                        tmpl_dim = "|dim:" + dim;
-                    }
+                        if ( dim > 0 ) {
+                            tmpl_dim = "|dim:" + dim;
+                        }
 
-                    msg += "\n\n{{coord|" + tmpl_lat + "|" + tmpl_lon + tmpl_dim + "|display=title}}";
+                        msg += "\n\n{{coord|" + tmpl_lat + "|" + tmpl_lon + tmpl_dim + "|display=title}}";
+                }
 
                 alert(msg);
         });

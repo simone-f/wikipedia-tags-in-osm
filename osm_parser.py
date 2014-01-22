@@ -110,7 +110,9 @@ class ParseOSMData():
                 self.app.osmObjs[osmId]["dim"] = dim
 
     def get_centroids(self):
-        centroids = OSMcentroids(self.app.wOSMFile, self.app.wOSMdb)
+        centroids = OSMcentroids(self.app.wOSMFile,
+                                 self.app.wOSMdb,
+                                 self.app.libspatialitePath)
 
         if os.path.isfile(self.app.wOSMdb) and not (self.app.args.download_osm or self.app.args.update_osm):
             print "\n* File del database  SQLite con gli oggetti OSM con tag Wikipedia già presente."
