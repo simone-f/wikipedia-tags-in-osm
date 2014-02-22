@@ -113,7 +113,7 @@ class Category:
     osmIds, list of OSM objects
     html, html code of web page
     """
-    def __init__(self, app, catId, catscanFile, categoryName, mappable, mainCategory=None, categoriesData=None):
+    def __init__(self, app, catId, catscanFile, categoryName, parentIsMappable, mainCategory=None, categoriesData=None):
         self.app = app
         self.ident = catId
         self.typ = "Categoria"
@@ -153,17 +153,15 @@ class Category:
         self.allOsmIds = []
 
         #Mappable or not
-        if not mappable or self.mainCategory.name in self.app.nonMappable and self.name in self.app.nonMappable[self.mainCategory.name]["subcategories"]:
-            #print "not mappable category", self.name
-            self.isMappable = False
-        else:
-            self.isMappable = True
+        self.isMappable = self.set_mappable(parentIsMappable)
 
         #Build articles
         for artIdx, articleName in enumerate(categoriesData[categoryName]["articles"]):
             artId = "%s_%d" % (self.ident, artIdx)
             article = Article(app, artId, articleName)
-            article.set_mappable(self.mainCategory, self)
+
+            article.set_mappable(self.isMappable)
+
             self.articles.append(article)
             self.allArticles.append(article)
             if not article.isMappable:
@@ -262,14 +260,24 @@ class Category:
         dict_file.write(text)
         dict_file.close()
 
+    def set_mappable(self, parentIsMappable):
+        if not parentIsMappable or \
+            self.name in self.app.nonMappable["subcategories"]:
+            #print "not mappable category", self.name
+            return False
+        else:
+            return True
+
     def check_articles_in_osm(self):
         """Add to articles and categories informations regarding their
            status in OSM (if they are tagged or not)
         """
+        #check articles in subcategories
         for subcategory in self.subcategories:
             if subcategory.isMappable:
                 subcategory.check_articles_in_osm()
-        #articles in category
+
+        #check articles in category
         for article in self.articles:
             if article.isMappable:
                 if not hasattr(article, "inOSM"):
@@ -278,7 +286,8 @@ class Category:
                 if article.inOSM:
                     self.titlesInOSM.append(article.name)
                     self.osmIds.extend(article.osmIds)
-        #articles in subcategories
+
+        #collect the titles in category
         self.allTitles.extend(self.titles)
         self.allTitlesInOSM.extend(self.titlesInOSM)
         self.allOsmIds.extend(self.osmIds)
@@ -504,11 +513,10 @@ class Article:
             self.inOSM = False
             self.osmIds = []
 
-    def set_mappable(self, mainCategory, parentCategory):
-        if not parentCategory.isMappable or \
-                mainCategory.name in self.app.nonMappable and \
-                (self.name in self.app.nonMappable[mainCategory.name]["articles"] or
-                 self.name in self.app.nonMappable[mainCategory.name]["redirects"]):
+    def set_mappable(self, parentIsMappable):
+        if not parentIsMappable or \
+                (self.name in self.app.nonMappable["articles"] or
+                 self.name in self.app.nonMappable["redirects"]):
             #print "not mappable article", self.name
             self.isMappable = False
         else:

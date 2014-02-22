@@ -384,20 +384,19 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
            "Opere nel Castello Sforzesco‎"...
         """
         print "\n- Leggi le liste di articoli e categorie da ignorare perché non mappabili, dal file './data/wikipedia/non_mappable'"
-        #nonMappable = {category name :
-        #                               {"subcategories" : [],
-        #                                "articles"      : []}
-        #                                "redirects"     : [], ...}
-        nonMappableParser = ConfigParser.RawConfigParser()
-        nonMappableParser.read(self.NONMAPPABLE)
-        nonMappable = {}
-        for section in nonMappableParser.sections():
-            categoryName = section.replace(" ", "_").decode("utf-8")
-            nonMappable[categoryName] = {}
-            for elementType in ("subcategories", "articles", "redirects"):
-                nonMappableString = nonMappableParser.get(section, elementType)
-                nonMappableList = nonMappableString.split("|")
-                nonMappable[categoryName][elementType] = [item.replace(" ", "_").decode("utf-8") for item in nonMappableList]
+        articles = []
+        subcategories = []
+        redirects = []
+        nonMappable = {"subcategories": subcategories,
+                       "articles": articles,
+                       "redirects": redirects}
+        for itemsType, itemsList in nonMappable.iteritems():
+            fileName = open(os.path.join(self.NONMAPPABLE, itemsType), "r")
+            nonMappableItems = fileName.read().replace(" ", "_").decode("utf-8").splitlines()
+            fileName.close()
+            nonMappableItems.sort()
+            nonMappable[itemsType] = nonMappableItems
+
         return nonMappable
 
     def add_tagged_articles(self):
