@@ -553,7 +553,7 @@ Se un articolo non è mappabile in OSM, ad es. il luogo in cui si è svolto un e
         """
         code = '\n    <table id="home_index">'
         code += '\n      <tr>'
-        columns = 5
+        columns = 4
         rows = [items[i:i + columns] for i in range(0, len(items), columns)]
         for row in rows:
             code += '\n      <tr>'
