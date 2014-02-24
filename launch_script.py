@@ -253,6 +253,19 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         #Count tags added by each user
         self.users = Users(self).users
 
+        #Create a json file with the data (needed by non_mappable.html)
+        tree = {"mappable": True,
+                "name": "Main",
+                "size": 1,
+                "children": []}
+        for theme in self.themes:
+            for category in theme.categories:
+                tree["children"].append(category.build_json_tree())
+        ifile = open(os.path.join(self.HTMLDIR, "json", "main.json"), "w")
+        data = json.dumps(tree)
+        ifile.write(data)
+        ifile.close()
+
         #Create webpages
         if self.args.create_webpages:
             print "\n- Crea pagine web"
@@ -359,6 +372,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         self.HTMLDIR = 'html'
         self.make_dir(os.path.join(self.HTMLDIR, "subpages"))
         self.make_dir(os.path.join(self.HTMLDIR, "GeoJSON"))
+        self.make_dir(os.path.join(self.HTMLDIR, "json"))
         self.homePageTitle = "Articoli Wikipedia etichettabili in OSM"
         self.UPDATETIME = time.strftime("%b %d, ore %H", time.localtime())
         statsDir = os.path.join("data", "stats")

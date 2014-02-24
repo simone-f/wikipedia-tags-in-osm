@@ -457,11 +457,13 @@ class Category:
         """
         tree = {}
         tree["name"] = self.name.replace("_", " ")
-        tree["size"] = self.allArticles
+        tree["size"] = len(self.allArticles)
+        tree["mappable"] = self.isMappable
         children = []
         if self.articles != []:
             for article in self.articles:
-                children.append({"name": article.name.replace("_", " ")})
+                children.append({"name": article.name.replace("_", " "),
+                                 "mappable": article.isMappable})
         for subcategory in self.subcategories:
             subcategoryDict = subcategory.build_json_tree()
             children.append(subcategoryDict)
@@ -474,7 +476,7 @@ class Category:
         """
         tree = {}
         tree["name"] = self.name.replace("_", " ")
-        tree["size"] = self.allArticles
+        tree["size"] = len(self.allArticles)
         tree["articles"] = []
         if self.articles != []:
             tree["articles"] = [article.name.replace("_", " ") for article in self.articles]
@@ -488,7 +490,7 @@ class Category:
 
     def write_json_file(self):
         import json
-        ifile = open("./outjson.json", "w")
+        ifile = open("./html/json/%s.json" % self.name.encode("utf-8"), "w")
         data = json.dumps(self.build_json_tree(), indent=4)
         ifile.write(data)
         ifile.close()
