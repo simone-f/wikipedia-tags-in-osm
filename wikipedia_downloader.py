@@ -52,7 +52,7 @@ def check_catscan_data(app, themesAndCatsNames):
     #download catscan data of missing categories
     for themeName, categoriesNames in needInfo.iteritems():
         for categoryName in categoriesNames:
-            result = download_a_new_category(themeName, categoryName)
+            result = download_a_new_category(app, themeName, categoryName)
             if not result:
                 themesAndCatsNames[themeName].remove(categoryName)
     return themesAndCatsNames
@@ -63,12 +63,11 @@ def download_a_new_category(app, themeName, categoryName):
        from catscan (http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php)
        and save it to: CATSCANDIR/theme name/category name.csv
     """
-    print "\n- Scarico (da catscan) la lista di sottocategorie ed articoli di una nuova categoria Wikipedia"
+    print "\n- Scarico la lista di sottocategorie ed articoli di una nuova categoria Wikipedia.\n  %s" % categoryName.encode("utf-8")
     #response = raw_input("\n- Scarico dati categoria %s da catscan?\n[y/N]" % categoryName.encode("utf-8"))
     response = "y"
     if response not in ("y", "Y"):
         return False
-    print "\ndownloading category info from catscan..."
 
     if themeName not in os.listdir(app.CATSCANDIR):
         os.makedirs(os.path.join(app.CATSCANDIR, themeName))
@@ -80,15 +79,15 @@ def download_a_new_category(app, themeName, categoryName):
     url += "&basecat=" + urllib.quote_plus(categoryName.encode("utf-8"))
     url += "&basedeep=8&templates=&mode=al&format=csv"
 
-    print "url:"
+    print "  url:"
     print url
-
+    print "  downloading data from CatScan..."
     data = urllib2.urlopen(url)
     filename = os.path.join(app.CATSCANDIR, themeName, "%s.csv" % categoryName)
     csvFile = open(filename, 'w')
     csvFile.write(data.read())
     csvFile.close()
-    print "Dati Wikipedia sulla nuova categoria salvati in:\n%s" % filename
+    print "  CatScan file:\n%s" % filename
 
     #Remember category date
     configparser = ConfigParser.RawConfigParser()
