@@ -314,26 +314,26 @@ def find_redirects(app):
                         redirects[category.name] = []
                     redirects[category.name].append(page["page_title"])
 
+    print "\n\n=Redirects="
+    for categoryName, titles in redirects.iteritems():
+        print "\n==%s==" % categoryName.encode("utf-8")
+        for title in titles:
+            print title
+
     #Save titles to data/wikipedia/redirects/redirects, from where they
     #can be mannually copied to non_mappable file
+    redirectsList = []
+    for categoryName, titles in redirects.iteritems():
+        redirectsList.extend([t.replace("_", " ").encode("utf-8") for t in titles])
+    redirectsList = list(set(redirectsList))
+    print "\nTot: %d" % len(redirectsList)
     fileName = os.path.join("data", "wikipedia", "redirects", "redirects")
     outFile = open(fileName, "w")
-    for categoryName, titles in redirects.iteritems():
-        outFile.write("\n\n[%s]\nredirects = " % categoryName.encode("utf-8"))
-        outFile.write("|".join([t.replace("_", " ").encode("utf-8") for t in titles]))
+    for title in list(set(redirectsList)):
+        outFile.write("%s\n" % title)
     outFile.close()
-    print "  La lista di redirects è stata scritta in %s per essere coppiata in non_mappable" % fileName
 
-    i = 0
-    print "REDIRECTS"
-    for categoryName, titles in redirects.iteritems():
-        print "\n=%s=" % categoryName.encode("utf-8")
-        for title in titles:
-            i += 1
-            print title
-    print "\nTot: %d" % i
-
-    print "La lista di redirects è stata scritta in %s per essere coppiata in non_mappable" % fileName
+    print "La lista di redirects è stata scritta in %s per essere copiata in data/wikipedia/non_mappable/redirects" % fileName
 
 
 def download_redirects_info(app):
