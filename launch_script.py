@@ -137,7 +137,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
                 OSM.filter_wikipedia_data_in_osm_file(self)
             #Extract Wikipedia articles tagged in OSM with preferred language.
             #If an article is tagged in a foreign language, ask to Wikpedia
-            #what is the corrisponding article of the preferred language, so
+            #what is the corresponding article of the preferred language, so
             #that we can flag it as tagged aswell.
             print "\n- Estrai dal file OSM gli articoli già taggati"
             parseOSMData = ParseOSMData(self)
