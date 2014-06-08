@@ -79,5 +79,10 @@ def filter_wikipedia_data_in_osm_file(app):
         print "File O5M assente, provo a convertire il file PBF..."
         app.convert_pbf_to_o5m(app)
     print "\n- Estrai i dati OSM con tag wikipedia"
-    command = 'osmfilter %s --keep="wikipedia*=*" --keep-tags="all wikipedia*=*" --ignore-dependencies -o=%s' % (app.countryO5M, app.wOSMFile)
+
+    if app.args.show_coordinates_from_osm:
+        command = 'osmfilter %s --keep="wikipedia*=*" --keep-tags="all wikipedia*=*" -o=%s' % (app.countryO5M, app.wOSMFile)
+    else:
+        command = 'osmfilter %s --keep="wikipedia*=*" --keep-tags="all wikipedia*=*" --ignore-dependencies -o=%s' % (app.countryO5M, app.wOSMFile)
+
     call(command, shell=True)

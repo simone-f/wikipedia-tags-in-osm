@@ -4,6 +4,7 @@ osmbbox = 6.627730,35.493500,18.521200,47.092600
 preferred language = it
 country = italy
 outdir = 
+libspatialite-path = /usr/lib/x86_64-linux-gnu/libspatialite.so.5.1.0
 
 [themes]
 cultura = Biblioteche d'Italia per regione | Osservatori astronomici d'Italia | Siti archeologici d'Italia | Università in Italia | Orti botanici d'Italia | Scuole in Italia | Teatri d'Italia

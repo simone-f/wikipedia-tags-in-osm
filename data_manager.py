@@ -506,14 +506,55 @@ class Article:
         self.name = name
         self.wikipediaUrl = "http://it.wikipedia.org/wiki/%s" % urllib.quote_plus(self.name.encode("utf-8"))
         self.wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=it&title=%s" % self.name.encode("utf-8")
+        self.OSMcoords = []
+        self.OSMdim = 0
 
     def check_if_in_osm(self):
         if self.name in self.app.taggedTitles:
             self.inOSM = True
             self.osmIds = self.app.taggedTitles[self.name]
+            self._get_coords_from_osm()
+            self._get_dim_from_osm()
+
         else:
             self.inOSM = False
             self.osmIds = []
+
+    def _get_dim_from_osm(self):
+        """Get article dimension from the bbox of the OSM object.
+           If more objects are tagged choose the first relation,
+           way or node.
+        """
+        objsDims = {"r": [], "w": []}
+        for osmId in self.osmIds:
+            if osmId in self.app.osmObjs and not osmId.startswith("n"):
+                objDim = self.app.osmObjs[osmId]["dim"]
+                objsDims[osmId[0]].append(objDim)
+
+        dim = (objsDims["r"] and objsDims["r"][0]) or \
+              (objsDims["w"] and objsDims["w"][0])
+        if dim == []:
+            dim = 0
+
+        self.OSMdim = dim
+
+    def _get_coords_from_osm(self):
+        """Get article coordinates from the centroid of the OSM object.
+           If more objects are tagged choose the first relation,
+           way or node.
+        """
+        coords = []
+        objsCoords = {"r": [], "w": [], "n": []}
+        for osmId in self.osmIds:
+            if osmId in self.app.osmObjs:
+                objCoord = self.app.osmObjs[osmId]["coords"]
+                objsCoords[osmId[0]].append(objCoord)
+
+        coords = (objsCoords["r"] and objsCoords["r"][0]) or \
+                 (objsCoords["w"] and objsCoords["w"][0]) or \
+                 (objsCoords["n"] and objsCoords["n"][0])
+
+        self.OSMcoords.extend(coords)
 
     def set_mappable(self, parentIsMappable):
         if not parentIsMappable or \

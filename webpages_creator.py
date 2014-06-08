@@ -144,9 +144,37 @@ class Helpers:
         return links, osmIdsString
 
     def missing_template_link(self, article):
-        title = "Sulla pagina Wikipedia manca il template coord"
-        img = "../img/no_template.png"
-        link = '<span class="missing_template_alert"><img src="%s" title="%s" class="articleLinkImg"></span>' % (img, title)
+        img_title = "Sulla pagina Wikipedia manca il template coord"
+        img_src = "../img/no_template.png"
+        img_tag = '<img src="{src}" title="{title}"'\
+                  ' class="articleLinkImg" />'.format(src=img_src, 
+                                                      title=img_title)
+        span_tag = '<span class="missing_template_alert" {{data}}>'\
+                   '{img}</span>'.format(img=img_tag)
+
+        if article.OSMcoords:
+            lat = article.OSMcoords[0]
+            lon = article.OSMcoords[1]
+            dim = article.OSMdim
+            wikipedia_title = urllib.quote_plus(article.name.encode("utf-8"))
+
+            a_tag = '<a href="../app/login?lat={lat}&lon={lon}">'\
+                    '{{span}}</a>'.format(lat=lat, lon=lon)
+
+            data = 'data-lat="{lat}" data-lon="{lon}" '\
+                   'data-dim="{dim}" '\
+                   'data-wikipedia="{title}"'.format(lat=lat,
+                                                     lon=lon,
+                                                     dim=dim,
+                                                     title=wikipedia_title)
+
+            span_tag = span_tag.format(data=data)
+            link = a_tag.format(span=span_tag)
+
+        else:
+            span_tag = span_tag.format(data='')
+            link = span_tag
+
         return link
 
     def add_tags_link(self, category):
@@ -575,6 +603,7 @@ class Subpage(Helpers):
     def __init__(self, app, mode, suffix, item, selectNonMappable):
         """A webpage with data about a main category or a region.
         """
+
         self.app = app
         code = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>'
         code += '\n<html>\n    <head>'
@@ -620,17 +649,7 @@ class Subpage(Helpers):
         code += '\n                  }'
         code += '\n          }'
         code += '\n        </script>'
-        code += '\n        <script>'
-        code += '\n          $(document).ready(function() {'
-        code += '\n            $(".missing_template_alert").click(function (event) {'
-        code += '\n                var msg = "All\'articolo in Wikipedia manca il testo per mostrare le coordinate e la mappa OSM (il template Coord).";'
-        code += '\n                msg += "\\n\\nAggiungi in cima alla pagina il seguente codice, completando le coordinate:";'
-        code += '\n                msg += "\\n\\n{{coord|lat (gradi decimali)|N|long (gradi decimali)|E|display=title}}";'
-        code += '\n                msg += "\\n\\nPuoi copiare le coordinate da JOSM: scaricando l\'oggetto e cliccando nel riquadro in basso a sinistra.";'
-        code += '\n                alert(msg);'
-        code += '\n                });'
-        code += '\n           });'
-        code += '\n        </script>'
+        code += '\n        <script src="../js/wtosm.js" type="text/javascript"></script>'
         code += '\n    </head>'
         code += '\n<body>'
         code += '\n\n<!-- Header -->'

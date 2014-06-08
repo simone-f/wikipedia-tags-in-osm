@@ -20,12 +20,14 @@
 """Extract lists of Wikipedia articles from wikipedia tags in an OSM file
 """
 
+import os
 from lxml import etree
 import urllib
 import urllib2
 import csv
 from subprocess import call
-import os
+
+from osm_centroids import OSMcentroids
 
 
 class ParseOSMData():
@@ -95,9 +97,76 @@ class ParseOSMData():
         ifile.close()
         return tags
 
+    def save_centroids(self, centroids, osmType):
+        for osmIdNoType, coords in centroids.iteritems():
+            osmId = osmType + str(osmIdNoType)
+            if osmId in self.app.osmObjs:
+                self.app.osmObjs[osmId]["coords"] = coords
+
+    def save_dimensions(self, dimensions, osmType):
+        for osmIdNoType, dim in dimensions.iteritems():
+            osmId = osmType + str(osmIdNoType)
+            if osmId in self.app.osmObjs:
+                self.app.osmObjs[osmId]["dim"] = dim
+
+    def get_centroids(self):
+        centroids = OSMcentroids(self.app.wOSMFile,
+                                 self.app.wOSMdb,
+                                 self.app.libspatialitePath)
+
+        if os.path.isfile(self.app.wOSMdb) and not (self.app.args.download_osm or self.app.args.update_osm):
+            print "\n* File del database  SQLite con gli oggetti OSM con tag Wikipedia già presente."
+            print "\n  Utilizzo quel database: %s" % self.app.wOSMdb
+        else:
+            try:
+                centroids.drop_database()
+                print "Drop old database"
+            except:
+                pass
+
+            print "\n* File del database SQLite con gli oggetti OSM con tag Wikipedia assente."
+            print "o da aggiornare (il file è da aggiornare se lo script è stato lanciato con l'opzione -d o -u)"
+            print "\n  Import dei dati"
+            centroids.import_data_in_sqlite_db()
+            print "\n  Import dei dati completato"
+
+        print "-- Provo a leggere i centroidi delle way dal database"
+        waysCentroids = centroids.get_ways_centroids()
+
+        if not waysCentroids:
+            print "--- Non ho trovato i centroidi delle way nel database"
+            print "--- Li calcolo ora"
+            centroids.create_ways_centroids()
+            print "-- Provo a leggere i centroidi delle way dal database"
+            waysCentroids = centroids.get_ways_centroids()
+
+
+        if waysCentroids:
+            print "-- Salvo i centroidi delle way nei dati del tag"
+            self.save_centroids(waysCentroids, "w")
+
+            waysDimensions = centroids.get_ways_dimensions()
+            self.save_dimensions(waysDimensions, "w")
+
+        print "-- Provo a leggere i centroidi delle relations dal database"
+        relationsCentroids = centroids.get_relations_centroids()
+
+        if not relationsCentroids:
+            print "--- Non ho trovato i centroidi delle relation nel database"
+            print "--- Per calcolarli lanciare lo script osm_coordinates.py"
+            print "    con l'opzione -r"
+            print "--- Il calcolo può durare molto (alcune ore)"
+
+        if relationsCentroids:
+            print "-- Salvo i centroidi delle relations nei dati del tag"
+            self.save_centroids(relationsCentroids, "r")
+
+            relationsDimensions = centroids.get_relations_dimensions()
+            self.save_dimensions(relationsDimensions, "r")
+
 #### Parse OSM file ####################################################
     def parse_osm_file(self):
-        """Extract from an OSM file wikipeida tags and OSM id where the
+        """Extract from an OSM file wikipedia tags and OSM id where the
            tags are used
         """
         allTags = []
@@ -120,15 +189,24 @@ class ParseOSMData():
                 allTags.append(tagString)
             if element.tag in ("node", "way", "relation"):
                 #end of OSM object
-                osmId = element.tag[0] + element.get("id")
-                user = element.get("user")
-                for tag in tags:
-                    if tag not in tagsData:
-                        tagsData[tag] = {"osmIds": [], "users": []}
-                    tagsData[tag]["osmIds"].append(osmId)
-                    tagsData[tag]["users"].append(user)
-                #print element.tag, osmId, allObjects[osmId]
-                tags = []       # reset tags
+                if tags != []:
+                    osmId = element.tag[0] + element.get("id")
+                    if osmId not in self.app.osmObjs:
+                        coords = []
+                        if element.tag == 'node':
+                            coords = [float(element.get('lat')),
+                                      float(element.get('lon'))]
+                        self.app.osmObjs[osmId] = {"coords": coords,
+                                                   "dim": 0}
+                    user = element.get("user")
+                    for tag in tags:
+                        if tag not in tagsData:
+                            tagsData[tag] = {"osmIds": [],
+                                             "users": []}
+                        tagsData[tag]["osmIds"].append(osmId)
+                        tagsData[tag]["users"].append(user)
+                    #print element.tag, osmId, allObjects[osmId]
+                    tags = []       # reset tags
             element.clear()
         #print "\nWikipedia tags number (with duplicate): ", len(allTags)
         #print "\nwikipedia tags number (no duplicate): ", len(tagsData)
