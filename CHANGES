@@ -1,5 +1,6 @@
 development version
 ===================
+- (Cristian Consonni) Add centroid coordinates to the popup for use in the Wikipedia template
 - (Contribution by Luca  Delucchi) New links let the user zoom to the coordinates obtained from Wikipedia with the online editor iD.
 
 v0.3.1.1
