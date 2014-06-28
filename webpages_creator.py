@@ -147,7 +147,7 @@ class Helpers:
         img_title = "Sulla pagina Wikipedia manca il template coord"
         img_src = "../img/no_template.png"
         img_tag = '<img src="{src}" title="{title}"'\
-                  ' class="articleLinkImg" />'.format(src=img_src, 
+                  ' class="articleLinkImg" />'.format(src=img_src,
                                                       title=img_title)
         span_tag = '<span class="missing_template_alert" {{data}}>'\
                    '{img}</span>'.format(img=img_tag)
@@ -422,7 +422,7 @@ class Homepage(Helpers):
         code += '\n      <h2>Difetti nelle liste</h2>'
         code += '\n      <ul>'
         code += '\n        <li> Articoli o categorie <b>non mappabili</b>, ad es. "es. Dipinti nel Museo Tal Dei Tali", possono essere rimossi dalla pagina, se segnalati (vedi mail).'
-        code += '\n          <br><a href="non_mappable.html" target="_blank">Questa pagina</a> può atiutare a trovarli.</li>'
+        code += '\n          <br><a href="non_mappable.html" target="_blank">Questa pagina</a> può aiutare a trovarli.</li>'
         code += '\n        <li> Può accadere che in una sottocategoria ricadano articoli non riguardanti il tema di partenza. Se questi sono mappabili vengono comunque mostrati in tabella.</li>'
         code += '\n        <li> Articoli o sottocategorie appartenenti a più categorie possono ripetersi più volte in una stessa pagina (i conteggi ne tengono conto).</li>'
         code += '\n      </ul>'
