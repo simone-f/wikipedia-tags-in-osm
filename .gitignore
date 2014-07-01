@@ -1,2 +1,4 @@
 *.pyc
 *~
+data/wikipedia/answers/*
+data/wikipedia/catscan/*
