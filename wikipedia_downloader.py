@@ -17,8 +17,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with wikipedia-tags-in-osm.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Functions for getting info from CatScan and Wikipedia API:
-   - download subcategories and articles names of a category (CatScan)
+"""Functions for getting info from Quick Intersection and Wikipedia API:
+   - download subcategories and articles names of a category (Quick Intersection)
    - check which articles have/don't have the Coord template (Wikipedia API)
 """
 
@@ -34,21 +34,24 @@ import ConfigParser
 import time
 
 
-### Manage catscan data ################################################
+### Manage Quick Intersection data ################################################
 def check_catscan_data(app, themesAndCatsNames):
-    """Check if we have Wikipedia data from catscan (subcategories names
+    """Check if we have Wikipedia data from Quick Intersection (subcategories names
        and articles names) of all the categories written in 'config' file
     """
-    print "\n- Controlla la presenza dei dati Wikipedia (catscan) di tutte le categorie nel file 'config'"
+    print "\n- Controlla la presenza dei dati Wikipedia (Quick Intersection) di tutte le categorie nel file 'config'"
     needInfo = {}
     for themeName, categoriesNames in themesAndCatsNames.iteritems():
         for categoryName in categoriesNames:
-            categoryCatscanFile = os.path.join(app.CATSCANDIR, themeName, "%s.csv" % categoryName)
+            categoryCatscanFile = os.path.join(app.CATSCANDIR,
+                                               themeName,
+                                               "%s.json" % categoryName)
             categoryCatscanFile = categoryCatscanFile.encode("utf-8")
             if not os.path.isfile(categoryCatscanFile):
                 if not themeName in needInfo:
                     needInfo[themeName] = []
                 needInfo[themeName].append(categoryName)
+
     #download catscan data of missing categories
     for themeName, categoriesNames in needInfo.iteritems():
         for categoryName in categoriesNames:
@@ -60,8 +63,8 @@ def check_catscan_data(app, themesAndCatsNames):
 
 def download_a_new_category(app, themeName, categoryName):
     """Download data (subcategories and articles) of a new category
-       from catscan (http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php)
-       and save it to: CATSCANDIR/theme name/category name.csv
+       from quick_intersection (http://tools.wmflabs.org/catscan2/quick_intersection.php?)
+       and save it to: CATSCANDIR/theme name/category name.json
     """
     print "\n- Scarico la lista di sottocategorie ed articoli di una nuova categoria Wikipedia.\n  %s" % categoryName.encode("utf-8")
     #response = raw_input("\n- Scarico dati categoria %s da catscan?\n[y/N]" % categoryName.encode("utf-8"))
@@ -72,22 +75,22 @@ def download_a_new_category(app, themeName, categoryName):
     if themeName not in os.listdir(app.CATSCANDIR):
         os.makedirs(os.path.join(app.CATSCANDIR, themeName))
 
-    #Download the CSV file with subcategories and articles of the requested category
-    url = "http://toolserver.org/~daniel/WikiSense/CategoryIntersect.php?"
-    url += "wikilang=%s" % app.WIKIPEDIALANG
-    url += "&wikifam=.wikipedia.org"
-    url += "&basecat=" + urllib.quote_plus(categoryName.encode("utf-8"))
-    url += "&basedeep=8&templates=&mode=al&format=csv"
+    #Download the JSON file with subcategories and articles of the requested category
+    url = "http://tools.wmflabs.org/catscan2/quick_intersection.php?"
+    url += "lang=%s" % app.WIKIPEDIALANG
+    url += "&project=wikipedia"
+    url += "&cats=" + urllib.quote_plus(categoryName.encode("utf-8"))
+    url += "&ns=*&depth=-1&max=30000&start=0&format=json&catlist=1&redirects=none&callback="
 
     print "  url:"
     print url
-    print "  downloading data from CatScan..."
+    print "  downloading data from Quick Intersection..."
     data = urllib2.urlopen(url)
-    filename = os.path.join(app.CATSCANDIR, themeName, "%s.csv" % categoryName)
+    filename = os.path.join(app.CATSCANDIR, themeName, "%s.json" % categoryName)
     csvFile = open(filename, 'w')
     csvFile.write(data.read())
     csvFile.close()
-    print "  CatScan file:\n%s" % filename
+    print "  file:\n%s" % filename
 
     #Remember category date
     configparser = ConfigParser.RawConfigParser()
@@ -287,77 +290,3 @@ def check_file_exists(fileName):
     elif os.stat(fileName).st_size == 0:
         print "\n* File vuoto:\n%s" % fileName
         sys.exit(1)
-
-
-### Download from Wikipedia the lists of redirects #####################
-def find_redirects(app):
-    """Download from http://tools.wmflabs.org/catscan2/quick_intersection.php
-       informations about the articles, find redirects and write them to:
-       data/wikipedia/redirects
-       Then, yhey can be manually copied and pasted to non_mappable file
-    """
-    print "\n- Scarica informazioni sugli articoli e leggi quali di questi sono redirects"
-    download_redirects_info(app)
-
-    #Read redirects from files
-    redirects = {}
-    for theme in app.themes:
-        for category in theme.categories:
-            fileName = os.path.join("data", "wikipedia", "redirects", "%s.json" % category.name)
-            jsonFileIn = open(fileName)
-            data = json.load(jsonFileIn)
-            jsonFileIn.close()
-            pages = data["pages"]
-            for page in pages:
-                if page["page_is_redirect"] == "1":
-                    if category.name not in redirects:
-                        redirects[category.name] = []
-                    redirects[category.name].append(page["page_title"])
-
-    print "\n\n=Redirects="
-    for categoryName, titles in redirects.iteritems():
-        print "\n==%s==" % categoryName.encode("utf-8")
-        for title in titles:
-            print title
-
-    #Save titles to data/wikipedia/redirects/redirects, from where they
-    #can be mannually copied to non_mappable file
-    redirectsList = []
-    for categoryName, titles in redirects.iteritems():
-        redirectsList.extend([t.replace("_", " ").encode("utf-8") for t in titles])
-    redirectsList = list(set(redirectsList))
-    print "\nTot: %d" % len(redirectsList)
-    fileName = os.path.join("data", "wikipedia", "redirects", "redirects")
-    outFile = open(fileName, "w")
-    for title in list(set(redirectsList)):
-        outFile.write("%s\n" % title)
-    outFile.close()
-
-    print "La lista di redirects è stata scritta in %s per essere copiata in data/wikipedia/non_mappable/redirects" % fileName
-
-
-def download_redirects_info(app):
-    """Download json files with info about the articles of each category
-    """
-    for theme in app.themes:
-        for category in theme.categories:
-            print category.name.replace("_", " ").encode("utf-8")
-            url = 'http://tools.wmflabs.org/catscan2/quick_intersection.php?'
-            url += 'lang=%s' % app.WIKIPEDIALANG
-            url += '&project=wikipedia'
-            url += '&cats=%s' % urllib.quote_plus(category.name.encode("utf-8"))
-            url += '&ns=0&depth=-1&max=30000&start=0&format=json&callback='
-            #answer = raw_input("\n  Download json with articles of categories?\n%s\n[y/N]" % url)
-            answer = "y"
-            if answer in ("y", "Y"):
-                try:
-                    response = urllib2.urlopen(url)
-                except:
-                    print "\n* a problem occurred during downloading"
-                else:
-                    fileName = os.path.join("data", "wikipedia", "redirects", "%s.json" % category.name)
-                    if os.path.isfile(fileName):
-                        call("rm %s" % fileName, shell=True)
-                    fileOut = open(fileName, "w")
-                    fileOut.write(response.read())
-                    fileOut.close()

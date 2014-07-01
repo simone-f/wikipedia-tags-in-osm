@@ -24,6 +24,7 @@ import os
 from copy import deepcopy
 import operator
 import urllib
+import json
 
 
 class Themes:
@@ -56,7 +57,7 @@ class Theme:
         self.categories = []
         for catIdx, categoryName in enumerate(categoriesNames):
             catId = "t%d_%d" % (themeId, catIdx)
-            catscanFile = os.path.join(app.CATSCANDIR, name, "%s.csv" % categoryName)
+            catscanFile = os.path.join(app.CATSCANDIR, name, "%s.json" % categoryName)
             category = Category(app, catId, catscanFile, categoryName, True)
             self.categories.append(category)
 
@@ -137,7 +138,7 @@ class Category:
         self.subcategories = []
         #Articles of the category
         self.articles = []
-        #Articles of cateogry + articles of its subcategories
+        #Articles of category + articles of its subcategories
         self.allArticles = []
         #Titles of mappable aarticles
         self.titles = []
@@ -156,7 +157,7 @@ class Category:
         self.isMappable = self.set_mappable(parentIsMappable)
 
         #Build articles
-        for artIdx, articleName in enumerate(categoriesData[categoryName]["articles"]):
+        for artIdx, articleName in enumerate(sorted(categoriesData[categoryName]["articles"])):
             artId = "%s_%d" % (self.ident, artIdx)
             article = Article(app, artId, articleName)
 
@@ -169,7 +170,7 @@ class Category:
                 self.isAllMappable = False
 
         #Build subcategories
-        for subIdx, subcatName in enumerate(categoriesData[categoryName]["subcategories"]):
+        for subIdx, subcatName in enumerate(sorted(categoriesData[categoryName]["subcategories"])):
             subIdx = "%s_%s" % (self.ident, subIdx)
             subcategory = Category(app, subIdx, catscanFile, subcatName, self.isMappable, self.mainCategory, categoriesData)
             self.subcategories.append(subcategory)
@@ -200,29 +201,24 @@ class Category:
         #print "\n- Leggi categorie-sottocategorie-articoli"
         #categoriesData =
         # {cat1: {subcat1: None, subcat2: None, "articles": ["article1", ...]},
-
         categoriesData = {}
-        filename = "%s" % catscanFile
-        file_in = open(filename, "r")
-        lines = file_in.readlines()
-        file_in.close()
 
-        for i, line in enumerate(lines):
-            values = line[:-2].split("\t")
-            level, name, categories = values[0], values[1], values[2]
-            name = name.decode("utf-8")
-            if level in ("1", "2", "6", "10"):
-                #  1 link to a Talk page
-                #  2 Link to other kind of page, for example: a user page
-                #  6 Link to a file, for example: an image
-                # 10 Link to a template page
+        inFile = open(catscanFile, "r")
+        fileData = json.loads(inFile.read())
+        inFile.close()
+        for page in fileData["pages"]:
+            namespace = page["page_namespace"]
+            name = page["page_title"]#.decode("utf-8")
+            if namespace not in ("0", "14"):
+                #this page is not an article nor a category
                 continue
+            categories = page["cats"]
             for categoryName in categories.split("|"):
-                categoryName = categoryName.decode("utf-8")
+                categoryName = categoryName#.decode("utf-8")
                 if categoryName not in categoriesData:
                     categoriesData[categoryName] = {"articles": [],
                                                     "subcategories": []}
-                if level == "0":
+                if namespace == "0":
                     rowType = "articles"
                 else:
                     rowType = "subcategories"

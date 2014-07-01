@@ -79,9 +79,6 @@ class App:
         parser.add_argument("-n", "--infer_coordinates_from_wikipedia",
                             help="Usa Nuts4Nuts per cercare le coordinate di un articolo non taggato e senza coordinate su Wikipedia",
                             action="store_true")
-        parser.add_argument("-r", "--update_redirects",
-                            help="Controlla gli articoli delle liste che sono redirects e crea un file con la loro lista per poterli aggiungere manualmente tra i non mappabili, perché non supportati da WIWOSM",
-                            action="store_true")
         group.add_argument("-p", "--print_categories_list",
                            help="Analizza i dati e stampa la lista delle categorie nel progetto.",
                            action="store_true")
@@ -104,7 +101,6 @@ class App:
         self.args = parser.parse_args()
         if self.args.category_info or self.args.category_info\
            or self.args.create_webpages or self.args.print_categories_list\
-           or self.args.update_redirects\
            or self.args.show_missing_templates\
            or self.args.show_coordinates_from_osm:
             self.args.analyze = True
@@ -226,11 +222,6 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         if self.args.infer_coordinates_from_wikipedia:
             print "\n- Usa Nuts4Nuts per inferire la posizione di alcuni articoli"
             nuts4nuts_infer.infer_coordinates_with_nuts4nuts(self)
-
-        #Download from Wikipedia the lists of redirects and create a file
-        #so that they can then be manually copied to non_mappable file
-        if self.args.update_redirects:
-            wikipedia_downloader.find_redirects(self)
 
         #For debugging
         # print info about a specific category
