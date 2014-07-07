@@ -93,12 +93,14 @@ def download_a_new_category(app, themeName, categoryName):
     print "  file:\n%s" % filename
 
     #Remember category date
+    categoryDate = time.strftime("%b %d, ore %H", time.localtime())
+    catsDatesFile = os.path.join("data", "wikipedia", "catscan", "update_dates.cfg")
     configparser = ConfigParser.RawConfigParser()
     configparser.optionxform = str
-    configparser.read("config")
-    categoryDate = time.strftime("%b %d, ore %H", time.localtime())
+    configparser.read(catsDatesFile)
     configparser.set("catscan dates", categoryName.encode("utf-8"), categoryDate)
-    configparser.write(open("config", "w"))
+    with open(catsDatesFile, 'wb') as configfile:
+        configparser.write(configfile)
     #update category date
     app.categoriesDates[categoryName] = categoryDate
     return True

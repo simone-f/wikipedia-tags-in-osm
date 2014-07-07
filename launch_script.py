@@ -319,12 +319,17 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         # Program version
         self.version = "v0.3.1.1"
 
-        #Read configuration from file
+        #Read configuration from config files
+        configFile = "config.cfg"
+        if not os.path.isfile(configFile):
+            call("cp %s %s" % ("config.template", configFile), shell=True)
+            print "* A new config file has been created:\n  %s\n\n  Fill it with the necessary information (see README.md and config.template)." % configFile
+            answer = raw_input("\n  Continue? [Y/n]\n")
+            if answer not in ("", "Y", "y"):
+                sys.exit()
         configparser = ConfigParser.RawConfigParser()
         configparser.optionxform = str
-        fp = open("config")
-        configparser.readfp(fp)
-        fp.close()
+        configparser.read(configFile)
         #country
         self.WIKIPEDIALANG = configparser.get("general", "preferred language")
         self.country = configparser.get("general", "country")
@@ -337,18 +342,30 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         # directory where html files must be copied after creation
         #(for example, Dropbox dir)
         self.OUTDIR = configparser.get("general", "outdir")
+        #debugging
+        self.print_categories_to_text_files = configparser.get("debug", "print categories to text files")
+        self.clickable_cells = configparser.get("debug", "clickable cells")
         #themes and categories
         themesAndCatsNames = {}
         for themeName in configparser.options("themes"):
             categoriesNames = [c.strip().replace(" ", "_").decode("utf-8") for c in configparser.get("themes", themeName).split("|")]
             themesAndCatsNames[themeName.replace(" ", "_").decode("utf-8")] = categoriesNames
+        # Wikipedia categories data, downloaded from quick_intersection
+        self.CATSCANDIR = os.path.join("data", "wikipedia", "catscan")
+        self.make_dir(self.CATSCANDIR)
         #categories dates
         self.categoriesDates = {}
-        for categoryName, date in configparser.items("catscan dates"):
-            self.categoriesDates[categoryName] = date
-        #debugging
-        self.print_categories_to_text_files = configparser.get("debug", "print categories to text files")
-        self.clickable_cells = configparser.get("debug", "clickable cells")
+        catsDatesFile = os.path.join(self.CATSCANDIR, "update_dates.cfg")
+        catsDatesConfigparser = ConfigParser.RawConfigParser()
+        catsDatesConfigparser.optionxform = str
+        if not os.path.isfile(catsDatesFile):
+            catsDatesConfigparser.add_section('catscan dates')
+            with open(catsDatesFile, 'wb') as configfile:
+                catsDatesConfigparser.write(configfile)
+        else:
+            catsDatesConfigparser.read(catsDatesFile)
+            for categoryName, date in catsDatesConfigparser.items("catscan dates"):
+                self.categoriesDates[categoryName] = date
 
         # OSM data
         self.countryPBF = os.path.join(self.OSMDIR, "%s-latest.osm.pbf" % self.country)
@@ -364,24 +381,24 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         self.libspatialitePath = configparser.get("general", "libspatialite-path")
         # OSM data of foreign coountries
         self.FOREIGNOSMDIR = "/tmp/"
-        # Wikipedia categories data, downloaded from catscan
-        self.CATSCANDIR = os.path.join("data", "wikipedia", "catscan")
         # lists of categories and articles that should be ignored
         # (not geographic content)
         self.NONMAPPABLE = os.path.join("data", "wikipedia", "non_mappable")
         # conversions foreign articles titles - preferred language articles
         self.WIKIPEDIAANSWERS = os.path.join("data", "wikipedia", "answers")
         self.WIKIPEDIAANSWER = os.path.join(self.WIKIPEDIAANSWERS, "answer")
-        # directory with webpages
+        # web pages dir
         self.HTMLDIR = 'html'
         self.make_dir(os.path.join(self.HTMLDIR, "subpages"))
         self.make_dir(os.path.join(self.HTMLDIR, "GeoJSON"))
         self.make_dir(os.path.join(self.HTMLDIR, "json"))
         self.homePageTitle = "Articoli Wikipedia etichettabili in OSM"
         self.UPDATETIME = time.strftime("%b %d, ore %H", time.localtime())
+        # stats and logs dir
         statsDir = os.path.join("data", "stats")
         self.make_dir(statsDir)
         self.make_dir(os.path.join("data", "logs"))
+        # templates dir
         self.MISSINGTEMPLATESDIR = os.path.join("data", "wikipedia", "missing_templates")
         self.make_dir(self.MISSINGTEMPLATESDIR)
         self.TEMPLATESSTATUSFILE = os.path.join(self.MISSINGTEMPLATESDIR, "missing_templates.csv")

@@ -1,12 +1,20 @@
 [general]
-osmdir = 
+#directory where OSM data will be downloaded
+osmdir = /data/osm
+#country bbox
 osmbbox = 6.627730,35.493500,18.521200,47.092600
+#country language
 preferred language = it
+#country name
 country = italy
-outdir = 
+#path to libspatialite
 libspatialite-path = /usr/lib/x86_64-linux-gnu/libspatialite.so.5.1.0
+#directory where html files must be copied after creation (optional, mandatory if --copy)
+outdir =
 
 [themes]
+#add an option (line) for each theme and its categories
+#theme name = category A name|category B name|category C name...
 cultura = Biblioteche d'Italia per regione | Osservatori astronomici d'Italia | Siti archeologici d'Italia | Università in Italia | Orti botanici d'Italia | Scuole in Italia | Teatri d'Italia
 escursionismo = Bivacchi d'Italia | Rifugi d'Italia | Sentieri delle Alpi | Sentieri dell'Italia | Malghe
 infrastrutture = Aeroporti d'Italia per regione | Fari d'Italia | Metropolitane in Italia | Porti d'Italia | Canali artificiali d'Italia | Funicolari in Italia |Parchi eolici in Italia | Stazioni ferroviarie d'Italia | Centrali idroelettriche in Italia| Idroscali d'Italia |Piste ciclabili d'Italia |Trafori ferroviari in Italia | Depositi locomotive d'Italia | Linee ferroviarie in Italia |Ponti d'Italia | Dighe d'Italia | Centrali termoelettriche in Italia | Trafori ferroviari in Italia | Trafori stradali in Italia | Autostrade in Italia
@@ -17,8 +25,7 @@ strutture architettoniche = Architetture militari d'Italia per regione | Fontane
 svago = Parchi di divertimento in Italia
 
 [debug]
+#save cateogories data as a text files in "data/logs/"
 print categories to text files = false
+#make cells of tables in web pages clickable. The names of the articles whose cells are clicked are collected in a strig to easily copy them to "data/wikipedia/non_mappable/articles"
 clickable cells = false
-
-[catscan dates]
-
