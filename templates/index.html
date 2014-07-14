@@ -1,0 +1,34 @@
+{% extends "index_base.html" %}
+
+{% import "macros.html" as macro %}
+
+{% block indexSelected %}
+ id="selected"
+{% endblock %}
+
+{% block content %}
+  <div id="content">
+
+    <!-- Index of themes with icons -->
+    <table id="home_index">
+      <tr>
+      {% for item in app.themes %}
+          {% if loop.index0 is divisibleby 4 %}
+      </tr>
+      <tr>
+          {% endif %}
+        <td><a href="#{{ item.name }}"><img src="img/themes/{{ item.name.lower() }}.png">{{ item.name.replace("_", " ") }}</a></td>
+      {% endfor %}
+      </tr>
+    </table>
+
+    <!-- List of themes -->
+    {% for item in app.themes %}
+
+    <!-- theme -->
+    <h3><a href="#top">&#8593;</a><a id="{{ item.name }}"></a><img src="{{ "img/themes/" ~ item.name.lower() ~ ".png" }}" class="item_img">{{ item.name.replace("_", " ") }}</h3>
+    <!-- list of categories -->
+    {{ macro.categoriesIndex(app, item, "themes", "home page", loop.index0) }}
+    {% endfor %}
+  </div>
+{% endblock %}

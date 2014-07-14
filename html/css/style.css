@@ -1,8 +1,8 @@
 body {
     font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
-    margin-left : 1.5em;
-    margin-right : 1.5em;
-    margin-bottom : 1.5em;
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+    margin-bottom: 1.5em;
 }
 
 /*Fix for IE*/
@@ -21,38 +21,38 @@ hr {
     color: #aaaaaa;
     background-color: #aaaaaa;
     height: 1px;
-    clear : both;
+    clear: both;
 }
 
 h1 {
-    margin-top : 1em;
-    margin-bottom : 0.5em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
     font-size: 150%;
 }
 
 h2 {
-    margin-top : 0;
+    margin-top: 0;
 }
 
 div#header p {
-    margin-top : 0.5em;
-    margin-bottom : 0.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 h2,
 div#tabs li {
-    font-size : 130%;
+    font-size: 130%;
 }
 
 h3 {
-    margin-top : 1.5em;
-    margin-bottom : 0.5em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
 }
 h3,
 table#home_index{
-    font-size : 120%;
-    margin-top : 1em;
-    margin-left : auto;
-    margin-right : auto;
+    font-size: 120%;
+    margin-top: 1em;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div#go_to_home {
@@ -63,20 +63,21 @@ div#update_time {
 }
 div#go_to_home,
 div#update_time {
-    margin-bottom : 1em;
+    margin-bottom: 1em;
 }
 
 div#update_time,
 div#go_to_home {
-    font-size : 80%;
+    font-size: 80%;
 }
 
-p {
-    font-size : 90%;
+p,
+div#content li {
+    font-size: 95%;
 }
 
 div#info {
-    margin-top : 1em;
+    margin-top: 1em;
     padding: 1em 1em 1em 1em;
     border: 1px #bbbbbb solid;
     overflow: hidden;
@@ -84,15 +85,15 @@ div#info {
 div#info h2,
 div#info ul,
 div#info p {
-    font-size : 80%;
+    font-size: 80%;
 }
 
 div#info h2 {
-    margin : 1em 0 0.5em 0;
+    margin: 1em 0 0.5em 0;
 }
 div#info ul,
 div#info p {
-    margin : 0em;
+    margin: 0em;
 }
 div#usersdiv {
     float:right;
@@ -109,17 +110,26 @@ table td {
     padding: 0.2em 0.4em;
 }
 
+table.noborder th,
+table.noborder td {
+    border: none;
+}
+table.noborder th {
+    font-weight: normal;
+    text-align: left;
+}
+
 table#stats td,
 table#users td {
-    text-align : right;
+    text-align: right;
     font-size: 80%;
 }
 table#users td:first-child {
-    text-align : left;
+    text-align: left;
 }
 table#stats td:nth-child(1),
 table#stats th:nth-child(1) {
-    text-align : left;
+    text-align: left;
     vertical-align: middle;
 }
 
@@ -129,7 +139,7 @@ table.categoriesIndex {
 }
 
 table.categoriesIndex {
-    margin-top : 0em;
+    margin-top: 0em;
 }
 
 table.categoriesIndex tr,
@@ -142,7 +152,7 @@ table.categoriesIndex td:nth-child(3),
 table.categoriesIndex td:nth-child(4),
 table.categoriesIndex th:nth-child(3),
 table.categoriesIndex th:nth-child(4) {
-    text-align : right;
+    text-align: right;
 }
 
 /*Progress bars*/
@@ -163,17 +173,17 @@ table.data,
 table#legend {
     font-size: 80%;
 }
-table#legend td:nth-child(1) {
-    text-align : center;
+td.legendIcon {
+    text-align: center;
 }
 
 div#tabs {
-    margin-top : 1em;
+    margin-top: 1em;
     }
 div#tabs ul {
-    list-style : none;
-    padding : 0;
-    margin : 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 div#tabs li {
     float: left;
@@ -218,15 +228,15 @@ div#tabs #selected a {
 }
 
 div#content, div#subpage_content {
-    clear : both;
-    padding : 1em 1em 1em 1em;
+    clear: both;
+    padding: 1em 1em 1em 1em;
 }
 div#content {
-    border : 1px solid black;
+    border: 1px solid black;
 }
 
 table#home_index{
-    margin-bottom : 2em;
+    margin-bottom: 2em;
 }
 table#home_index a {
     display: block;
@@ -238,36 +248,36 @@ table#home_index img {
 
 div#nonMappableCategories,
 div#nonMappableArticles {
-    font-size : 90%;
+    font-size: 90%;
 }
 
 .item_img {
     vertical-align: middle;
-    margin-left : 0.5em;
-    margin-right : 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 
 div#selectNonMappable {
     border: 2px #ffb2b2 solid;
-    margin-bottom : 1em;
+    margin-bottom: 1em;
 }
 
 div.showHideNonMappable {
-    margin-bottom : 0.3em;
+    margin-bottom: 0.3em;
 }
 div.showHideNonMappable a {
     font-size: 70%;
     color: #e5e4e3;
-    margin-bottom : 1em;
+    margin-bottom: 1em;
 }
 div.showHideNonMappable a:hover {
-    color : black;
+    color: black;
 }
 
 .non_mappable {
     background-color: #f2f1f0;
-    /*set display : "" for showing non_mappable articles and categories by default*/
-    display : none;
+    /*set display: "" for showing non_mappable articles and categories by default*/
+    display: none;
 }
 
 .articleLinkImg, .infoImg {
@@ -353,7 +363,7 @@ table.popup td {
 }
 table.popup tr:nth-child(1),
 table.popup tr:nth-child(2) {
-    text-align : center;
+    text-align: center;
     font-size: 90%;
 }
 table.popup tr:nth-child(3) {

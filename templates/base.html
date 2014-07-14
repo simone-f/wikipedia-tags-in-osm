@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" http://www.w3.org/TR/html4/loose.dtd>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <title>Articoli di Wikipedia mappabili in OSM</title>
+    {% if pageType == "home page" %}
+      {% set root = "./" %}
+    {% else %}
+      {% set root = "../" %}
+    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{{ root }}css/style.css">
+    <script type="text/javascript" src="{{ root }}js/jquery-1.10.2.min.js"></script>
+    {% block scripts %}
+    {% endblock %}
+  </head>
+<body>
+
+  <div id="update_time">
+    Aggiornamento: {{ app.UPDATETIME }}
+  {% if pageType == "sub page" and mode == "themes" %}
+<br>Aggiornamento articoli in categoria: {{ item.updateTime }}
+  {% endif %}
+  </div>
+  {% block header %}
+  {% endblock %}
+  {% block content %}
+  {% endblock %}
+</body>
+</html>

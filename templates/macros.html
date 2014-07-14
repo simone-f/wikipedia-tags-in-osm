@@ -1,0 +1,189 @@
+{% macro legenda(pageType, display="none") %}
+{% if pageType == "home page" %}
+{% set imgPath = "./img" %}
+{% else %}
+{% set imgPath = "../img" %}
+{% endif %}
+<div id="legenda" style="display:{{ display }}">
+  <table id="legend">
+    <tr><td class="index_done100"></td><td colspan="2">100% articoli taggati</td></tr>
+    <tr><td class="index_done099"></td><td colspan="2">99% articoli taggati</td></tr>
+    <tr><td class="index_done075"></td><td colspan="2">75% articoli taggati</td></tr>
+    <tr><td class="index_done050"></td><td colspan="2">50% articoli taggati</td></tr>
+    <tr><td class="index_done025"></td><td colspan="2">25% articoli taggati</td></tr>
+    <tr><td class="index_done0"></td><td colspan="2">0% articoli taggati</td></tr>
+    <tr>
+        <td rowspan="4" class="legendIcon">Oggetto taggato,<br>niente da fare<br>:-)</td>
+        <td class="legendIcon"><img src="{{ imgPath }}/wiwosm.png"></td><td>Vedi l'oggetto sulla mappa Wikipedia</td>
+    <tr>
+        <td class="legendIcon"><img src="{{ imgPath }}/josm.png"></td><td>Scarica l'oggetto in JOSM</td>
+    </tr>
+    <tr>
+        <td class="legendIcon"><img src="{{ imgPath }}/osm.png"></td><td>Vedi la pagina OSM dell'oggetto</td>
+    </tr>
+    <tr>
+        <td class="legendIcon"><img src="{{ imgPath }}/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td>
+    </tr>
+    <tr>
+        <td rowspan="4" class="legendIcon">Qualcosa da fare<br>:-(</td>
+        <td class="legendIcon"><img src="{{ imgPath }}/add-tags.png"></td><td>Cerca in OSM possibili oggetti corrispondenti agli articoli e taggali facilmente tramite lo strumento <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a></td>
+    </tr>
+    <tr>
+        <td class="legendIcon"><img src="{{ imgPath }}/no_template.png"></td><td>All'articolo su Wikipedia manca il <a href="https://it.wikipedia.org/wiki/Template%3ACoord" target="_blank">template Coord</a>. Clicca su un'icona per ulteriori informazioni</td>
+    </tr>
+    <tr>
+        <td class="legendIcon" nowrap><img src="{{ imgPath }}/josm_load_and_zoom.png"><img src="{{ imgPath }}/id.png"></td>
+        <td>L'articolo non è taggato ma Wikipedia ne conosce la posizione. Clicca sull'icona per zoomare con l'editor JOSM / iD sulla posizione conosciuta e trovare più facilmente l'oggetto da taggare</td>
+    </tr>
+    <tr>
+        <td class="legendIcon" nowrap><img src="{{ imgPath }}/josm_load_and_zoom_blue.png"><img src="{{ imgPath }}/id_blue.png"></td>
+        <td>L'articolo non è taggato ma ne è stata calcolata la posizione approssimata tramite i contenuti dell'articolo e <a href="https://github.com/SpazioDati/Nuts4Nuts" target="_blank">Nuts4Nuts</a>. Clicca sull'icona per aprire JOSM alla posizione conosciuta e trovare più facilmente l'oggetto da taggare</td>
+    </tr>
+  </table>
+</div>
+{% endmacro %}
+
+{% macro showHideDiv() %}
+    <script type="text/javascript" charset="utf-8">
+      function showHideDiv(elementid){
+        if (document.getElementById(elementid).style.display == "none"){
+            document.getElementById(elementid).style.display = "";
+            }
+        else {
+            document.getElementById(elementid).style.display = "none";
+            }
+        }
+    </script>
+{% endmacro %}
+
+{% macro progressClass(item, mode) -%}
+done{% if item.progress[mode]["num"] == 0.0 %}
+0
+    {% elif item.progress[mode]["num"] == 1.0 %}
+100
+    {% elif item.progress[mode]["num"] <= 0.25 %}
+025
+    {% elif item.progress[mode]["num"] <= 0.50 %}
+050
+    {% elif item.progress[mode]["num"] <= 0.75 %}
+075
+    {% else %}
+099
+    {% endif %}
+{%- endmacro %}
+
+{% macro categoriesIndex(app, item, mode, pageType, tableIndex) %}
+  {% if mode == "themes" and pageType == "home page" %}
+    {% set subcategories = item.categories %}
+  {% else %}
+    {% set subcategories = item.subcategories %}
+  {% endif %}
+
+  {% if mode == "themes" and pageType == "sub page" and not item.articlesAreAllMappable %}
+    {% set tableId = ' id="' ~ item.ident ~ '_index"' %}
+  {% endif %}
+  <table class="categoriesIndex"{{ tableId }}>
+    <thead>
+      <tr>
+        <th></th>
+        {% if tableIndex == 0 %}
+        <th>Numero di articoli<br>taggati / totale</th>
+        {% else %}
+        <th></th>
+        {% endif %}
+        {% if pageType == "home page" %}
+          {% set root = "./" %}
+        {% else %}
+          {% set root = "../" %}
+        {% endif %}
+        {% if app.args.show_link_to_wikipedia_coordinates %}
+        <th><img src="{{ root }}img/josm_load_and_zoom.png" title="Articoli non taggati ma di cui si conosce la posizione"></th>
+        {% endif %}
+        {% if app.args.show_missing_templates %}
+        <th><img src="{{ root }}img/no_template.png" title="Articoli taggati ma senza template Coord in Wikipedia"></th>
+        {% endif %}
+      </tr>
+    </thead>
+
+    <tbody>
+      {# Articles #}
+      {% if pageType == "sub page" and item.articles|length != 0 %}
+      <tr>
+        {% if item.titles|length == 0 %}
+          {% set colspan = 2 %}
+          {% if app.args.show_link_to_wikipedia_coordinates %}
+            {% set colspan = colspan + 1 %}
+          {% endif %}
+          {% if app.args.show_missing_templates %}
+            {% set colspan = colspan + 1 %}
+          {% endif %}
+        <td class="non_mappable" colspan="{{ colspan }}">- <a href="#Articles">Articoli</a></td>
+        {% else %}
+        <td>- <a href="#Articles">Articoli</a></td>
+        {% endif %}
+        {# progress #}
+        {% if item.titles|length != 0 %}
+        <td>
+          <div class="progress">
+            <span class="percent">{{ item.titlesInOSM|length }} / {{ item.titles|length }}</span>
+            <div class="bar index_{{ progressClass(item, 'articles') }}" style="width:{{ item.progress.articles.num * 100 }}"></div>
+          </div>
+        </td>
+        {% endif %}
+      </tr>
+      {% endif %}
+      {# Subcategories #}
+      {% for subcategory in subcategories %}
+      <tr>
+        {# Name #}
+        {% if pageType == "home page" %}
+          {% if mode == "themes" %}
+            {% set link = "subpages/" ~ subcategory.name ~ ".html" %}
+          {% elif mode == "regions" %}
+            {% set link = "subpages/" ~ item.name ~ ".html#" ~ subcategory.name %}
+          {% endif %}
+        {% else %}
+          {% set link = "#" ~ subcategory.name %}
+        {% endif %}
+        {% if subcategory.isMappable %}
+        <td>- <a href="{{ link }}" title="Vedi pagina">{{ subcategory.name.replace("_", " ") }}</a></td>
+        {% else %}
+          {% set colspan = 2 %}
+          {% if app.args.show_link_to_wikipedia_coordinates %}
+            {% set colspan = colspan + 1 %}
+          {% endif %}
+          {% if app.args.show_missing_templates %}
+            {% set colspan = colspan + 1 %}
+          {% endif %}
+        <td class="non_mappable" colspan="{{ colspan }}">- <a href="{{ link }}" title="Vedi pagina">{{ subcategory.name.replace("_", " ") }}</a></td>
+        {% endif %}
+        {# Progress #}
+        {% if subcategory.isMappable %}
+        <td>
+          <div class="progress">
+            <span class="percent">{{ subcategory.allTitlesInOSM|length }} / {{ subcategory.allTitles|length }}</span>
+            <div class="bar index_{{ progressClass(subcategory, 'allMArticles') }}" style="width:{{ subcategory.progress.allMArticles.num * 100 }}"></div>
+          </div>
+        </td>
+        {# Number of non tagged articles with Wikipedia coordinates #}
+          {% if app.args.show_link_to_wikipedia_coordinates %}
+            {% if subcategory.wikipediaCoordsNum == 0 %}
+        <td></td>
+            {% else %}
+        <td>{{ subcategory.wikipediaCoordsNum }}</td>
+            {% endif %}
+          {% endif %}
+        {# Number of articles without Coord template #}
+          {% if app.args.show_missing_templates %}
+            {% if subcategory.missingTemplatesNum == 0 %}
+        <td></td>
+            {% else %}
+        <td>{{ subcategory.missingTemplatesNum }}</td>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endmacro %}

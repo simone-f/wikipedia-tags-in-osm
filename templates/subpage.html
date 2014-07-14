@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% import "macros.html" as macro %}
+
+{% block scripts %}
+    <script>
+     $(document).ready(function(){});
+        function showHideNonMappable (elementid){
+            var cssclass = "table#" + elementid + " td.non_mappable";
+            if ($(cssclass).css("display") != "table-cell"){
+              $(cssclass).css("display", "table-cell");}
+            else {
+               $(cssclass).css("display", "none");}};
+    </script>
+    {% if selectNonMappable %}
+    <script type="text/javascript">
+        var nonMappableCategories = "";
+        var nonMappableArticles = "";
+        function getName(cellThatWasClicked){
+          name = decodeURIComponent(cellThatWasClicked.firstChild)
+          name = name.replace("http://it.wikipedia.org/wiki/","");
+          name = name.replace("_"," ");'
+          if (name.substring(0,10) == "Categoria:"){'
+              nonMappableCategories += "|" + name.replace("Categoria:","");
+             }
+          else {
+             nonMappableArticles += "|" + name;
+          }
+        document.getElementById("nonMappableCategories").innerHTML = nonMappableCategories;
+        document.getElementById("nonMappableArticles").innerHTML = nonMappableArticles;
+        cellThatWasClicked.style.backgroundColor = "#ffb2b2";
+        }
+      </script>
+      {% endif%}
+    {{ macro.showHideDiv() }}
+    {% if app.args.show_missing_templates %}
+      <script src="../js/wtosm.js" type="text/javascript"></script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if mode == "themes" %}
+      {% set suffix = ""%}
+    {% else %}
+      {% set suffix = "_1"%}
+    {% endif %}
+    <div id="go_to_home"><a href="../index{{ suffix }}.html">&#8592; Tutte le categorie</a></div>
+<!-- Content -->
+<div id="content">
+{% if mode == "themes" %}
+<h2><a id="index"></a>{{ helpers.wikipedia_link(item) }} ({{ item.progress["allMArticles"]["string"] }})</h2>
+{% else %}
+<h2><img src="../img/regions/{{ item.name.lower() }}.png" class="item_img"><a id="index"></a>{{ item.name.replace("_", " ") }}</h2>
+{% endif %}
+
+{%if selectNonMappable %}
+<div id="selectNonMappable">
+  Per contrassegnare alcune categorie ed articoli come "non mappabili": clicca sulle loro celle, copia le stringhe qui sotto ed incollale nel file "./data/wikipedia/non_mappable".<br><br>
+  Categorie:
+  <div id="nonMappableCategories">&nbsp;</div><br>
+  Articoli:'
+  <div id="nonMappableArticles">&nbsp;</div>
+</div>
+{% endif %}
+<!-- Legenda -->
+<p><a href="javascript:showHideDiv('legenda');"><img src="../img/info.png" class="infoImg"> Legenda</a></p>
+{{ macro.legenda(pageType="sub page") }}
+
+<!-- Index -->
+{% if mode == "themes" and item.articles != [] and item.titles == [] %}
+  <div class="showHideNonMappable"><a href='javascript:showHideNonMappable("{{ item.ident }}_index");' title="Visualizza sottocategorie non mappabili">Mostra non mappabili</a></div>
+{% endif %}
+{{ macro.categoriesIndex(app, item, mode, "sub page", 0) }}
+
+<!-- Articles -->
+{# h3 #}
+{% if item.articles|length != 0 %}
+  {% if item.titles|length != 0 %}
+<h3><a href="#index">&#8593;</a> <a id="Articles"></a>Articoli {{ item.progress["articles"]["string"] }}</h3>
+  {% else %}
+<h3><a href="#index">&#8593;</a> <a id="Articles"></a>Articoli</h3>
+  {% endif %}
+  {% if not item.articlesAreAllMappable: %}
+<div class="showHideNonMappable"><a href='javascript:showHideNonMappable("{{ item.ident }}_articles");' title="Visualizza articoli non mappabili">Mostra non mappabili</a></div>
+  {% endif %}
+{# table #}
+<table{{ item.articlesTable.attr }}>
+  {% for row in item.articlesTable.content %}
+  <tr>
+    {% for cell in row %}
+    <td{{ cell["attr"] }}>{{ cell["content"] }}</td>
+    {%endfor%}
+  </tr>
+  {%endfor%}
+</table>
+{% endif %}
+
+<!-- Subcategories -->
+{% for subcategory in item.subcategories %}
+{# h3 #}
+  {% if subcategory.isMappable %}
+<h3><a href="#index">&#8593;</a> <a id="{{ subcategory.name }}"></a>{{ helpers.wikipedia_link(subcategory) }} <span class="{{ macro.progressClass(subcategory, 'allMArticles') }}">{{ subcategory.progress["allMArticles"]["string"] }}</span> {% if not subcategory.allTitles|length == subcategory.allTitlesInOSM|length %}{{ helpers.add_tags_link(subcategory) }}{% endif %} {% if subcategory.allTitlesInOSM|length != 0 %}{{ helpers.overpass_turbo_link(helpers.overpass_query(subcategory)) }}{% endif %}</h3>
+  {% else %}
+<h3><a href="#index">&#8593;</a> <a id="{{ subcategory.name }}"></a>{{ helpers.wikipedia_link(subcategory) }}</h3>
+  {% endif %}
+  {% if not subcategory.isAllMappable %}
+  <div class="showHideNonMappable"><a href="javascript:showHideNonMappable('{{ subcategory.ident }}');" title="Mostra anche categorie ed articoli non mappabili">Mostra non mappabili</a></div>
+  {% endif %}
+{# table #}
+<table{{ subcategory.categoryTable.attr }}>
+  {% for row in subcategory.categoryTable.content %}
+  <tr>
+    {% for cell in row %}
+    <td{{ cell["attr"] }}>{{ cell["content"] }}</td>
+    {%endfor%}
+  </tr>
+  {%endfor%}
+</table>
+{% endfor %}
+{% endblock %}
