@@ -277,7 +277,7 @@ class Creator():
         self.homepages = []
 
         #themes (index)
-        print " - render index.html (themes)"
+        print "  render index.html (themes)"
         indexTemplate = env.get_template('index.html')
         code = indexTemplate.render(app=self.app,
                                     pageType="home page",
@@ -285,7 +285,7 @@ class Creator():
         self.homepages.append(code)
 
         #regions (index_1)
-        print " - render index_1.html (regions)"
+        print "  render index_1.html (regions)"
         indexTemplate = env.get_template('index_1.html')
         code = indexTemplate.render(app=self.app,
                                     pageType="home page",
@@ -293,16 +293,24 @@ class Creator():
         self.homepages.append(code)
 
         #map (index_2)
-        print " - render index_2.html (map)"
+        print "  render index_2.html (map)"
         indexTemplate = env.get_template('index_2.html')
         code = indexTemplate.render(app=self.app,
                                     pageType="home page",
                                     statsRows=self.stats_table())
         self.homepages.append(code)
 
+        #help (index_3)
+        print "  render index_3.html (help)"
+        helpTemplate = env.get_template('index_3.html')
+        code = helpTemplate.render(app=self.app,
+                                   pageType="home page",
+                                   statsRows=self.stats_table())
+        self.homepages.append(code)
+
         #categories (subpages)
         helpers = Helpers(app)
-        print " - render categories subpages"
+        print "  render categories subpages"
         for theme in app.themes:
             for category in theme.categories:
                 #articles
