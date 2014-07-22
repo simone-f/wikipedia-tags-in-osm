@@ -18,9 +18,9 @@
 #  along with wikipedia-tags-in-osm.  If not, see <http://www.gnu.org/licenses/>.
 
 """Starting from a list of Wikipedia categories written by the user in
-   'config' file, the script:
+   'config.cfg' file, the script:
    - downloads/updates a national OSM data file
-   - downloads from (from catscan) Wikipedia data regarding the selected
+   - downloads from (from Quick Intersection) Wikipedia data regarding the selected
      categories (subcategories names and articles titles)
    - creates webpages for showing which articles are already tagged and
      which ones are not.
@@ -48,7 +48,7 @@ import nuts4nuts_infer
 class App:
     def __init__(self):
         #Options
-        text = "A partire da una lista di categorie inserite dall'utente nel file 'config', lo script:\
+        text = "A partire da una lista di categorie inserite dall'utente nel file 'config.cfg', lo script:\
  scarica/aggiorna i dati OSM nazionali, scarica da Wikipedia i dati sulle categorie (gli articoli che le compongono)\
  e crea delle pagine HTML indicando gli articoli già taggati e da taggare in OSM."
         parser = argparse.ArgumentParser(description=text)
@@ -93,10 +93,7 @@ class App:
                             help="Non aprire le pagine web in Firefox dopo averle aggiornate.",
                             action="store_true")
         parser.add_argument("--copy",
-                            help="Copia la cartella html nella directory descritta nel file config (es. dir dropbox).",
-                            action="store_true")
-        parser.add_argument("--bitly",
-                            help="Use bitly links, to count visits to homepage.",
+                            help="Copia la cartella html nella directory descritta nel file config.cfg (es. dir dropbox).",
                             action="store_true")
         self.args = parser.parse_args()
         if self.args.category_info or self.args.category_info\
@@ -164,8 +161,8 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         #self.nonMappable = {mainCategory.name : {"articles" : [], "subcategories" : []}}
         self.nonMappable = self.read_non_mappable_items()
 
-        #Check if we have Wikipedia data from CatScan of all the
-        #categories in the project (config file)
+        #Check if we have Wikipedia data from Quick Intersection of all the
+        #categories in the project (config.cfg file)
         themesAndCatsNames = wikipedia_downloader.check_catscan_data(self, themesAndCatsNames)
 
         #Organize Wikipedia data.
@@ -173,7 +170,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         #  Theme().categories = [Category(), ...]
         #    Category().subcategories = [Category(), ...]
         #    Category().articles = [Article(), ...]
-        #categories without catscan data
+        #categories without Quick Intersection data
         self.categoriesWithoutData = []
         allThemes = Themes(self, themesAndCatsNames)
         self.themes = allThemes.themesList
@@ -337,7 +334,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         self.COUNTRYBBOX = configparser.get("general", "osmbbox")
         self.countryPoly = os.path.join("data", "OSM", "%s.poly" % self.country)
         if self.WIKIPEDIALANG == "" or self.country == "" or self.OSMDIR == "":
-            print "\n* Inserisci nel file 'config' le opzioni 'osmdir', 'preferred language', 'country'"
+            print "\n* Inserisci nel file 'config.cfg' le opzioni 'osmdir', 'preferred language', 'country'"
             sys.exit(1)
         # directory where html files must be copied after creation
         #(for example, Dropbox dir)
@@ -402,7 +399,6 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         self.MISSINGTEMPLATESDIR = os.path.join("data", "wikipedia", "missing_templates")
         self.make_dir(self.MISSINGTEMPLATESDIR)
         self.TEMPLATESSTATUSFILE = os.path.join(self.MISSINGTEMPLATESDIR, "missing_templates.csv")
-        self.make_dir(os.path.join("data", "wikipedia", "redirects"))
         return themesAndCatsNames
 
     def make_dir(self, path):
@@ -583,7 +579,7 @@ Per ripetere l'aggiornamento, lanciare nuovamente lo script con l'opzione -u."
         """
         print "\n- Copia i file delle pagine web nella directory '%s'" % self.OUTDIR
         if self.OUTDIR == "":
-            print "\n  *Scrivi nel file 'config' --> 'outdir', il path della directory su cui copiare i file."
+            print "\n  *Scrivi nel file 'config.cfg' --> 'outdir', il path della directory su cui copiare i file."
         else:
             call("cp -R ./html/* %s" % self.OUTDIR, shell=True)
 

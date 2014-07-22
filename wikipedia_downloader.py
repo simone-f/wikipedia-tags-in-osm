@@ -37,9 +37,9 @@ import time
 ### Manage Quick Intersection data ################################################
 def check_catscan_data(app, themesAndCatsNames):
     """Check if we have Wikipedia data from Quick Intersection (subcategories names
-       and articles names) of all the categories written in 'config' file
+       and articles names) of all the categories written in 'config.cfg' file
     """
-    print "\n- Controlla la presenza dei dati Wikipedia (Quick Intersection) di tutte le categorie nel file 'config'"
+    print "\n- Controlla la presenza dei dati Wikipedia (Quick Intersection) di tutte le categorie nel file 'config.cfg'"
     needInfo = {}
     for themeName, categoriesNames in themesAndCatsNames.iteritems():
         for categoryName in categoriesNames:
@@ -52,7 +52,7 @@ def check_catscan_data(app, themesAndCatsNames):
                     needInfo[themeName] = []
                 needInfo[themeName].append(categoryName)
 
-    #download catscan data of missing categories
+    #download data of missing categories from Quick Intersection
     for themeName, categoriesNames in needInfo.iteritems():
         for categoryName in categoriesNames:
             result = download_a_new_category(app, themeName, categoryName)
@@ -67,7 +67,7 @@ def download_a_new_category(app, themeName, categoryName):
        and save it to: CATSCANDIR/theme name/category name.json
     """
     print "\n- Scarico la lista di sottocategorie ed articoli di una nuova categoria Wikipedia.\n  %s" % categoryName.encode("utf-8")
-    #response = raw_input("\n- Scarico dati categoria %s da catscan?\n[y/N]" % categoryName.encode("utf-8"))
+    #response = raw_input("\n- Scarico dati categoria %s da Quick Intersection?\n[y/N]" % categoryName.encode("utf-8"))
     response = "y"
     if response not in ("y", "Y"):
         return False

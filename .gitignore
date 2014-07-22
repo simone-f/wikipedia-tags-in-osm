@@ -1,5 +1,15 @@
 *.pyc
 *~
+config.cfg
+data/wikipedia/missing_templates/*
 data/wikipedia/answers/*
 data/wikipedia/catscan/*
-config.cfg
+data/nuts4nuts/nuts4nuts*
+data/nuts4nuts/articles_to_scan.txt
+data/OSM/*
+data/logs/*
+data/stats/*
+html/*.html
+html/json/*
+html/GeoJSON/*
+html/subpages/*

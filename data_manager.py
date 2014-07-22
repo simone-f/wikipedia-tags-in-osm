@@ -129,8 +129,8 @@ class Category:
             self.mainCategory = mainCategory
         self.wikipediaUrl = "http://it.wikipedia.org/wiki/Categoria:%s" % urllib.quote_plus(self.name.encode("utf-8"))
 
-        #Extract categories info from catscan data
-        #print "\n- reading catscan data"
+        #Extract categories info from Quick Intersection data
+        #print "\n- reading Quick Intersection data"
         if categoriesData is None:
             categoriesData = self.read_categories_data(catscanFile, self.name)
 
@@ -196,7 +196,7 @@ class Category:
         self.html = ""
 
     def read_categories_data(self, catscanFile, category):
-        """Extract categories data from catscan
+        """Extract categories data from Quick Intersection
         """
         #print "\n- Leggi categorie-sottocategorie-articoli"
         #categoriesData =
@@ -242,7 +242,7 @@ class Category:
                 isClean = False
             for subcatName in data["subcategories"]:
                 if subcatName not in categoriesData_foo:
-                    #there aren't data reagarding this category from catscan
+                    #there aren't data reagarding this category from Quick Intersection
                     self.app.categoriesWithoutData.append(subcatName)
                     categoriesdata[catName]["subcategories"].remove(subcatName)
                     isClean = False
