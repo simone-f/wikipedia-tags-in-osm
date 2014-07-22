@@ -61,9 +61,9 @@ class OSMcentroids(object):
            centroids
         """
 
-        print "Import dei dati dal file OSM: "
+        print "Import OSM data of file: "
         print self.wOSMFile
-        print "nel database Spatialite: "
+        print "into the Spatialite database: "
         print self.wOSMdb
         print
 
@@ -73,7 +73,7 @@ class OSMcentroids(object):
         call(command, shell=True)
 
         print
-        print "Import completato!"
+        print "Import completed!"
 
     def _query_wrapper(self, query):
         con = spatialite.connect(self.wOSMdb)
@@ -87,7 +87,7 @@ class OSMcentroids(object):
         except spatialite.OperationalError as error:
             print "Failed execution of query:\n%s" % query
             print error
-            print "Nessuna tabella creata"
+            print "None table created"
 
         return cur
 
@@ -208,11 +208,11 @@ class OSMcentroids(object):
                 cur = con.cursor()
             cur.execute(query)
             num = cur.fetchone()[0]
-            print "Creata una tabella con %d righe" % num
+            print "A table with %d rows has been created" % num
         except spatialite.OperationalError as error:
             print "Failed execution of query:\n%s" % query
             print error
-            print "Nessuna tabella creata"
+            print "None table created"
         finally:
             with con:
                 cur = con.cursor()
@@ -302,24 +302,23 @@ class OSMcentroids(object):
 
 def main():
         # Options
-        text = 'A partire dal file contenente gli elementi di OSM con il '\
-               'tag Wikipedia (creato con osmfilter) ed importa i dati in un '\
-               'database SQLite usando Spatialite '\
-               '(e in particolare spatialite_osm_raw). '\
-               'Quindi crea due tabelle: '\
+        text = 'Starting from the file containing OSM elements with '\
+               'Wikipedia tag (created with osmfilter) this script imports data into a '\
+               'Spatialite database '\
+               '(through spatialite_osm_raw). '\
+               'Then, it creates two tables: '\
                '1) osm_ways_centroids '\
                '2) osm_relations_centroids '\
-               '- contenenti i centroidi rispettivamente delle way e delle '\
-               'relations con un tag Wikipedia.'\
-               'Questi dati sono usati nello script principale nella '\
-               'creazione delle pagine e in particolare del collegamento a '\
-               "Wikipedia per l'inserimento del template {{coord}}"
+               '- which contain the centroids of ways and relations with Wikipedia tags respectevely.'\
+               'These data are used by the main program\'s script during '\
+               'web pages creation, specifically while creating the link '\
+               'to insert {{coord}} template in Wikipedia'
 
         parser = argparse.ArgumentParser(description=text)
 
         parser.add_argument("-d", "--database",
-                            help='Nome del database SQLite/Spatialite da '
-                                 'creare [default: '
+                            help='SQLite/Spatialite database name that '
+                                 'will be created [default: '
                                  './data/OSM/Wikipedia-data-in-OSM.sqlite]',
                             dest="wOSMdb",
                             default=os.path.join("data",
@@ -329,14 +328,14 @@ def main():
                             action="store"
                             )
         parser.add_argument("-p", "--libspatialite_path",
-                            help='Percorso di libspatialite [default: '
+                            help='Path to libspatialite [default: '
                                  'libspatialite]',
                             dest="libspatialitePath",
                             default="libspatialite",
                             action="store"
                             )
         parser.add_argument("-f", "--osm_file",
-                            help='Nome del file con i dati OSM (creato con '
+                            help='Name of the file with OSM data (created by '
                                  'osmfilter) [default: '
                                  './data/OSM/Wikipedia-data-in-OSM.osm]',
                             dest="wOSMFile",
@@ -359,16 +358,14 @@ def main():
                             action="store_true"
                             )
         parser.add_argument("--drop_database",
-                            help="Elimina il database",
+                            help="Drop the database",
                             action="store_true")
         parser.add_argument("--drop_ways_centroids_table",
-                            help='Elimina dal database la tabella con i '
-                                 'centroidi delle ways: '
+                            help='Drop from the database the table whith ways centroids: '
                                  'osm_ways_centroids',
                             action="store_true")
         parser.add_argument("--drop_relations_centroids_table",
-                            help='Elimina dal database la tabella con i '
-                                 'centroidi delle relations: '
+                            help='Drop from the database the table with relations centroids: '
                                  'osm_relations_centroids',
                             action="store_true")
 

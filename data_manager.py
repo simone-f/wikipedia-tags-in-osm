@@ -198,9 +198,8 @@ class Category:
     def read_categories_data(self, catscanFile, category):
         """Extract categories data from Quick Intersection
         """
-        #print "\n- Leggi categorie-sottocategorie-articoli"
-        #categoriesData =
-        # {cat1: {subcat1: None, subcat2: None, "articles": ["article1", ...]},
+        #print "\n- Read cateogries, sub-categories and articles relations"
+        #categoriesData = {cat1: {subcat1: None, subcat2: None, "articles": ["article1", ...]},
         categoriesData = {}
 
         inFile = open(catscanFile, "r")
@@ -329,7 +328,7 @@ class Category:
     def set_has_template_in_article(self, article):
         if article.isMappable and article.inOSM and not hasattr(article, "hasTemplate"):
             if article.name not in self.app.templatesStatus:
-                print "* Errore: articolo non presente nel dizionario templatesStatus:", article.name.encode("utf-8")
+                print "* Error: this article is missing from templatesStatus dictionary:", article.name.encode("utf-8")
             else:
                 if self.app.templatesStatus[article.name] == "True":
                     article.hasTemplate = True

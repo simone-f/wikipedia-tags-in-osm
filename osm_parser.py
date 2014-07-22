@@ -115,8 +115,8 @@ class ParseOSMData():
                                  self.app.libspatialitePath)
 
         if os.path.isfile(self.app.wOSMdb) and not (self.app.args.download_osm or self.app.args.update_osm):
-            print "\n* File del database  SQLite con gli oggetti OSM con tag Wikipedia già presente."
-            print "\n  Utilizzo quel database: %s" % self.app.wOSMdb
+            print "\n* The SQLite database containing OSM object with Wikipedia tag already exists."
+            print "\n  I'll use this database: %s" % self.app.wOSMdb
         else:
             try:
                 centroids.drop_database()
@@ -124,41 +124,40 @@ class ParseOSMData():
             except:
                 pass
 
-            print "\n* File del database SQLite con gli oggetti OSM con tag Wikipedia assente."
-            print "o da aggiornare (il file è da aggiornare se lo script è stato lanciato con l'opzione -d o -u)"
-            print "\n  Import dei dati"
+            print "\n* The SQLite database containing Wikipedia tagged OSM data is missing or must be updated"
+            print " (this happens when the script is launched with `-d` or `-u` options)"
+            print "\n  Importing data"
             centroids.import_data_in_sqlite_db()
-            print "\n  Import dei dati completato"
+            print "\n  Data import completed"
 
-        print "-- Provo a leggere i centroidi delle way dal database"
+        print "-- Trying to read centroids of ways from database"
         waysCentroids = centroids.get_ways_centroids()
 
         if not waysCentroids:
-            print "--- Non ho trovato i centroidi delle way nel database"
-            print "--- Li calcolo ora"
+            print "--- I didn't find ways centroids in the database"
+            print "--- I'll calculate them"
             centroids.create_ways_centroids()
-            print "-- Provo a leggere i centroidi delle way dal database"
+            print "-- Trying to read centroids of ways from database"
             waysCentroids = centroids.get_ways_centroids()
 
 
         if waysCentroids:
-            print "-- Salvo i centroidi delle way nei dati del tag"
+            print "-- Saving centroids of ways into tags data"
             self.save_centroids(waysCentroids, "w")
 
             waysDimensions = centroids.get_ways_dimensions()
             self.save_dimensions(waysDimensions, "w")
 
-        print "-- Provo a leggere i centroidi delle relations dal database"
+        print "-- Trying to read centroids of relations from database"
         relationsCentroids = centroids.get_relations_centroids()
 
         if not relationsCentroids:
-            print "--- Non ho trovato i centroidi delle relation nel database"
-            print "--- Per calcolarli lanciare lo script osm_coordinates.py"
-            print "    con l'opzione -r"
-            print "--- Il calcolo può durare molto (alcune ore)"
+            print "--- I didn't find centroids of relations in the database"
+            print "--- Launch osm_centroids.py script with `-r` option to calculate them"
+            print "--- This may take several hours."
 
         if relationsCentroids:
-            print "-- Salvo i centroidi delle relations nei dati del tag"
+            print "-- Saving centroids of relations into tags data"
             self.save_centroids(relationsCentroids, "r")
 
             relationsDimensions = centroids.get_relations_dimensions()
@@ -545,4 +544,4 @@ class ParseOSMData():
                 writer.writerow(row)
                 n += 1
         fileOut.close()
-        print "  %d titoli di articoli tradotti nella lingua preferita e salvati in '%s'" % (n, fileName)
+        print "  %d titles of articles have been translated to the preferred language and saved to '%s'" % (n, fileName)
