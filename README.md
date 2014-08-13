@@ -42,6 +42,8 @@ Starting from a list of Wikipedia categories, written by the user in the 'config
 * osmconvert
 * osmfilter
 * wget
+* python-jinja2
+* python-babel
 * zgrep, cut (if using --show_link_to_wikipedia_coordinates)
 * python-requests (if using --infer_coordinates_from_wikipedia)
 
