@@ -59,7 +59,7 @@ def update_osm_data(app):
         call('mv %s %s' % (app.countryO5M, app.oldCountryO5M), shell=True)
     else:
         print "O5M is missing, I'll try to convert the PBF file..."
-        app.convert_pbf_to_o5m(app)
+        convert_pbf_to_o5m(app)
     call('osmupdate -v -B=%s %s %s' % (app.countryPoly, app.oldCountryO5M, app.countryO5M), shell=True)
     if os.path.isfile(app.countryO5M):
         print "\n- %s has been updated, removing temporary file %s" % (app.countryO5M, app.oldCountryO5M)
@@ -77,7 +77,7 @@ def filter_wikipedia_data_in_osm_file(app):
     """
     if not os.path.isfile(app.countryO5M):
         print "O5M file is missing, I'll try to convert the PBF file..."
-        app.convert_pbf_to_o5m(app)
+        convert_pbf_to_o5m(app)
     print "\n- Extract OSM data wih Wikipedia tag"
 
     if app.args.show_coordinates_from_osm:
