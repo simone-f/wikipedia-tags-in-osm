@@ -15,17 +15,17 @@
 {% block content %}
     <div id="go_to_home"><a href="./index.html">&#8592; Tutte le categorie</a></div>
     <div id="content">
-    <h2><a id="Tag errati"></a>Errori</h2>
-    <p>Tag privi dell'indicazione della lingua, che si riferiscono ad articoli stranieri inesistenti o che non sembrano articoli Wikipedia.</p>
+    <h2><a id="Tag errati"></a>{% trans %}Errors{% endtrans %}</h2>
+    <p>{% trans %}Tags without a lang, about foreign non existing articles or that does not seem to be Wikipedia articles.{% endtrans %}</p>
     <!-- Errors -->
     {% if app.wrongTags|length == 0 %}
-    <p><i>Nessun errore rilevato.</i></p>
+    <p><i>{% trans %}No errors where found{% endtrans %}</i></p>
     {% else %}
     {{ errors_or_warnings_table(app.wrongTags) }}
     <br>
     {% endif %}
-    <h2>Avvertimenti</h2>
-    <p>Pagine di Wikipedia taggate tramite una url o con lingua in maiuscolo.<br>Non sono errori e sono usati da WIWOSM, ma sono sconsigliati dal <a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank">Wiki</a>.</p>
+    <h2>{% trans %}Warnings{% endtrans %}</h2>
+    <p>{% trans %}Wikipedia articles tagged with a url or with uppercase lang.<br>They are not errors and are used by WIWOSM, but the Wiki <a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank">the Wiki</a> suggests to do not use them{% endtrans %}.</p>
     {% if app.badTags|length != 0 %}
     {{ errors_or_warnings_table(app.badTags) }}
     {% endif %}

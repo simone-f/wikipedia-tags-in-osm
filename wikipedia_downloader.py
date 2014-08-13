@@ -39,7 +39,7 @@ def check_catscan_data(app, themesAndCatsNames):
     """Check if we have Wikipedia data from Quick Intersection (subcategories names
        and articles names) of all the categories written in 'config.cfg' file
     """
-    print "\n- Controlla la presenza dei dati Wikipedia (Quick Intersection) di tutte le categorie nel file 'config.cfg'"
+    print "\n- Check that we have Wikipedia data (from Quick Intersection) of all the categories in `config.cfg`"
     needInfo = {}
     for themeName, categoriesNames in themesAndCatsNames.iteritems():
         for categoryName in categoriesNames:
@@ -66,7 +66,7 @@ def download_a_new_category(app, themeName, categoryName):
        from quick_intersection (http://tools.wmflabs.org/catscan2/quick_intersection.php?)
        and save it to: CATSCANDIR/theme name/category name.json
     """
-    print "\n- Scarico la lista di sottocategorie ed articoli di una nuova categoria Wikipedia.\n  %s" % categoryName.encode("utf-8")
+    print "\n- Download the list of sub-cateogries and articles of a new Wikipedia category.\n  %s" % categoryName.encode("utf-8")
     #response = raw_input("\n- Scarico dati categoria %s da Quick Intersection?\n[y/N]" % categoryName.encode("utf-8"))
     response = "y"
     if response not in ("y", "Y"):
@@ -210,7 +210,7 @@ def parse_wikipedia_answer(app):
 
 
 def save_updated_templates_status(app):
-    print "\n- Salvataggio del file con lo status dei template"
+    print "\n- Save file with geo templates' statuses"
     fileName = app.TEMPLATESSTATUSFILE
     oldFileName = os.path.join(app.MISSINGTEMPLATESDIR, "old_%s" % app.TEMPLATESSTATUSFILE.split("/")[-1])
     call("cp '%s' '%s'" % (fileName, oldFileName), shell=True)
@@ -224,9 +224,9 @@ def save_updated_templates_status(app):
         writer.writerow([title.encode("utf-8"), status])
     fileOut.close()
     #Print results
-    print "  Articoli taggati: %d" % len(app.templatesStatus)
-    print "    con template  : %d" % len([i for i in app.templatesStatus.values() if i == "True"])
-    print "    senza template: %d" % len([i for i in app.templatesStatus.values() if i == "False"])
+    print "  Tagged articles   : %d" % len(app.templatesStatus)
+    print "    with template   : %d" % len([i for i in app.templatesStatus.values() if i == "True"])
+    print "    without template: %d" % len([i for i in app.templatesStatus.values() if i == "False"])
 
 
 ### Add Wikipedia coordinates to non tagged articles ###################
@@ -264,19 +264,19 @@ def download_and_filter_wikipedia_coordinates(app):
     remove_file(coordsFile)
     #download
     url = "http://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world/new_C.gz"
-    print "\n* Il file con le coordinate Wikipedia non è presente e verrà scaricato."
+    print "\n* The file with coordinates from Wikipedia is missing and will be downloaded."
     print "  File provided by user Kolossos:\n", url
     downloadCmd = 'wget "%s" -O %s' % (url, inFile)
     print downloadCmd
     call(downloadCmd, shell=True)
     check_file_exists(inFile)
     #filter coordinates of articles in WIKIPEDIALANG
-    print "\n  filtra coordinate in %s ..." % app.WIKIPEDIALANG
+    print "\n  filter coordinates in %s ..." % app.WIKIPEDIALANG
     filterCmd = 'zgrep ^%s "%s" | cut -f2,3,4 > %s' % (app.WIKIPEDIALANG, inFile, coordsFile)
     print filterCmd
     call(filterCmd, shell=True)
     check_file_exists(coordsFile)
-    print "\n  rimuovi il file non più necessario: %s" % inFile
+    print "\n  remove unnecessary file: %s" % inFile
     remove_file(inFile)
 
 
@@ -287,8 +287,8 @@ def remove_file(fileName):
 
 def check_file_exists(fileName):
     if not os.path.isfile(fileName):
-        print "\n* File non trovato:\n%s" % fileName
+        print "\n* Missing file:\n%s" % fileName
         sys.exit(1)
     elif os.stat(fileName).st_size == 0:
-        print "\n* File vuoto:\n%s" % fileName
+        print "\n* Empty file:\n%s" % fileName
         sys.exit(1)

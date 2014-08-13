@@ -41,7 +41,7 @@ def convert_pbf_to_o5m(app):
     """Convert file format PBF --> O5M, necessary for using osmfilter later
     """
     if not os.path.isfile(app.countryPBF):
-        print "\n* PBF file is missing.\nDownload the OSM data by launching the program with `-d` option."
+        print "\n* PBF is missing.\nDownload the OSM data by launching the program with `-d` option."
         sys.exit(1)
     print "\n- Convert file format: PBF --> O5M ..."
     if os.path.isfile(app.countryO5M):

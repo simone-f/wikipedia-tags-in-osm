@@ -1,0 +1,474 @@
+# Italian (Italy) translations for PROJECT.
+# Copyright (C) 2014 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# Simone F. <groppo8@gmail.com>, 2014.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2014-08-13 21:30+0200\n"
+"PO-Revision-Date: 2014-08-13 21:30+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: it_IT <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 1.3\n"
+
+#: webpages_creator.py:38
+msgid "article"
+msgstr "articolo"
+
+#: webpages_creator.py:40
+msgid "category"
+msgstr "categoria"
+
+#: webpages_creator.py:41
+msgid "See {0}: {1}"
+msgstr "Vedi vedi {0}: {1}"
+
+#: webpages_creator.py:81
+msgid "Zoom with JOSM nearby the object that must be tagged"
+msgstr "Zooma in JOSM vicino all'oggetto da taggare"
+
+#: webpages_creator.py:92
+msgid "Zoom with browser, {0} editor, nearby the object that must be tagged"
+msgstr "Zooma in JOSM vicino all'oggetto da taggare"
+
+#: webpages_creator.py:98
+msgid "View as clickable map, image... (Overpass Turbo)"
+msgstr "Visualizza come mappa cliccabile, immagine... (Overpass Turbo)"
+
+#: webpages_creator.py:136
+msgid "Wikipedia page is missing the coordinates' template"
+msgstr "Sulla pagina Wikipedia manca il template coord"
+
+#: webpages_creator.py:175
+msgid "Search objects by name and add tag them automatically (WIWOSM add-tags)"
+msgstr "Cerca oggetti per nome ed aggiungi tag automaticamente (WIWOSM add-tags"
+
+#: webpages_creator.py:200
+msgid "See Wikipedia map (WIWOSM)"
+msgstr "Vedi mappa Wikipedia (WIWOSM)"
+
+#: webpages_creator.py:209
+msgid "See OSM web page"
+msgstr "Vedi pagina OSM"
+
+#: templates/base.html:5 templates/index_base.html:11
+msgid "Wikipedia articles which can be mapped in OpenStreetMap"
+msgstr "Articoli Wikipedia che possono essere mappati in OpenStreetMap"
+
+#: templates/base.html:19
+msgid "Update time"
+msgstr "Aggiornamento"
+
+#: templates/base.html:21
+msgid "Update time of articles in category"
+msgstr "Aggiornamento degli articoli nella categoria"
+
+#: templates/errors.html:18
+msgid "Errors"
+msgstr "Errori"
+
+#: templates/errors.html:19
+msgid ""
+"Tags without a lang, about foreign non existing articles or that does not"
+" seem to be Wikipedia articles."
+msgstr ""
+"Tag privi dell'indicazione della lingua, che si riferiscono ad articoli "
+"stranieri inesistenti o che non sembrano articoli Wikipedia."
+
+#: templates/errors.html:22
+#, fuzzy
+msgid "No errors where found"
+msgstr "Nessun errore rilevato."
+
+#: templates/errors.html:27
+msgid "Warnings"
+msgstr "Avvertimenti"
+
+#: templates/errors.html:28
+#, fuzzy
+msgid ""
+"Wikipedia articles tagged with a url or with uppercase lang.<br>They are "
+"not errors and are used by WIWOSM, but the Wiki <a "
+"href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" "
+"target=\"_blank\">the Wiki</a> suggests to do not use them"
+msgstr ""
+"Pagine di Wikipedia taggate tramite una url o con lingua in "
+"maiuscolo.<br>Non sono errori e sono usati da WIWOSM, ma sono "
+"sconsigliati dal <a href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\""
+" target=\"_blank\">Wiki</a>"
+
+#: templates/index_3.html:12
+msgid "What do to"
+msgstr "Cosa fare"
+
+#: templates/index_3.html:14
+msgid ""
+"<b>Add the tag</b> to the object in OSM, leaving empty spaces between "
+"words, es.<b>\"wikipedia=en:Article's title\"</b>"
+msgstr ""
+"<b>Aggiungi il tag</b> all'oggetto in OSM, lasciando gli spazi tra le "
+"parole, es.<b>\"wikipedia=it:Titolo dell'articolo\"</b>"
+
+#: templates/index_3.html:15
+msgid ""
+"<b>Just one language</b>. If the article is already tagged in a foreign "
+"language a new tag is not needed (see <a "
+"href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" target=\"_blank\"> "
+"exceptions</a> on OSM Wiki)."
+msgstr ""
+"<b>Una sola lingua</b>. Se l'articolo è già taggato in una lingua "
+"straniera non occorre aggiungere quella italiana (vedi <a "
+"href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" target=\"_blank\"> "
+"eccezioni</a> sul Wiki di OSM)."
+
+#: templates/index_3.html:16
+#, fuzzy
+msgid ""
+"<b>Non mappable</b> articles or categories, e.g. \"Paintings in X "
+"Museum\", can be removed from these pages, when reported to "
+"maintainers.<br><a href=\"non_mappable.html\" target=\"_blank\">This "
+"page</a> can help to find them."
+msgstr ""
+"Articoli o categorie <b>non mappabili</b>, ad es. \"es. Dipinti nel Museo"
+" Tal Dei Tali\", possono essere rimossi dalla pagina, se segnalati (vedi "
+"\"Informazioni e conteggi\").<br><a href=\"non_mappable.html\" "
+"target=\"_blank\">Questa pagina</a> può aiutare a trovarli."
+
+#: templates/index_3.html:22
+#, fuzzy
+msgid ""
+"Add tags with <b><a "
+"href=\"http://ideditor.com/\"target=\"_blank\">iD</a></b> editor, like "
+"shown in these tutorials:"
+msgstr ""
+"Aggiungi i tag tramite l'editor <b><a href=\"http://ideditor.com/\" "
+"target=\"_blank\">iD</a></b> come mostrato in questi due tutorial:"
+
+#: templates/index_3.html:28
+#, fuzzy
+msgid ""
+"from <a "
+"href=\"https://www.youtube.com/watch?v=lCJOvFk8sTc&feature=youtu.be&hd=1\""
+" target=\"_blank\">tables</a>"
+msgstr ""
+"from <a "
+"href=\"https://www.youtube.com/watch?v=lCJOvFk8sTc&feature=youtu.be&hd=1\""
+" target=\"_blank\">tables</a>"
+
+#: templates/index_3.html:29
+msgid ""
+"from the <a href=\"https://www.youtube.com/watch?v=_2ouZ7jK5TE\" "
+"target=\"_blank\">map</a>"
+msgstr ""
+"dalla <a href=\"https://www.youtube.com/watch?v=_2ouZ7jK5TE\" "
+"target=\"_blank\">mappa</a>"
+
+#: templates/index_3.html:38
+msgid ""
+"It you use <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
+"target=\"_blank\">JOSM</a></b> you can procede in a similar same way, and"
+" also use these two tools:"
+msgstr ""
+"Se usi l'editor <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\""
+" target=\"_blank\">JOSM</a></b>, oltre alle procedure dei video, puoi "
+"usare questi due strumenti:"
+
+#: templates/index_3.html:44
+msgid ""
+"<a href=\"http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia\" "
+"target=\"_blank\">Plugin Wikipedia</a>. Hint: copy a category name from a"
+" table and paste it into the plugin."
+msgstr ""
+"<a href=\"http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia\" "
+"target=\"_blank\">Plugin Wikipedia</a>. Suggerimento: copia dalle tabelle"
+" il nome di una categoria ed incollalo nel plugin."
+
+#: templates/index_3.html:45
+msgid ""
+"<a href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl"
+"/Add-tags\" target=\"_blank\">add-tags</a>. Hint: you can easily use this"
+" tool by clicking on these icons <img src=\"./img/add-tags.png\"> on the "
+"pages."
+msgstr ""
+"<a href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl"
+"/Add-tags\" target=\"_blank\">add-tags</a>. Suggeriemnto: puoi usare "
+"questo servizio anche cliccando sulle icone <img src=\"./img/add-"
+"tags.png\"> presenti in queste pagine."
+
+#: templates/index_3.html:52
+msgid "Tables' legend"
+msgstr "Legenda tabelle"
+
+#: templates/index_3.html:53
+msgid "Colors and symbols in tables."
+msgstr "Colori e simboli nelle tabelle."
+
+#: templates/index_base.html:12
+msgid ""
+"Lists of Wikipedia articles which can be mapped in OpenStreetMap, through"
+" the tag <b><a href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" "
+"target=\"_blank\">wikipedia</a> = en:Article's title"
+msgstr ""
+"Liste di articoli Wikipedia che possono essere mappati in OpenStreetMap, "
+"tramite il tag <b><a "
+"href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" "
+"target=\"_blank\">wikipedia</a> = it:Titolo dell'articolo"
+
+#: templates/index_base.html:15
+msgid "Information and counters"
+msgstr "Informazioni e conteggi"
+
+#: templates/index_base.html:15
+msgid "Suspicious tags"
+msgstr "Tag sospetti"
+
+#: templates/index_base.html:21
+msgid "Mapper"
+msgstr "Mappatore"
+
+#: templates/index_base.html:21
+msgid "Tag"
+msgstr "Tag"
+
+#: templates/index_base.html:50
+msgid "Why"
+msgstr "Perché"
+
+#: templates/index_base.html:52
+#, fuzzy
+msgid ""
+"Geographic informations are added to Wikipedia and OpenStreetMap gains "
+"more informations about an object."
+msgstr ""
+"Si arricchisce Wikipedia di informazioni geografiche ed OpenStreetMap di "
+"informazioni sull'oggetto."
+
+#: templates/index_base.html:53
+#, fuzzy
+msgid ""
+"Gli oggetti di OpenStreetMap con tag Wikipedia compaiono in quest'ultima "
+"<a href=\"http://toolserver.org/~kolossos/openlayers/kml-on-"
+"ol.php?lang=it&amp;uselang=de&amp;params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&amp;title=Colosseom&amp;zoom=18&amp;lat=41.89&amp;lon=12.49284&amp;layers=B00000FTTTF\">su"
+" una mappa</a> (progetto <a "
+"href=\"http://wiki.openstreetmap.org/wiki/WIWOSM\" "
+"target=\"_blank\">WIWOSM</a>)."
+msgstr ""
+"Gli oggetti di OpenStreetMap con tag Wikipedia compaiono in quest'ultima "
+"<a href=\"http://toolserver.org/~kolossos/openlayers/kml-on-"
+"ol.php?lang=it&amp;uselang=de&amp;params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&amp;title=Colosseom&amp;zoom=18&amp;lat=41.89&amp;lon=12.49284&amp;layers=B00000FTTTF\">su"
+" una mappa</a> (progetto <a "
+"href=\"http://wiki.openstreetmap.org/wiki/WIWOSM\" "
+"target=\"_blank\">WIWOSM</a>)."
+
+#: templates/index_base.html:54
+msgid ""
+"wikipedia tags lead the queries executed on www.openstreetmap.org "
+"(Nominatim) to better results."
+msgstr ""
+"La presenza di questi tag migliora i risultati delle ricerche eseguite su"
+" www.openstreetmap.org (Nominatim)."
+
+#: templates/index_base.html:56
+msgid "Lists defects"
+msgstr "Difetti nelle liste"
+
+#: templates/index_base.html:58
+#, fuzzy
+msgid ""
+"Non mappable</b> articles or categories, e.g. \"Paintings in X Museum\", "
+"can be removed from these pages, when reported to maintainers.<br><a "
+"href=\"non_mappable.html\" target=\"_blank\">This page</a> can help to "
+"find them."
+msgstr ""
+"Articoli o categorie <b>non mappabili</b>, ad es. \"es. Dipinti nel Museo"
+" Tal Dei Tali\", possono essere rimossi dalla pagina, se segnalati (vedi "
+"\"Informazioni e conteggi\").<br><a href=\"non_mappable.html\" "
+"target=\"_blank\">Questa pagina</a> può aiutare a trovarli."
+
+#: templates/index_base.html:59
+msgid ""
+"It may happen that a sub-category contain an article not striclty related"
+" to the choosen theme. If the article is mappable it will be shown "
+"anyway."
+msgstr ""
+"Può accadere che in una sottocategoria ricadano articoli non riguardanti "
+"il tema di partenza. Se questi sono mappabili vengono comunque mostrati "
+"in tabella."
+
+#: templates/index_base.html:60
+msgid ""
+"Articles or sub-categories belonging to multiple categories may appear "
+"more than once in the same page."
+msgstr ""
+"Articoli o sottocategorie appartenenti a più categorie possono ripetersi "
+"più volte in una stessa pagina (i conteggi ne tengono conto)."
+
+#: templates/index_base.html:62
+msgid "Program for pages creation"
+msgstr "Programma per generare le pagine"
+
+#: templates/index_base.html:63
+msgid "Code"
+msgstr "Codice"
+
+#: templates/index_base.html:63
+msgid "Author"
+msgstr "Altre"
+
+#: templates/index_base.html:63
+msgid "Other authors"
+msgstr "Altri autori"
+
+#: templates/index_base.html:64
+msgid "Credits and attributions."
+msgstr "Riconoscimenti ed attribuzioni."
+
+#: templates/index_base.html:65
+#, fuzzy
+msgid ""
+"Thanks to those who reported non mappable articles (names are in commits "
+"messages) and to Andrea Borruso for iD tutorials."
+msgstr ""
+"Grazie a chi ha segnalato gli articoli non mappabili (i nomi sono nei "
+"commit) e ad Andrea Borruso per i video tutorial su iD."
+
+#: templates/index_base.html:66
+msgid "Services linked from these pages"
+msgstr "Servizi linkati da queste pagine"
+
+#: templates/index_base.html:67
+msgid "Services used for pages creation"
+msgstr "Servizi usati per creare le pagine"
+
+#: templates/index_base.html:68
+msgid "Themes' icons"
+msgstr "Icone dei temi"
+
+#: templates/index_base.html:74
+msgid "Show categories per theme"
+msgstr "Visualizza categorie per tema"
+
+#: templates/index_base.html:75
+msgid "Show categories per region"
+msgstr "Visualizza categorie per regione"
+
+#: templates/index_base.html:77
+msgid "Show map with non tagged articles"
+msgstr "Visualizza mappa con articoli da taggare"
+
+#: templates/index_base.html:79
+msgid "Show help"
+msgstr "Visualizza aiuto"
+
+#: templates/non_mappable.html:171 templates/subpage.html:47
+#, fuzzy
+msgid "All categories"
+msgstr "Tutte le categorie"
+
+#: templates/non_mappable.html:174
+#, fuzzy
+msgid "Search non mappable items"
+msgstr "Cerca non mappabili"
+
+#: templates/non_mappable.html:175
+#, fuzzy
+msgid "Search possible non mappable articles and categories with a substring."
+msgstr ""
+"Cerca tramite una sottostringa gli articoli e le categorie probabilmente "
+"non mappabili."
+
+#: templates/non_mappable.html:176
+msgid "Examples"
+msgstr "Esempi"
+
+#: templates/non_mappable.html:178
+msgid "Article \"<i>List</i> of churches in Salerno\"."
+msgstr "Articolo \"<i>Lista</i> delle chiese di Salerno\"."
+
+#: templates/non_mappable.html:179
+msgid "Category \"<i>Paintings</i> in Santa Maria Novella basilica\""
+msgstr ""
+"Categoria \"<i>Dipinti</i> nella basilica e nel convento di Santa Maria "
+"Novella\""
+
+#: templates/non_mappable.html:184
+msgid "Typology"
+msgstr "Tipologia"
+
+#: templates/non_mappable.html:185
+msgid "Status"
+msgstr "Status"
+
+#: templates/non_mappable.html:188
+msgid "categories"
+msgstr "categorie"
+
+#: templates/non_mappable.html:189
+#, fuzzy
+msgid "mappable"
+msgstr "mappabili"
+
+#: templates/non_mappable.html:192
+msgid "articles"
+msgstr "articoli"
+
+#: templates/non_mappable.html:193
+msgid "non mappable"
+msgstr "non mappabili"
+
+#: templates/non_mappable.html:196 templates/non_mappable.html:197
+msgid "all"
+msgstr "tutti"
+
+#: templates/non_mappable.html:200
+msgid "Search string"
+msgstr "Stringa di ricerca"
+
+#: templates/subpage.html:58
+msgid ""
+"To flag some categories and articles as \"non mappable\": click on their "
+"cells, copy the strings above and paste them in the files in "
+"\"./data/wikipedia/non_mappable/\"."
+msgstr ""
+"Per contrassegnare alcune categorie ed articoli come \"non mappabili\": "
+"clicca sulle loro celle, copia le stringhe qui sotto ed incollale nel "
+"file \"./data/wikipedia/non_mappable\"."
+
+#: templates/subpage.html:59
+msgid "Categories"
+msgstr "Categorie"
+
+#: templates/subpage.html:61 templates/subpage.html:79
+#: templates/subpage.html:81
+msgid "Articles"
+msgstr "Articoli"
+
+#: templates/subpage.html:66
+msgid "Legenda"
+msgstr "Legenda"
+
+#: templates/subpage.html:71
+msgid "Show non mappable categories"
+msgstr "Mostra sottocategorie non mappabili"
+
+#: templates/subpage.html:71 templates/subpage.html:84
+#: templates/subpage.html:107
+msgid "Show non mappable"
+msgstr "Mostra non mappabili"
+
+#: templates/subpage.html:84
+#, fuzzy
+msgid "View non mappable articles"
+msgstr "Visualizza articoli non mappabili"
+
+#: templates/subpage.html:107
+msgid "Show also non mappable categories and articles"
+msgstr "Mostra anche categorie ed articoli non mappabili"
+

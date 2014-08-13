@@ -33,8 +33,12 @@ class Helpers:
         self.app = app
 
     def wikipedia_link(self, item):
-        text = item.name.replace("_", " ")
-        title = "Vedi %s: %s" % (item.typ.lower(), text.replace("\"", "&quot;"))
+        text = item.name.replace("_", " ").replace("\"", "&quot;")
+        if isinstance(item, Article):
+            itemType = self.app._("article")
+        elif isinstance(item, Category):
+            itemType = self.app._("category")
+        title = self.app._("See {0}: {1}").format(itemType, text)
         cssClass = ' class="wikipedia_link"'
         link = self.url_to_link(item.wikipediaUrl, title, text, None, cssClass)
         return link
@@ -74,7 +78,7 @@ class Helpers:
             top = data[0] + 0.0005
             bottom = data[0] - 0.0005
             url += "load_and_zoom?left=%f&amp;right=%f&amp;top=%f&amp;bottom=%f" % tuple((left, right, top, bottom))
-            title = "Zooma in JOSM vicino all'oggetto da taggare"
+            title = self.app._("Zoom with JOSM nearby the object that must be tagged")
         link = self.url_to_link(url, title, None, img)
         return link
 
@@ -85,13 +89,13 @@ class Helpers:
         elif editor == 'Potlatch2':
             url += 'editor=potlatch2'
         url += '#map=%s/%s/%s' % (zoom, data[0], data[1])
-        title = "Zooma col browser, editor %s, vicino all'oggetto da taggare" % editor
+        title = self.app._("Zoom with browser, {0} editor, nearby the object that must be tagged").format(editor)
         link = self.url_to_link(url, title, title, img)
         return link
 
     def overpass_turbo_link(self, query, cssClass=""):
         url = 'http://overpass-turbo.eu/index.html?Q=%s&amp;R' % urllib.quote_plus(query)
-        title = "Visualizza come mappa cliccabile, immagine... (Overpass Turbo)"
+        title = self.app._("View as clickable map, image... (Overpass Turbo)")
         img = "../img/Overpass-turbo.png"
         if cssClass != "":
             cssClass = ' class="%s"' % cssClass
@@ -129,7 +133,7 @@ class Helpers:
         return links, osmIdsString
 
     def missing_template_link(self, article):
-        img_title = "Sulla pagina Wikipedia manca il template coord"
+        img_title = self.app._("Wikipedia page is missing the coordinates' template")
         img_src = "../img/no_template.png"
         img_tag = '<img src="{src}" title="{title}"'\
                   ' class="articleLinkImg" />'.format(src=img_src,
@@ -168,7 +172,7 @@ class Helpers:
         url += "&amp;bbox=%s" % self.app.COUNTRYBBOX
         url += "&amp;cat=%s" % urllib.quote_plus(category.name.encode("utf-8"))
         url += "&amp;key=*&amp;value=*&amp;basedeep=10&amp;types=*&amp;request=Submit&amp;iwl=yes"
-        title = "Cerca oggetti ed aggiungi tag (WIWOSM add-tags)"
+        title = self.app._("Search objects by name and add tag them automatically (WIWOSM add-tags)")
         img = "../img/add-tags.png"
         link = self.url_to_link(url, title, None, img)
         return link
@@ -187,13 +191,13 @@ class Helpers:
         code = '<a href="%s" title="%s"%s%s>%s</a>' % (url, title, target, cssClass, textOrImg)
         return code
 
-    def tagged_article_links(self, app, article):
+    def tagged_article_links(self, article):
         """Create links for tagged article from OSM objects to various
            services
         """
         #WIWOSM link
-        wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=%s&amp;title=%s" % (app.WIKIPEDIALANG, article.name)
-        wiwosmTitle = "Vedi mappa Wikipedia (WIWOSM)"
+        wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=%s&amp;title=%s" % (self.app.WIKIPEDIALANG, article.name)
+        wiwosmTitle = self.app._("See Wikipedia map (WIWOSM)")
         wiwosmImg = "../img/wiwosm.png"
         wiwosmLink = self.url_to_link(wiwosmUrl, wiwosmTitle, None, wiwosmImg)
 
@@ -202,7 +206,7 @@ class Helpers:
         osmLinks, osmIdsDiv = self.osm_ids_string(article)
         #link for showing the div
         osmUrl = "javascript:showHideDiv(\'%s\');" % article.ident
-        osmLinkTitle = "Vedi pagina OSM"
+        osmLinkTitle = self.app._("See OSM web page")
         #check what kinds of OSM primitive are tagged and use the
         #right icon
         osmTypeAbbr = [osmType[0] for osmType in osmLinks if osmLinks[osmType] != []]
@@ -222,13 +226,13 @@ class Helpers:
         code += '\n      %s ' % osmLink
         code += '\n      %s ' % josmLink
         code += '\n      %s' % overpassTurboLink
-        if app.args.show_missing_templates and hasattr(article, "hasTemplate"):
+        if self.app.args.show_missing_templates and hasattr(article, "hasTemplate"):
             if not article.hasTemplate:
                 code += '\n      %s' % self.missing_template_link(article)
         code += '\n      %s' % osmIdsDiv
         return code
 
-    def non_tagged_article_links(self, app, article):
+    def non_tagged_article_links(self, article):
         """Create links to various services for an article not tagged in OSM yet
         """
         if hasattr(article, "wikipediaCoords"):
@@ -262,9 +266,12 @@ class Helpers:
 class Creator():
     def __init__(self, app):
         self.app = app
-        env = Environment(loader=FileSystemLoader("templates"),
+        env = Environment(extensions=['jinja2.ext.i18n',
+                                      'jinja2.ext.autoescape'],
+                          loader=FileSystemLoader("templates"),
                           trim_blocks=True,
                           lstrip_blocks=True)
+        env.install_gettext_translations(self.app.translations)
 
         #When selectNonMappable==True the cells of tables in webpages
         #can be clicked, to create list of non mappable articles
@@ -443,6 +450,7 @@ class ArticlesTable(Helpers):
         """
         self.attr = ''
         self.content = []
+        self.app = app
 
         if item.articles != []:
             self.attr  += ' class="data"'
@@ -470,9 +478,9 @@ class ArticlesTable(Helpers):
                 #Article tagging status cell
                 if article.isMappable:
                     if article.inOSM:
-                        links = self.tagged_article_links(app, article)
+                        links = self.tagged_article_links(article)
                     else:
-                        links = self.non_tagged_article_links(app, article)
+                        links = self.non_tagged_article_links(article)
                     cell = {"attr": "", "content": links}
                     rows[-1].append(cell)
             self.content = rows
@@ -578,9 +586,9 @@ class CategoryTable(Helpers):
             if item.isMappable:
                 #content
                 if item.inOSM:
-                    links = self.tagged_article_links(self.app, item)
+                    links = self.tagged_article_links(item)
                 else:
-                    links = self.non_tagged_article_links(self.app, item)
+                    links = self.non_tagged_article_links(item)
                 #attributes
                 nowrap = ""
                 if links != "":

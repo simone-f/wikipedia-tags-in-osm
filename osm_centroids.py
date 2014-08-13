@@ -138,7 +138,7 @@ class OSMcentroids(object):
                 cur = con.cursor()
             cur.execute(query)
             num = cur.fetchone()[0]
-            print "Creata una tabella con %d righe" % num
+            print "A table with %d rows has been created" % num
         except spatialite.OperationalError as error:
             print "Failed execution of query:\n%s" % query
             print error

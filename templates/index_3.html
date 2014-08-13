@@ -9,24 +9,24 @@
 {% block content %}
   <div id="content">
 <!-- How to -->
-    <h2>Cosa fare</h2>
+    <h2>{% trans %}What do to{% endtrans %}</h2>
     <ul>
-      <li><b>Aggiungi il tag</b> all'oggetto in OSM, lasciando gli spazi tra le parole, es.<b>"wikipedia=it:Titolo dell'articolo"</b>.</li>
-      <li><b>Una sola lingua</b>. Se l'articolo è già taggato in una lingua straniera non occorre aggiungere quella italiana (vedi <a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank"> eccezioni</a> sul Wiki di OSM).</li>
-      <li>Articoli o categorie <b>non mappabili</b>, ad es. "es. Dipinti nel Museo Tal Dei Tali", possono essere rimossi dalla pagina, se segnalati (vedi "Informazioni e conteggi").<br><a href="non_mappable.html" target="_blank">Questa pagina</a> può aiutare a trovarli.</li>
+      <li>{% trans %}<b>Add the tag</b> to the object in OSM, leaving empty spaces between words, es.<b>"wikipedia=en:Article's title"</b>{% endtrans %}.</li>
+      <li>{% trans %}<b>Just one language</b>. If the article is already tagged in a foreign language a new tag is not needed (see <a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank"> exceptions</a> on OSM Wiki).{% endtrans %}</li>
+      <li>{% trans %}<b>Non mappable</b> articles or categories, e.g. "Paintings in X Museum", can be removed from these pages, when reported to maintainers.<br><a href="non_mappable.html" target="_blank">This page</a> can help to find them.{% endtrans %}</li>
     </ul>
 
     <table class="noborder">
       <tr>
-        <td style="vertical-align:top"><img src="img/iD_logo.png" width="48px"></img></td>
-        <td>Aggiungi i tag tramite l'editor <b><a href="http://ideditor.com/" target="_blank">iD</a></b> come mostrato in questi due tutorial:</td>
+        <td style="vertical-align:top"><img src="img/iD_logo.svg" width="48px"></img></td>
+        <td>{% trans %}Add tags with <b><a href="http://ideditor.com/"target="_blank">iD</a></b> editor, like shown in these tutorials:{% endtrans %}</td>
       </tr>
       <tr>
         <td></td>
         <td>
           <ul>
-            <li>dalle <a href="https://www.youtube.com/watch?v=lCJOvFk8sTc&feature=youtu.be&hd=1" target="_blank">tabelle</a></li>
-            <li>dalla <a href="https://www.youtube.com/watch?v=_2ouZ7jK5TE" target="_blank">mappa</a></li>
+            <li>{% trans %}from <a href="https://www.youtube.com/watch?v=lCJOvFk8sTc&feature=youtu.be&hd=1" target="_blank">tables</a>{% endtrans %}</li>
+            <li>{% trans %}from the <a href="https://www.youtube.com/watch?v=_2ouZ7jK5TE" target="_blank">map</a>{% endtrans %}</li>
           </ul>
         </td>
       </tr>
@@ -35,22 +35,22 @@
     <table class="noborder">
       <tr>
         <td style="vertical-align:top"><img src="img/JOSM_logo.png"></img></td>
-        <td>Se usi l'editor <b><a href="http://wiki.openstreetmap.org/wiki/IT:JOSM" target="_blank">JOSM</a></b>, oltre alle procedure dei video, puoi usare questi due strumenti:</td>
+        <td>{% trans %}It you use <b><a href="http://wiki.openstreetmap.org/wiki/IT:JOSM" target="_blank">JOSM</a></b> you can procede in a similar same way, and also use these two tools:{% endtrans %}</td>
       </tr>
       <tr>
         <td></td>
         <td>
           <ul>
-            <li><a href="http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia" target="_blank">Plugin Wikipedia</a>. Suggerimento: copia dalle tabelle il nome di una categoria ed incollalo nel plugin.</li>
-            <li><a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a>. Puoi usare questo servizio anche cliccando sulle icone <img src="./img/add-tags.png"> presenti in queste pagine.
+            <li>{% trans %}<a href="http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia" target="_blank">Plugin Wikipedia</a>. Hint: copy a category name from a table and paste it into the plugin.{% endtrans %}</li>
+            <li>{% trans %}<a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a>. Hint: you can easily use this tool by clicking on these icons <img src="./img/add-tags.png"> on the pages.{% endtrans %}</li>
           </ul>
         </td>
       </tr>
     </table>
 
     <!-- Legenda -->
-    <h2>Legenda tabelle</h2>
-    <p>Colori e simboli nelle tabelle.</p>
+    <h2>{% trans %}Tables' legend{% endtrans %}</h2>
+    <p>{% trans %}Colors and symbols in tables.{% endtrans %}</p>
     {{ macro.legenda(pageType="home page", display="") }}
   </div>
 {% endblock %}

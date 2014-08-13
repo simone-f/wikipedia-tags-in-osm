@@ -34,6 +34,7 @@ import csv
 import ConfigParser
 import sys
 import json
+from babel.support import Translations
 
 #local imports
 from osm_parser import ParseOSMData
@@ -268,6 +269,8 @@ The number of tagged articles will replace that of the lust run in the tags' num
         ifile.close()
 
         #Create webpages
+        self.translations = Translations.load("locale", ["it_IT"])
+        self._ = self.translations.ugettext
         if self.args.create_webpages:
             print "\n- Crea pagine web"
             Creator(self)

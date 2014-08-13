@@ -44,7 +44,7 @@
     {% else %}
       {% set suffix = "_1"%}
     {% endif %}
-    <div id="go_to_home"><a href="../index{{ suffix }}.html">&#8592; Tutte le categorie</a></div>
+    <div id="go_to_home"><a href="../index{{ suffix }}.html">&#8592; {% trans %}All categories{% endtrans %}</a></div>
 <!-- Content -->
 <div id="content">
 {% if mode == "themes" %}
@@ -55,20 +55,20 @@
 
 {%if selectNonMappable %}
 <div id="selectNonMappable">
-  Per contrassegnare alcune categorie ed articoli come "non mappabili": clicca sulle loro celle, copia le stringhe qui sotto ed incollale nel file "./data/wikipedia/non_mappable".<br><br>
-  Categorie:
+  {% trans %}To flag some categories and articles as "non mappable": click on their cells, copy the strings above and paste them in the files in "./data/wikipedia/non_mappable/".{% endtrans %}<br><br>
+  {% trans %}Categories{% endtrans %}:
   <div id="nonMappableCategories">&nbsp;</div><br>
-  Articoli:'
+  {% trans %}Articles{% endtrans %}:
   <div id="nonMappableArticles">&nbsp;</div>
 </div>
 {% endif %}
 <!-- Legenda -->
-<p><a href="javascript:showHideDiv('legenda');"><img src="../img/info.png" class="infoImg"> Legenda</a></p>
+<p><a href="javascript:showHideDiv('legenda');"><img src="../img/info.png" class="infoImg"> {% trans %}Legenda{% endtrans %}</a></p>
 {{ macro.legenda(pageType="sub page") }}
 
 <!-- Index -->
 {% if mode == "themes" and item.articles != [] and item.titles == [] %}
-  <div class="showHideNonMappable"><a href='javascript:showHideNonMappable("{{ item.ident }}_index");' title="Visualizza sottocategorie non mappabili">Mostra non mappabili</a></div>
+  <div class="showHideNonMappable"><a href='javascript:showHideNonMappable("{{ item.ident }}_index");' title="{% trans %}Show non mappable categories{% endtrans %}">{% trans %}Show non mappable{% endtrans %}</a></div>
 {% endif %}
 {{ macro.categoriesIndex(app, item, mode, "sub page", 0) }}
 
@@ -76,12 +76,12 @@
 {# h3 #}
 {% if item.articles|length != 0 %}
   {% if item.titles|length != 0 %}
-<h3><a href="#index">&#8593;</a> <a id="Articles"></a>Articoli {{ item.progress["articles"]["string"] }}</h3>
+<h3><a href="#index">&#8593;</a> <a id="Articles"></a>{% trans %}Articles{% endtrans %} {{ item.progress["articles"]["string"] }}</h3>
   {% else %}
-<h3><a href="#index">&#8593;</a> <a id="Articles"></a>Articoli</h3>
+<h3><a href="#index">&#8593;</a> <a id="Articles"></a>{% trans %}Articles{% endtrans %}</h3>
   {% endif %}
   {% if not item.articlesAreAllMappable: %}
-<div class="showHideNonMappable"><a href='javascript:showHideNonMappable("{{ item.ident }}_articles");' title="Visualizza articoli non mappabili">Mostra non mappabili</a></div>
+<div class="showHideNonMappable"><a href='javascript:showHideNonMappable("{{ item.ident }}_articles");' title="{% trans %}View non mappable articles{% endtrans %}">{% trans %}Show non mappable{% endtrans %}</a></div>
   {% endif %}
 {# table #}
 <table{{ item.articlesTable.attr }}>
@@ -104,7 +104,7 @@
 <h3><a href="#index">&#8593;</a> <a id="{{ subcategory.name }}"></a>{{ helpers.wikipedia_link(subcategory) }}</h3>
   {% endif %}
   {% if not subcategory.isAllMappable %}
-  <div class="showHideNonMappable"><a href="javascript:showHideNonMappable('{{ subcategory.ident }}');" title="Mostra anche categorie ed articoli non mappabili">Mostra non mappabili</a></div>
+  <div class="showHideNonMappable"><a href="javascript:showHideNonMappable('{{ subcategory.ident }}');" title="{% trans %}Show also non mappable categories and articles{% endtrans %}">{% trans %}Show non mappable{% endtrans %}</a></div>
   {% endif %}
 {# table #}
 <table{{ subcategory.categoryTable.attr }}>

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-    <title>Articoli di Wikipedia mappabili in OSM</title>
+    <title>{% trans %}Wikipedia articles which can be mapped in OpenStreetMap{% endtrans %}</title>
     {% if pageType == "home page" %}
       {% set root = "./" %}
     {% else %}
@@ -16,9 +16,9 @@
 <body>
 
   <div id="update_time">
-    Aggiornamento: {{ app.UPDATETIME }}
+    {% trans %}Update time{% endtrans %}: {{ app.UPDATETIME }}
   {% if pageType == "sub page" and mode == "themes" %}
-<br>Aggiornamento articoli in categoria: {{ item.updateTime }}
+<br>{% trans %}Update time of articles in category{% endtrans %}: {{ item.updateTime }}
   {% endif %}
   </div>
   {% block header %}

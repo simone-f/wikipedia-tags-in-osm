@@ -168,36 +168,36 @@
 {% endblock %}
 
 {% block content %}
-  <div id="go_to_home"><a href="./index.html">&#8592; Tutte le categorie</a></div>
+  <div id="go_to_home"><a href="./index.html">&#8592; {% trans %}All categories{% endtrans %}</a></div>
   <div id="content">
     <div class="form-field">
-      <br><h1>Cerca non mappabili</h1>
-      <p>Cerca tramite una sottostringa gli articoli e le categorie probabilmente non mappabili.</p>
-      <p>Esempi</p>
+      <br><h1>{% trans %}Search non mappable items{% endtrans %}</h1>
+      <p>{% trans %}Search possible non mappable articles and categories with a substring.{% endtrans %}</p>
+      <p>{% trans %}Examples{% endtrans %}</p>
       <ul>
-        <li>Articolo "<i>Lista</i> delle chiese di Salerno".</li>
-        <li>Categoria "<i>Dipinti</i> nella basilica e nel convento di Santa Maria Novella"</li>
+        <li>{% trans %}Article "<i>List</i> of churches in Salerno".{% endtrans %}</li>
+        <li>{% trans %}Category "<i>Paintings</i> in Santa Maria Novella basilica"{% endtrans %}</li>
       </ul><!--<p>Categorie: <span id="articlesNum"></span></p>
       <p>Articoli: <span id="articlesNum"></span></p>-->
       <table class="noborder">
         <tr>
-          <th>Tipologia:</th>
-          <th>Status:</th>
+          <th>{% trans %}Typology{% endtrans %}:</th>
+          <th>{% trans %}Status{% endtrans %}:</th>
         </tr>
         <tr>
-          <td><input type=radio name=r1 id="categoriesRBtn" value="categories">categorie</td>
-          <td><input type=radio name=r2 id="mappableRBtn" value="mappable" checked="checked">mappabili</td>
+          <td><input type=radio name=r1 id="categoriesRBtn" value="categories">{% trans %}categories{% endtrans %}</td>
+          <td><input type=radio name=r2 id="mappableRBtn" value="mappable" checked="checked">{% trans %}mappable{% endtrans %}</td>
         </tr>
         <tr>
-          <td><input type=radio name=r1 id="articlesRBtn" value="articles" checked="checked">articoli</td>
-          <td><input type=radio name=r2 id="nonMappableRBtn" value="non mappable">non mappabili</td>
+          <td><input type=radio name=r1 id="articlesRBtn" value="articles" checked="checked">{% trans %}articles{% endtrans %}</td>
+          <td><input type=radio name=r2 id="nonMappableRBtn" value="non mappable">{% trans %}non mappable{% endtrans %}</td>
         </tr>
         <tr>
-          <td><input type=radio name=r1 id="allItemsRBtn" value="articlesandcategories">tutti</td>
-          <td><input type=radio name=r2 id="allStatusesRBtn" value="all">tutti</td>
+          <td><input type=radio name=r1 id="allItemsRBtn" value="articlesandcategories">{% trans %}all{% endtrans %}</td>
+          <td><input type=radio name=r2 id="allStatusesRBtn" value="all">{% trans %}all{% endtrans %}</td>
         </tr>
       </table>
-      <p>Stringa di ricerca: <input type="text" name="itemName" id="in">
+      <p>{% trans %}Search string{% endtrans %}: <input type="text" name="itemName" id="in">
       <input type="button" value="Cerca" id="button"></p>
     </div>
   <div id="out"></div>

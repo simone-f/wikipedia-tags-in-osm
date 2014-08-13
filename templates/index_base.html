@@ -8,17 +8,17 @@
 
 {% block header %}
   <div id="header">
-    <h1><a id="top"></a>Articoli Wikipedia mappabili in OSM</h1>
-    <p>Liste di articoli Wikipedia (IT) mappabili in OpenStreetMap, tramite il tag "<b><a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank">wikipedia</a> = it:Titolo dell'articolo</b>".</p>
+    <h1><a id="top"></a>{% trans %}Wikipedia articles which can be mapped in OpenStreetMap{% endtrans %}</h1>
+    <p>{% trans %}Lists of Wikipedia articles which can be mapped in OpenStreetMap, through the tag <b><a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank">wikipedia</a> = en:Article's title{% endtrans %}</b>".</p>
 
     <!-- Informations -->
-    <p><a id="description" href="javascript:showHideDiv('info');"><img src="./img/info.png" class="infoImg"> Informazioni e conteggi</a> | <a href="errors.html" title="Visualizza tag sospetti">Tag sospetti</a></p>
+    <p><a id="description" href="javascript:showHideDiv('info');"><img src="./img/info.png" class="infoImg"> {% trans %}Information and counters{% endtrans %}</a> | <a href="errors.html" title="Visualizza tag sospetti">{% trans %}Suspicious tags{% endtrans %}</a></p>
     <div id="info" style="display:none">
       <!-- Users -->
       {% if app.users.keys()|length != 0 %}
       <div id="usersdiv">
         <table id="users">
-          <tr><th>Mapper</th><th>Tag</th></tr>
+          <tr><th>{% trans %}Mapper{% endtrans %}</th><th>{% trans %}Tag{% endtrans %}</th></tr>
         {% for user, tagsNumber in app.tagsPerUser %}
           <tr><td><a href="http://www.openstreetmap.org/user/{{ user }}/">{{ user }}</a></td><td>{{ tagsNumber }}</td></tr>
         {% endfor %}
@@ -47,37 +47,36 @@
         </tr>
       {% endfor %}
       </table>
-      <h2>Perché</h2>
+      <h2>{% trans %}Why{% endtrans %}</h2>
       <ul>
-        <li>Si arricchisce Wikipedia di informazioni geografiche ed OpenStreetMap di informazioni sull'oggetto.</li>
-        <li>Gli oggetti di OpenStreetMap con tag Wikipedia compaiono in quest'ultima <a href="http://toolserver.org/~kolossos/openlayers/kml-on-ol.php?lang=it&amp;uselang=de&amp;params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&amp;title=Colosseom&amp;zoom=18&amp;lat=41.89&amp;lon=12.49284&amp;layers=B00000FTTTF">su una mappa</a> (progetto <a href="http://wiki.openstreetmap.org/wiki/WIWOSM" target="_blank">WIWOSM</a>).</li>
-        <li>La presenza di questi tag migliora i risultati delle ricerche eseguite su www.openstreetmap.org (Nominatim).</li>
+        <li>{% trans %}Geographic informations are added to Wikipedia and OpenStreetMap gains more informations about an object.{% endtrans %}</li>
+        <li>{% trans %}Gli oggetti di OpenStreetMap con tag Wikipedia compaiono in quest'ultima <a href="http://toolserver.org/~kolossos/openlayers/kml-on-ol.php?lang=it&amp;uselang=de&amp;params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&amp;title=Colosseom&amp;zoom=18&amp;lat=41.89&amp;lon=12.49284&amp;layers=B00000FTTTF">su una mappa</a> (progetto <a href="http://wiki.openstreetmap.org/wiki/WIWOSM" target="_blank">WIWOSM</a>).{% endtrans %}</li>
+        <li>{% trans %}wikipedia tags lead the queries executed on www.openstreetmap.org (Nominatim) to better results.{% endtrans %}</li>
       </ul>
-      <h2>Difetti nelle liste</h2>
+      <h2>{% trans %}Lists defects{% endtrans %}</h2>
       <ul>
-        <li> Articoli o categorie <b>non mappabili</b>, ad es. "es. Dipinti nel Museo Tal Dei Tali", possono essere rimossi dalla pagina, se segnalati (vedi mail).
-          <br><a href="non_mappable.html" target="_blank">Questa pagina</a> può atiutare a trovarli.</li>
-        <li> Può accadere che in una sottocategoria ricadano articoli non riguardanti il tema di partenza. Se questi sono mappabili vengono comunque mostrati in tabella.</li>
-        <li> Articoli o sottocategorie appartenenti a più categorie possono ripetersi più volte in una stessa pagina (i conteggi ne tengono conto).</li>
+        <li>{% trans %}Non mappable</b> articles or categories, e.g. "Paintings in X Museum", can be removed from these pages, when reported to maintainers.<br><a href="non_mappable.html" target="_blank">This page</a> can help to find them.{% endtrans %}</li>
+        <li>{% trans %}It may happen that a sub-category contain an article not striclty related to the choosen theme. If the article is mappable it will be shown anyway.{% endtrans %}</li>
+        <li>{% trans %}Articles or sub-categories belonging to multiple categories may appear more than once in the same page.{% endtrans %}</li>
       </ul>
-      <h2>Programma per generare le pagine</h2>
-      <p>Codice: <a href="https://github.com/simone-f/wikipedia-tags-in-osm" target="_blank">wikipedia-tags-in-osm {{ app.version }}</a> (GPLv3)<br>Autore: <a href="mailto:groppo8@gmail.com">Simone F.</a> Altri autori: Luca Delucchi, Cristian Consonni</p>
-      <p><br>Riconoscimenti ed attribuzioni.</p>
-      <p>Grazie a chi ha segnalato gli articoli non mappabili (i nomi sono nei commit) e ad Andrea Borruso, per i video tutorial su iD.</p>
-      <p>Servizi linkati da queste pagine: <a href="http://wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (master, Kolossos), <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a> (Kolossos), <a href="http://overpass-turbo.eu/" target="_blank">OverpassTurbo</a> (tyr.asd).</p>
-      <p>Servizi usati per creare le pagine: <a href="http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php" target="_blank">CatScan</a> (Duesentrieb), <a href="http://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world/">Wikipedia coordinates</a> (Kolossos), <a href="http://nuts4nutsrecon.spaziodati.eu/">Nuts4Nuts</a>, <a href="http://tools.wmflabs.org/catscan2/quick_intersection.php">quick_intersection</a> (Magnus Manske).</p>
-      <p>Icone dei temi: <a href="https://github.com/mapbox/maki" target="_blank">Maki</a> (BSD)<br>
+      <h2>{% trans %}Program for pages creation{% endtrans %}</h2>
+      <p>{% trans %}Code{% endtrans %}: <a href="https://github.com/simone-f/wikipedia-tags-in-osm" target="_blank">wikipedia-tags-in-osm {{ app.version }}</a> (GPLv3)<br>{% trans%}Author{% endtrans %}: <a href="mailto:groppo8@gmail.com">Simone F.</a> {% trans %}Other authors{% endtrans %}: Luca Delucchi, Cristian Consonni</p>
+      <p><br>{% trans %}Credits and attributions.{% endtrans %}</p>
+      <p>{% trans %}Thanks to those who reported non mappable articles (names are in commits messages) and to Andrea Borruso for iD tutorials.{% endtrans %}</p>
+      <p>{% trans %}Services linked from these pages{% endtrans %}: <a href="http://wiki.openstreetmap.org/wiki/WIWOSM">WIWOSM</a> (master, Kolossos), <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a> (Kolossos), <a href="http://overpass-turbo.eu/" target="_blank">OverpassTurbo</a> (tyr.asd).</p>
+      <p>{% trans %}Services used for pages creation{% endtrans %}: <a href="http://toolserver.org/%7Edaniel/WikiSense/CategoryIntersect.php" target="_blank">CatScan</a> (Duesentrieb), <a href="http://toolserver.org/~kolossos/wp-world/pg-dumps/wp-world/">Wikipedia coordinates</a> (Kolossos), <a href="http://nuts4nutsrecon.spaziodati.eu/">Nuts4Nuts</a>, <a href="http://tools.wmflabs.org/catscan2/quick_intersection.php">quick_intersection</a> (Magnus Manske).</p>
+      <p>{% trans %}Themes' icons{% endtrans %}: <a href="https://github.com/mapbox/maki" target="_blank">Maki</a> (BSD)<br>
       Stemmi regionali: <a href="http://www.araldicacivica.it" target="_blank">www.araldicacivica.it</a> (<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/it/">CC BY-NC-ND 3.0</a>)<br>
       Icone di nodi, way, relazioni ed Overpass Turbo da <a href="http://wiki.openstreetmap.org/">Wiki OSM</a>.</p>
     </div>
     <div id="tabs">
       <ul>
-        <li{% block indexSelected %}{% endblock %}><a title="Visualizza categorie per tema" href="./index.html">Temi</a></li>
-        <li{% block index1Selected %}{% endblock %}><a title="Visualizza categorie per regione" href="./index_1.html">Regioni</a></li>
+        <li{% block indexSelected %}{% endblock %}><a title="{% trans %}Show categories per theme{% endtrans %}" href="./index.html">Temi</a></li>
+        <li{% block index1Selected %}{% endblock %}><a title="{% trans %}Show categories per region{% endtrans %}" href="./index_1.html">Regioni</a></li>
         {% if app.args.show_link_to_wikipedia_coordinates %}
-        <li{% block index2Selected %}{% endblock %}><a title="Visualizza mappa con articoli da taggare" href="./index_2.html">Mappa</a></li>
+        <li{% block index2Selected %}{% endblock %}><a title="{% trans %}Show map with non tagged articles{% endtrans %}" href="./index_2.html">Mappa</a></li>
         {% endif %}
-        <li class="help"{% block index3Selected %}{% endblock %}><a title="Visualizza aiuto" href="./index_3.html">Aiuto</a></li>
+        <li class="help"{% block index3Selected %}{% endblock %}><a title="{% trans %}Show help{% endtrans %}" href="./index_3.html">Aiuto</a></li>
        </ul>
     </div>
   </div>
