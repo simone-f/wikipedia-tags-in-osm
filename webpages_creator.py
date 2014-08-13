@@ -278,42 +278,45 @@ class Creator():
         #or categories that can be copied into the file ./data/wikipedia/non_mappable
         selectNonMappable = True if app.clickable_cells == "true" else False
         app.tagsPerUser = sorted(self.app.users.items(), key=lambda x: x[1], reverse=True)
-        self.homepages = []
 
         #Create homepages
-        self.homepages = []
+        self.homepages = {}
 
         #themes (index)
-        print "  render index.html (themes)"
-        indexTemplate = env.get_template('index.html')
+        htmlFile = "index.html"
+        print " - render %s (themes)" % htmlFile
+        indexTemplate = env.get_template(htmlFile)
         code = indexTemplate.render(app=self.app,
                                     pageType="home page",
                                     statsRows=self.stats_table())
-        self.homepages.append(code)
+        self.homepages[htmlFile] = code
 
         #regions (index_1)
-        print "  render index_1.html (regions)"
-        indexTemplate = env.get_template('index_1.html')
+        htmlFile = "index_1.html"
+        print " - render %s (regions)" % htmlFile
+        indexTemplate = env.get_template(htmlFile)
         code = indexTemplate.render(app=self.app,
                                     pageType="home page",
                                     statsRows=self.stats_table())
-        self.homepages.append(code)
+        self.homepages[htmlFile] = code
 
         #map (index_2)
-        print "  render index_2.html (map)"
-        indexTemplate = env.get_template('index_2.html')
+        htmlFile = "index_2.html"
+        print " - render %s (map)" % htmlFile
+        indexTemplate = env.get_template(htmlFile)
         code = indexTemplate.render(app=self.app,
                                     pageType="home page",
                                     statsRows=self.stats_table())
-        self.homepages.append(code)
+        self.homepages[htmlFile] = code
 
         #help (index_3)
-        print "  render index_3.html (help)"
-        helpTemplate = env.get_template('index_3.html')
+        htmlFile = "index_3.html"
+        print " - render %s (help)" % htmlFile
+        helpTemplate = env.get_template(htmlFile)
         code = helpTemplate.render(app=self.app,
                                    pageType="home page",
                                    statsRows=self.stats_table())
-        self.homepages.append(code)
+        self.homepages[htmlFile] = code
 
         #categories (subpages)
         helpers = Helpers(app)
@@ -413,11 +416,8 @@ class Creator():
         """Save webpages as html files
         """
         # homepage
-        for i, homepage in enumerate(self.homepages):
-            filename = "index.html"
-            if i > 0:
-                filename = "index_%d.html" % i
-            self.save_file(self.homepages[i], filename)
+        for fileName, homepage in self.homepages.iteritems():
+            self.save_file(homepage, fileName)
         # categories pages
         for theme in self.app.themes:
             for category in theme.categories:
