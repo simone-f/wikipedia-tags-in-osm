@@ -341,6 +341,9 @@ The number of tagged articles will replace that of the lust run in the tags' num
         self.OSMDIR = configparser.get("general", "osmdir")
         self.COUNTRYBBOX = configparser.get("general", "osmbbox")
         self.countryPoly = os.path.join("data", "OSM", "%s.poly" % self.country)
+        if not os.path.isfile(self.countryPoly):
+            print "\n* Poly file is missing: \n  %s" % self.countryPoly
+            sys.exit(1)
         if self.WIKIPEDIALANG == "" or self.country == "" or self.OSMDIR == "":
             print "\n* Fill in `config.cfg` file the following options: `osmdir`, `preferred language`, `country`"
             sys.exit(1)
