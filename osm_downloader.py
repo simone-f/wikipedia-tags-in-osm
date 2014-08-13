@@ -77,7 +77,7 @@ def filter_wikipedia_data_in_osm_file(app):
     """
     if not os.path.isfile(app.countryO5M):
         print "O5M file is missing, I'll try to convert the PBF file..."
-        app.convert_pbf_to_o5m(app)
+        convert_pbf_to_o5m(app)
     print "\n- Extract OSM data wih Wikipedia tag"
 
     if app.args.show_coordinates_from_osm:
