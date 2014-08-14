@@ -12,6 +12,10 @@ libspatialite-path = /usr/lib/x86_64-linux-gnu/libspatialite.so.5.1.0
 #directory where html files must be copied after creation (optional, mandatory if --copy)
 outdir =
 
+[i18n]
+#supported locales
+supported_locales = it_IT | en_US
+
 [themes]
 #add an option (line) for each theme and its categories
 #theme name = category A name|category B name|category C name...

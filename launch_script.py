@@ -283,7 +283,20 @@ The number of tagged articles will replace that of the lust run in the tags' num
         ifile.close()
 
         #Create webpages
-        for locale_langcode in self.args.locales:
+
+        # Restrict to the supported locales
+        self.locales = frozenset(self.SUPPORTED_LOCALES).intersection(
+            self.args.locales)
+
+        non_supported_locales = self.args.locales - self.SUPPORTED_LOCALES
+        for locale in non_supported_locales:
+            print 'Warning: dropping unsupported locale: ', locale
+
+        # if no supported locale is chosen fallback to en_US
+        if not self.locales:
+            self.locales = frozenset(['en_US'])
+
+        for locale_langcode in self.locales:
             self.translations = Translations.load("locale", [locale_langcode])
             self._ = self.translations.ugettext
             if self.args.create_webpages:
@@ -425,6 +438,12 @@ The number of tagged articles will replace that of the lust run in the tags' num
         self.MISSINGTEMPLATESDIR = os.path.join("data", "wikipedia", "missing_templates")
         self.make_dir(self.MISSINGTEMPLATESDIR)
         self.TEMPLATESSTATUSFILE = os.path.join(self.MISSINGTEMPLATESDIR, "missing_templates.csv")
+
+        supported_locales = configparser.get("i18n", "supported_locales")
+        self.SUPPORTED_LOCALES = [lcode.strip()
+                                  for lcode in supported_locales.split('|')
+                                  ]
+
         return themesAndCatsNames
 
     def make_dir(self, path):
