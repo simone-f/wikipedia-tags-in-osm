@@ -29,6 +29,7 @@
 import argparse
 import os
 import time
+import locale
 from subprocess import call
 import csv
 import ConfigParser
@@ -101,12 +102,25 @@ class App:
         parser.add_argument("--copy",
                             help="Copy html folder to the directory configured on `config.cfg` (eg. dropbox dir).",
                             action="store_true")
+        parser.add_argument("--locale",
+                            nargs='+',
+                            dest='locales',
+                            metavar='LANG',
+                            help="Generate pages in the specified locales. Default: use the system locale. ")
+
         self.args = parser.parse_args()
         if self.args.category_info or self.args.category_info\
            or self.args.create_webpages or self.args.print_categories_list\
            or self.args.show_missing_templates\
            or self.args.show_coordinates_from_osm:
             self.args.analyze = True
+
+        # Default value for locale
+        # get system locale
+        sys_locale_langcode, sys_locale_encoding = locale.getdefaultlocale()
+
+        if not self.args.locales:
+            self.args.locales = [sys_locale_langcode]
 
         if len(sys.argv) == 1:
             parser.print_help()
@@ -269,11 +283,12 @@ The number of tagged articles will replace that of the lust run in the tags' num
         ifile.close()
 
         #Create webpages
-        self.translations = Translations.load("locale", ["it_IT"])
-        self._ = self.translations.ugettext
-        if self.args.create_webpages:
-            print "\n- Crea pagine web"
-            Creator(self)
+        for locale_langcode in self.args.locales:
+            self.translations = Translations.load("locale", [locale_langcode])
+            self._ = self.translations.ugettext
+            if self.args.create_webpages:
+                print "\n- Create web pages with locale: ", locale_langcode
+                Creator(self)
 
         #Save stats
         if self.args.create_webpages and self.args.save_stats:
