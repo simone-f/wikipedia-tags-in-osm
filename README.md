@@ -26,6 +26,7 @@ Services used by the program: MediaWiki [API](https://www.mediawiki.org/wiki/API
 
 * themes icons are from [Maki](https://github.com/mapbox/maki), License BSD
 * regions icons are from [araldicacivica.it](http://www.araldicacivica.it), License [CC BY-NC-ND 3.0](http://creativecommons.org/licenses/by-nc-nd/3.0/it/)
+* flags are from Wikimedia Commons:[Project Nuvola 2.0+/Flags](https://commons.wikimedia.org/wiki/Commons:Project_Nuvola_2.0%2B/Flags)
 * nodes, ways, relations and Overpass Turbo icons are from the [OSM Wiki](http://wiki.openstreetmap.org/)
 
 ##Overview
