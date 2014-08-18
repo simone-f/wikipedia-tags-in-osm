@@ -96,7 +96,7 @@ class Helpers:
     def overpass_turbo_link(self, query, cssClass=""):
         url = 'http://overpass-turbo.eu/index.html?Q=%s&amp;R' % urllib.quote_plus(query)
         title = self.app._("View as clickable map, image... (Overpass Turbo)")
-        img = "../img/Overpass-turbo.png"
+        img = "{{root}}img/Overpass-turbo.png"
         if cssClass != "":
             cssClass = ' class="%s"' % cssClass
         link = self.url_to_link(url, title, None, img, cssClass)
@@ -119,22 +119,18 @@ class Helpers:
         for osmType, linksList in links.iteritems():
             if len(linksList) > 0:
                 if osmIdsString != "":
-                    osmIdsString += "<br>"
-                if isinstance(item, Article):
-                    imgPath = "../img/"
-                else:
-                    imgPath = "./img/"
-                img = '<img title="%s" src="%s%s.png">' % (osmType[:-1], imgPath, osmType)
+                    osmIdsString += "<br />"
+                img = '<img title="%s" src="%s%s.png">' % (osmType[:-1], "{{root}}img/", osmType)
                 osmIdsString += "%s %s" % (img, ", ".join(linksList))
         if isinstance(item, Article):
             #put the string into a div
             osmDivId = item.ident
-            osmIdsString = '<div id="%s" style="display:none"><br>%s</div>' % (osmDivId, osmIdsString)
+            osmIdsString = '<div id="%s" style="display:none"><br />%s</div>' % (osmDivId, osmIdsString)
         return links, osmIdsString
 
     def missing_template_link(self, article):
         img_title = self.app._("Wikipedia page is missing the coordinates' template")
-        img_src = "../img/no_template.png"
+        img_src = "{{root}}img/no_template.png"
         img_tag = '<img src="{src}" title="{title}"'\
                   ' class="articleLinkImg" />'.format(src=img_src,
                                                       title=img_title)
@@ -173,7 +169,7 @@ class Helpers:
         url += "&amp;cat=%s" % urllib.quote_plus(category.name.encode("utf-8"))
         url += "&amp;key=*&amp;value=*&amp;basedeep=10&amp;types=*&amp;request=Submit&amp;iwl=yes"
         title = self.app._("Search objects by name and add tag them automatically (WIWOSM add-tags)")
-        img = "../img/add-tags.png"
+        img = "{{root}}img/add-tags.png"
         link = self.url_to_link(url, title, None, img)
         return link
 
@@ -198,7 +194,7 @@ class Helpers:
         #WIWOSM link
         wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=%s&amp;title=%s" % (self.app.WIKIPEDIALANG, article.name)
         wiwosmTitle = self.app._("See Wikipedia map (WIWOSM)")
-        wiwosmImg = "../img/wiwosm.png"
+        wiwosmImg = "{{root}}img/wiwosm.png"
         wiwosmLink = self.url_to_link(wiwosmUrl, wiwosmTitle, None, wiwosmImg)
 
         #Show a div with OSM ids of the article
@@ -210,13 +206,13 @@ class Helpers:
         #check what kinds of OSM primitive are tagged and use the
         #right icon
         osmTypeAbbr = [osmType[0] for osmType in osmLinks if osmLinks[osmType] != []]
-        osmLinkImg = "../img/osm_%s.png" % "".join(sorted(osmTypeAbbr))
+        osmLinkImg = "{{root}}img/osm_%s.png" % "".join(sorted(osmTypeAbbr))
         osmLink = self.url_to_link(osmUrl, osmLinkTitle, None, osmLinkImg, "", None)
 
         query = self.overpass_query(article)
 
         #JOSM remote control link
-        img = "../img/josm.png"
+        img = "{{root}}img/josm.png"
         josmLink = self.josm_link("download", query, img)
 
         #Overpass Turbo link
@@ -237,11 +233,11 @@ class Helpers:
         """
         if hasattr(article, "wikipediaCoords"):
             #the article is not tagged but Wikipedia knows its coordinates
-            img = "../img/josm_load_and_zoom.png"
-            img_id = "../img/id.png"
+            img = "{{root}}img/josm_load_and_zoom.png"
+            img_id = "{{root}}img/id.png"
             if article.wikipediaCoordsSource == 'Nuts4Nuts':
-                img = "../img/josm_load_and_zoom_blue.png"
-                img_id = "../img/id_blue.png"
+                img = "{{root}}img/josm_load_and_zoom_blue.png"
+                img_id = "{{root}}img/id_blue.png"
             code = self.josm_link("load_and_zoom", article.wikipediaCoords,
                                   img)
             code += '\n      %s ' % self.edit_link(article.wikipediaCoords,
@@ -264,8 +260,9 @@ class Helpers:
 
 ### Webpages creator ###################################################
 class Creator():
-    def __init__(self, app):
+    def __init__(self, app, locale_langcode):
         self.app = app
+        self.locale_langcode = locale_langcode
         env = Environment(extensions=['jinja2.ext.i18n',
                                       'jinja2.ext.autoescape'],
                           loader=FileSystemLoader("templates"),
@@ -286,8 +283,12 @@ class Creator():
         htmlFile = "index.html"
         print " - render %s (themes)" % htmlFile
         indexTemplate = env.get_template(htmlFile)
+
         code = indexTemplate.render(app=self.app,
-                                    pageType="home page",
+                                    pageType="Home page",
+                                    root = '../',
+                                    path = '/',
+                                    filename = htmlFile,
                                     statsRows=self.stats_table())
         self.homepages[htmlFile] = code
 
@@ -295,17 +296,28 @@ class Creator():
         htmlFile = "index_1.html"
         print " - render %s (regions)" % htmlFile
         indexTemplate = env.get_template(htmlFile)
+
+        # path is relative to root/locale, needs a trailing slash
         code = indexTemplate.render(app=self.app,
-                                    pageType="home page",
+                                    pageType="Home page",
+                                    root = '../',
+                                    path = '/',
+                                    filename = htmlFile,
                                     statsRows=self.stats_table())
+
+
         self.homepages[htmlFile] = code
 
         #map (index_2)
         htmlFile = "index_2.html"
         print " - render %s (map)" % htmlFile
         indexTemplate = env.get_template(htmlFile)
+        # path is relative to root/locale, needs a trailing slash
         code = indexTemplate.render(app=self.app,
-                                    pageType="home page",
+                                    pageType="Home page",
+                                    root = '../',
+                                    path = '/',
+                                    filename = htmlFile,
                                     statsRows=self.stats_table())
         self.homepages[htmlFile] = code
 
@@ -313,8 +325,12 @@ class Creator():
         htmlFile = "index_3.html"
         print " - render %s (help)" % htmlFile
         helpTemplate = env.get_template(htmlFile)
+        # path is relative to root/locale, needs a trailing slash
         code = helpTemplate.render(app=self.app,
-                                   pageType="home page",
+                                   pageType="Home page",
+                                   root = '../',
+                                   path = '/',
+                                   filename = htmlFile,
                                    statsRows=self.stats_table())
         self.homepages[htmlFile] = code
 
@@ -330,12 +346,19 @@ class Creator():
                     subcategory.categoryTable = CategoryTable(app, subcategory, selectNonMappable)
 
                 categoryTemplate = env.get_template('subpage.html')
+                filename = "%s.html" % category.name
+
+                # path is relative to root/locale, needs a trailing slash
                 category.html = categoryTemplate.render(app=self.app,
                                                         pageType="sub page",
                                                         selectNonMappable=selectNonMappable,
                                                         helpers=helpers,
                                                         mode="themes",
+                                                        root = '../../',
+                                                        path = '/subpages/',
+                                                        filename = filename,
                                                         item=category)
+                category.html = category.html.replace('{{root}}', '../../')
 
         print "  render regions subpages"
         #regions (subpages)
@@ -343,23 +366,42 @@ class Creator():
             for subcategory in region.subcategories:
                 subcategory.categoryTable = CategoryTable(app, subcategory, selectNonMappable)
             regionTemplate = env.get_template('subpage.html')
+            filename = "%s.html" % region.name
+
+            # path is relative to root/locale, needs a trailing slash
             region.html = regionTemplate.render(app=self.app,
                                                 pageType="sub page",
                                                 selectNonMappable=selectNonMappable,
                                                 helpers=helpers,
                                                 mode="regions",
+                                                root = '../../',
+                                                path = '/subpages/',
+                                                filename = filename,
                                                 item=region)
+
+            region.html = region.html.replace('{{root}}', '../../')
+
         #Create errors page
         print "  render errors page"
         errorsTemplate = env.get_template('errors.html')
+
+        # path is relative to root/locale, needs a trailing slash
         self.errorsHtml = errorsTemplate.render(app=self.app,
                                                 pageType="home page",
+                                                root = '../',
+                                                path = '/',
+                                                filename = 'errors.html',
                                                 helpers=helpers)
         #Create non_mappable page
         print "  render non_mappable page"
         nonMappableTemplate = env.get_template('non_mappable.html')
+
+        # path is relative to root/locale, needs a trailing slash
         self.nonMappableHtml = nonMappableTemplate.render(app=self.app,
                                                           pageType="home page",
+                                                          root = '../',
+                                                          path = '/',
+                                                          filename = 'non_mappable.html',
                                                           helpers=helpers)
 
         #Save all HTML files
@@ -421,12 +463,12 @@ class Creator():
         # categories pages
         for theme in self.app.themes:
             for category in theme.categories:
-                categoryFile = os.path.join("subpages", "%s.html" % category.name)
-                self.save_file(category.html, categoryFile)
+                categoryFile = "%s.html" % category.name
+                self.save_file(category.html, categoryFile, subdir="subpages")
         # regions pages
         for region in self.app.regions:
-            regionFile = os.path.join("subpages", "%s.html" % region.name)
-            self.save_file(region.html, regionFile)
+            regionFile = "%s.html" % region.name
+            self.save_file(region.html, regionFile, subdir="subpages")
         # errors page
         self.save_file(self.errorsHtml, "errors.html")
         # non_mapable page
@@ -435,8 +477,28 @@ class Creator():
         if not self.app.args.nofx:
             call("firefox html/index.html", shell=True)
 
-    def save_file(self, text, fileName):
-        fileOut = open(os.path.join(self.app.HTMLDIR, fileName), "w")
+    def save_file(self, text, fileName, subdir=None):
+
+        # output directory (html/locale_locale_langcode)
+        outDir = os.path.join(self.app.HTMLDIR, self.locale_langcode)
+        if subdir:
+            outDir = os.path.join(self.app.HTMLDIR,
+                                  self.locale_langcode,
+                                  subdir
+                                  )
+
+        # Try to make the directory, catch exception if it exists
+        # (and skik creation)
+        try:
+            os.makedirs(outDir)
+        except OSError as e:
+            # skip directory creation
+            # print 'Skipping directory {0} creation: {1}'.format(
+            #     outDir, str(e.strerror))
+            pass
+
+        fileOut = open(os.path.join(outDir, fileName), "w")
+
         if isinstance(text, unicode):
             text = text.encode("utf-8")
         fileOut.write(text)

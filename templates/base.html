@@ -3,13 +3,8 @@
   <head>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <title>{% trans %}Wikipedia articles which can be mapped in OpenStreetMap{% endtrans %}</title>
-    {% if pageType == "home page" %}
-      {% set root = "./" %}
-    {% else %}
-      {% set root = "../" %}
-    {% endif %}
-    <link rel="stylesheet" type="text/css" href="{{ root }}css/style.css">
-    <script type="text/javascript" src="{{ root }}js/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{root}}css/style.css">
+    <script type="text/javascript" src="{{root}}js/jquery-1.10.2.min.js"></script>
     {% block scripts %}
     {% endblock %}
   </head>
@@ -18,9 +13,20 @@
   <div id="update_time">
     {% trans %}Update time{% endtrans %}: {{ app.UPDATETIME }}
   {% if pageType == "sub page" and mode == "themes" %}
-<br>{% trans %}Update time of articles in category{% endtrans %}: {{ item.updateTime }}
+<br />{% trans %}Update time of articles in category{% endtrans %}: {{ item.updateTime }}
   {% endif %}
   </div>
+
+  {% if app.locales|length  > 1 %}
+  <div class="translations">
+    <ul>
+      {% for locale in app.locales %}
+      <li><a href="{{root}}{{locale}}{{path}}{{filename}}"><img src="{{root}}img/lang/{{locale}}.svg" width="24" height="24" /></a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
   {% block header %}
   {% endblock %}
   {% block content %}

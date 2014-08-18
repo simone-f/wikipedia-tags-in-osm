@@ -12,7 +12,7 @@
     <p>{% trans %}Lists of Wikipedia articles which can be mapped in OpenStreetMap, through the tag <b><a href="http://wiki.openstreetmap.org/wiki/Wikipedia" target="_blank">wikipedia</a> = en:Article's title{% endtrans %}</b>".</p>
 
     <!-- Informations -->
-    <p><a id="description" href="javascript:showHideDiv('info');"><img src="./img/info.png" class="infoImg"> {% trans %}Information and counters{% endtrans %}</a> | <a href="errors.html" title="Visualizza tag sospetti">{% trans %}Suspicious tags{% endtrans %}</a></p>
+    <p><a id="description" href="javascript:showHideDiv('info');"><img src="{{root}}img/info.png" class="infoImg"> {% trans %}Information and counters{% endtrans %}</a> | <a href="errors.html" title="Visualizza tag sospetti">{% trans %}Suspicious tags{% endtrans %}</a></p>
     <div id="info" style="display:none">
       <!-- Users -->
       {% if app.users.keys()|length != 0 %}

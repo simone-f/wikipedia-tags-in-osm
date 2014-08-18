@@ -288,9 +288,11 @@ The number of tagged articles will replace that of the lust run in the tags' num
         self.locales = frozenset(self.SUPPORTED_LOCALES).intersection(
             self.args.locales)
 
-        non_supported_locales = self.args.locales - self.SUPPORTED_LOCALES
-        for locale in non_supported_locales:
-            print 'Warning: dropping unsupported locale: ', locale
+        non_supported_locales = frozenset(self.args.locales) - \
+                                    frozenset(self.SUPPORTED_LOCALES)
+
+        for locale_langcode in non_supported_locales:
+            print 'Warning: dropping unsupported locale: ', locale_langcode
 
         # if no supported locale is chosen fallback to en_US
         if not self.locales:
@@ -301,7 +303,7 @@ The number of tagged articles will replace that of the lust run in the tags' num
             self._ = self.translations.ugettext
             if self.args.create_webpages:
                 print "\n- Create web pages with locale: ", locale_langcode
-                Creator(self)
+                Creator(self, locale_langcode)
 
         #Save stats
         if self.args.create_webpages and self.args.save_stats:

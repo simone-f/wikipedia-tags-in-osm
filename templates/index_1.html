@@ -17,7 +17,7 @@
       </tr>
       <tr>
           {% endif %}
-        <td><a href="#{{ item.name }}"><img src="{{ "img/regions/" ~ item.name.lower() ~ ".png" }}">{{ item.name.replace("_", " ") }}</a></td>
+        <td><a href="#{{ item.name }}"><img src="{{root}}{{"img/regions/" ~ item.name.lower() ~ ".png" }}">{{ item.name.replace("_", " ") }}</a></td>
       {% endfor %}
       </tr>
     </table>
@@ -26,9 +26,9 @@
     {% for item in app.regions %}
 
     <!-- region -->
-    <h3><a href="#top">&#8593;</a><a id={{ item.name}}></a><img src="{{ "img/regions/" ~ item.name.lower() ~ ".png"}}" class="item_img"><a href="{{ "./subpages/" ~ item.name ~ ".html" }}" title="Visualizza pagina della regione">{{ item.name.replace("_", " ") }}</a></h3>
+    <h3><a href="#top">&#8593;</a><a id={{ item.name}}></a><img src="{{root}}{{"img/regions/" ~ item.name.lower() ~ ".png"}}" class="item_img"><a href="{{ "./subpages/" ~ item.name ~ ".html" }}" title="Visualizza pagina della regione">{{ item.name.replace("_", " ") }}</a></h3>
     <!-- list of categories -->
-    {{ macro.categoriesIndex(app, item, "regions", "home page", loop.index0) }}
+    {{ macro.categoriesIndex(app, item, "regions", "home page", loop.index0, root) }}
     {% endfor %}
   </div>
 {% endblock %}
