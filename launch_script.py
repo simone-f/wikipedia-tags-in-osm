@@ -283,25 +283,27 @@ The number of tagged articles will replace that of the lust run in the tags' num
         ifile.close()
 
         #Create webpages
+        if self.args.create_webpages:
+            # Restrict to the supported locales
+            self.locales = frozenset(self.SUPPORTED_LOCALES).intersection(
+                self.args.locales)
 
-        # Restrict to the supported locales
-        self.locales = frozenset(self.SUPPORTED_LOCALES).intersection(
-            self.args.locales)
+            non_supported_locales = frozenset(self.args.locales) - \
+                                        frozenset(self.SUPPORTED_LOCALES)
 
-        non_supported_locales = frozenset(self.args.locales) - \
-                                    frozenset(self.SUPPORTED_LOCALES)
+            for locale_langcode in non_supported_locales:
+                print 'Warning: dropping unsupported locale: {0}'.format(
+                       locale_langcode)
 
-        for locale_langcode in non_supported_locales:
-            print 'Warning: dropping unsupported locale: ', locale_langcode
+            # if no supported locale is chosen fallback to en_US
+            if not self.locales:
+                self.locales = frozenset(['en_US'])
 
-        # if no supported locale is chosen fallback to en_US
-        if not self.locales:
-            self.locales = frozenset(['en_US'])
-
-        for locale_langcode in self.locales:
-            self.translations = Translations.load("locale", [locale_langcode])
-            self._ = self.translations.ugettext
-            if self.args.create_webpages:
+            for locale_langcode in self.locales:
+                self.translations = Translations.load("locale",
+                                                      [locale_langcode]
+                                                      )
+                self._ = self.translations.ugettext
                 print "\n- Create web pages with locale: ", locale_langcode
                 Creator(self, locale_langcode)
 
@@ -427,7 +429,6 @@ The number of tagged articles will replace that of the lust run in the tags' num
         self.WIKIPEDIAANSWER = os.path.join(self.WIKIPEDIAANSWERS, "answer")
         # web pages dir
         self.HTMLDIR = 'html'
-        self.make_dir(os.path.join(self.HTMLDIR, "subpages"))
         self.make_dir(os.path.join(self.HTMLDIR, "GeoJSON"))
         self.make_dir(os.path.join(self.HTMLDIR, "json"))
         self.homePageTitle = "Articoli Wikipedia etichettabili in OSM"

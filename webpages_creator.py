@@ -285,7 +285,6 @@ class Creator():
         indexTemplate = env.get_template(htmlFile)
 
         code = indexTemplate.render(app=self.app,
-                                    pageType="Home page",
                                     root = '../',
                                     path = '/',
                                     filename = htmlFile,
@@ -297,9 +296,7 @@ class Creator():
         print " - render %s (regions)" % htmlFile
         indexTemplate = env.get_template(htmlFile)
 
-        # path is relative to root/locale, needs a trailing slash
         code = indexTemplate.render(app=self.app,
-                                    pageType="Home page",
                                     root = '../',
                                     path = '/',
                                     filename = htmlFile,
@@ -312,9 +309,7 @@ class Creator():
         htmlFile = "index_2.html"
         print " - render %s (map)" % htmlFile
         indexTemplate = env.get_template(htmlFile)
-        # path is relative to root/locale, needs a trailing slash
         code = indexTemplate.render(app=self.app,
-                                    pageType="Home page",
                                     root = '../',
                                     path = '/',
                                     filename = htmlFile,
@@ -325,9 +320,7 @@ class Creator():
         htmlFile = "index_3.html"
         print " - render %s (help)" % htmlFile
         helpTemplate = env.get_template(htmlFile)
-        # path is relative to root/locale, needs a trailing slash
         code = helpTemplate.render(app=self.app,
-                                   pageType="Home page",
                                    root = '../',
                                    path = '/',
                                    filename = htmlFile,
@@ -348,9 +341,7 @@ class Creator():
                 categoryTemplate = env.get_template('subpage.html')
                 filename = "%s.html" % category.name
 
-                # path is relative to root/locale, needs a trailing slash
                 category.html = categoryTemplate.render(app=self.app,
-                                                        pageType="sub page",
                                                         selectNonMappable=selectNonMappable,
                                                         helpers=helpers,
                                                         mode="themes",
@@ -368,9 +359,7 @@ class Creator():
             regionTemplate = env.get_template('subpage.html')
             filename = "%s.html" % region.name
 
-            # path is relative to root/locale, needs a trailing slash
             region.html = regionTemplate.render(app=self.app,
-                                                pageType="sub page",
                                                 selectNonMappable=selectNonMappable,
                                                 helpers=helpers,
                                                 mode="regions",
@@ -385,9 +374,7 @@ class Creator():
         print "  render errors page"
         errorsTemplate = env.get_template('errors.html')
 
-        # path is relative to root/locale, needs a trailing slash
         self.errorsHtml = errorsTemplate.render(app=self.app,
-                                                pageType="home page",
                                                 root = '../',
                                                 path = '/',
                                                 filename = 'errors.html',
@@ -396,9 +383,7 @@ class Creator():
         print "  render non_mappable page"
         nonMappableTemplate = env.get_template('non_mappable.html')
 
-        # path is relative to root/locale, needs a trailing slash
         self.nonMappableHtml = nonMappableTemplate.render(app=self.app,
-                                                          pageType="home page",
                                                           root = '../',
                                                           path = '/',
                                                           filename = 'non_mappable.html',
@@ -475,7 +460,11 @@ class Creator():
         self.save_file(self.nonMappableHtml, "non_mappable.html")
 
         if not self.app.args.nofx:
-            call("firefox html/index.html", shell=True)
+            call("firefox {0}".format(os.path.join("html",
+                                                   self.locale_langcode,
+                                                   "index.html")),
+                 shell=True
+                 )
 
     def save_file(self, text, fileName, subdir=None):
 
