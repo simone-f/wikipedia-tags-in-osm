@@ -12,15 +12,15 @@
     <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- MarkerCluster CSS and JS -->
-    <link rel="stylesheet" href="./css/screen.css" />
-    <link rel="stylesheet" href="./css/MarkerCluster.css" />
-    <link rel="stylesheet" href="./css/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="{{root}}css/screen.css" />
+    <link rel="stylesheet" href="{{root}}css/MarkerCluster.css" />
+    <link rel="stylesheet" href="{{root}}css/MarkerCluster.Default.css" />
     <!--[if lte IE 8]><link rel="stylesheet" href="../dist/MarkerCluster.Default.ie.css" /><![endif]-->
-    <script type="text/javascript"  src="js/leaflet.markercluster-src.js"></script>
+    <script type="text/javascript"  src="{{root}}js/leaflet.markercluster-src.js"></script>
     <!-- Labelling CSS and JS -->
-    <link rel="stylesheet" href="./css/leaflet.label.css" />
-    <script type="text/javascript" src="./js/leaflet.label.js"></script>
-    <script type="text/javascript" src="./GeoJSON/coords.js"></script>
+    <link rel="stylesheet" href="{{root}}css/leaflet.label.css" />
+    <script type="text/javascript" src="{{root}}js/leaflet.label.js"></script>
+    <script type="text/javascript" src="{{root}}GeoJSON/coords.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -29,7 +29,7 @@
       <p><b>Clicca</b> su un articolo per visitarne la pagina o mapparlo/taggarlo tramite il link per JOSM/iD (coordinate tratte da Wikipedia).<br>Se un articolo non è mappabile in OSM, ad es. il luogo in cui si è svolto un evento storico, segnalalo come tale, affinché venga rimosso (vedi pagina "Aiuto").</p>
     </div>
     <div id="map"></div>
-   <script type="text/javascript" src="./js/map.js"></script>
+   <script type="text/javascript" src="{{root}}js/map.js"></script>
    <!-- <div class="overlay">Articoli da taggare: <script type="application/x-javascript">document.write(coords.features.length);</script></div> -->
   </div>
 {% endblock %}

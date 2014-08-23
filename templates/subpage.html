@@ -50,7 +50,7 @@
 {% if mode == "themes" %}
 <h2><a id="index"></a>{{ helpers.wikipedia_link(item) }} ({{ item.progress["allMArticles"]["string"] }})</h2>
 {% else %}
-<h2><img src="../img/regions/{{ item.name.lower() }}.png" class="item_img"><a id="index"></a>{{ item.name.replace("_", " ") }}</h2>
+<h2><img src="{{root}}img/regions/{{ item.name.lower() }}.png" class="item_img"><a id="index"></a>{{ item.name.replace("_", " ") }}</h2>
 {% endif %}
 
 {%if selectNonMappable %}
@@ -63,14 +63,14 @@
 </div>
 {% endif %}
 <!-- Legenda -->
-<p><a href="javascript:showHideDiv('legenda');"><img src="../img/info.png" class="infoImg"> {% trans %}Legenda{% endtrans %}</a></p>
+<p><a href="javascript:showHideDiv('legenda');"><img src="{{root}}img/info.png" class="infoImg"> {% trans %}Legenda{% endtrans %}</a></p>
 {{ macro.legenda(pageType="sub page") }}
 
 <!-- Index -->
 {% if mode == "themes" and item.articles != [] and item.titles == [] %}
   <div class="showHideNonMappable"><a href='javascript:showHideNonMappable("{{ item.ident }}_index");' title="{% trans %}Show non mappable categories{% endtrans %}">{% trans %}Show non mappable{% endtrans %}</a></div>
 {% endif %}
-{{ macro.categoriesIndex(app, item, mode, "sub page", 0) }}
+{{ macro.categoriesIndex(app, item, mode, "sub page", 0, root) }}
 
 <!-- Articles -->
 {# h3 #}

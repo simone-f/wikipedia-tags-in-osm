@@ -17,7 +17,7 @@
       </tr>
       <tr>
           {% endif %}
-        <td><a href="#{{ item.name }}"><img src="img/themes/{{ item.name.lower() }}.png">{{ item.name.replace("_", " ") }}</a></td>
+        <td><a href="#{{ item.name }}"><img src="{{root}}img/themes/{{ item.name.lower() }}.png" />{{ item.name.replace("_", " ") }}</a></td>
       {% endfor %}
       </tr>
     </table>
@@ -26,9 +26,9 @@
     {% for item in app.themes %}
 
     <!-- theme -->
-    <h3><a href="#top">&#8593;</a><a id="{{ item.name }}"></a><img src="{{ "img/themes/" ~ item.name.lower() ~ ".png" }}" class="item_img">{{ item.name.replace("_", " ") }}</h3>
+    <h3><a href="#top">&#8593;</a><a id="{{ item.name }}"></a><img src="{{root}}{{"img/themes/" ~ item.name.lower() ~ ".png" }}" class="item_img" />{{ item.name.replace("_", " ") }}</h3>
     <!-- list of categories -->
-    {{ macro.categoriesIndex(app, item, "themes", "home page", loop.index0) }}
+    {{ macro.categoriesIndex(app, item, "themes", "home page", loop.index0, root) }}
     {% endfor %}
   </div>
 {% endblock %}

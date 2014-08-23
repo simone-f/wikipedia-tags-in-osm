@@ -1,9 +1,5 @@
 {% macro legenda(pageType, display="none") %}
-{% if pageType == "home page" %}
-{% set imgPath = "./img" %}
-{% else %}
-{% set imgPath = "../img" %}
-{% endif %}
+
 <div id="legenda" style="display:{{ display }}">
   <table id="legend">
     <tr><td class="index_done100"></td><td colspan="2">100% articoli taggati</td></tr>
@@ -14,29 +10,29 @@
     <tr><td class="index_done0"></td><td colspan="2">0% articoli taggati</td></tr>
     <tr>
         <td rowspan="4" class="legendIcon">Oggetto taggato,<br>niente da fare<br>:-)</td>
-        <td class="legendIcon"><img src="{{ imgPath }}/wiwosm.png"></td><td>Vedi l'oggetto sulla mappa Wikipedia</td>
+        <td class="legendIcon"><img src="{{root}}img/wiwosm.png"></td><td>Vedi l'oggetto sulla mappa Wikipedia</td>
     <tr>
-        <td class="legendIcon"><img src="{{ imgPath }}/josm.png"></td><td>Scarica l'oggetto in JOSM</td>
+        <td class="legendIcon"><img src="{{root}}img/josm.png"></td><td>Scarica l'oggetto in JOSM</td>
     </tr>
     <tr>
-        <td class="legendIcon"><img src="{{ imgPath }}/osm.png"></td><td>Vedi la pagina OSM dell'oggetto</td>
+        <td class="legendIcon"><img src="{{root}}img/osm.png"></td><td>Vedi la pagina OSM dell'oggetto</td>
     </tr>
     <tr>
-        <td class="legendIcon"><img src="{{ imgPath }}/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td>
+        <td class="legendIcon"><img src="{{root}}img/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td>
     </tr>
     <tr>
         <td rowspan="4" class="legendIcon">Qualcosa da fare<br>:-(</td>
-        <td class="legendIcon"><img src="{{ imgPath }}/add-tags.png"></td><td>Cerca in OSM possibili oggetti corrispondenti agli articoli e taggali facilmente tramite lo strumento <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a></td>
+        <td class="legendIcon"><img src="{{root}}img/add-tags.png"></td><td>Cerca in OSM possibili oggetti corrispondenti agli articoli e taggali facilmente tramite lo strumento <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a></td>
     </tr>
     <tr>
-        <td class="legendIcon"><img src="{{ imgPath }}/no_template.png"></td><td>All'articolo su Wikipedia manca il <a href="https://it.wikipedia.org/wiki/Template%3ACoord" target="_blank">template Coord</a>. Clicca su un'icona per ulteriori informazioni</td>
+        <td class="legendIcon"><img src="{{root}}img/no_template.png"></td><td>All'articolo su Wikipedia manca il <a href="https://it.wikipedia.org/wiki/Template%3ACoord" target="_blank">template Coord</a>. Clicca su un'icona per ulteriori informazioni</td>
     </tr>
     <tr>
-        <td class="legendIcon" nowrap><img src="{{ imgPath }}/josm_load_and_zoom.png"><img src="{{ imgPath }}/id.png"></td>
+        <td class="legendIcon" nowrap><img src="{{root}}img/josm_load_and_zoom.png"><img src="{{root}}img/id.png"></td>
         <td>L'articolo non è taggato ma Wikipedia ne conosce la posizione. Clicca sull'icona per zoomare con l'editor JOSM / iD sulla posizione conosciuta e trovare più facilmente l'oggetto da taggare</td>
     </tr>
     <tr>
-        <td class="legendIcon" nowrap><img src="{{ imgPath }}/josm_load_and_zoom_blue.png"><img src="{{ imgPath }}/id_blue.png"></td>
+        <td class="legendIcon" nowrap><img src="{{root}}img/josm_load_and_zoom_blue.png"><img src="{{root}}img/id_blue.png"></td>
         <td>L'articolo non è taggato ma ne è stata calcolata la posizione approssimata tramite i contenuti dell'articolo e <a href="https://github.com/SpazioDati/Nuts4Nuts" target="_blank">Nuts4Nuts</a>. Clicca sull'icona per aprire JOSM alla posizione conosciuta e trovare più facilmente l'oggetto da taggare</td>
     </tr>
   </table>
@@ -72,7 +68,7 @@ done{% if item.progress[mode]["num"] == 0.0 %}
     {% endif %}
 {%- endmacro %}
 
-{% macro categoriesIndex(app, item, mode, pageType, tableIndex) %}
+{% macro categoriesIndex(app, item, mode, pageType, tableIndex, root) %}
   {% if mode == "themes" and pageType == "home page" %}
     {% set subcategories = item.categories %}
   {% else %}
@@ -91,16 +87,11 @@ done{% if item.progress[mode]["num"] == 0.0 %}
         {% else %}
         <th></th>
         {% endif %}
-        {% if pageType == "home page" %}
-          {% set root = "./" %}
-        {% else %}
-          {% set root = "../" %}
-        {% endif %}
         {% if app.args.show_link_to_wikipedia_coordinates %}
-        <th><img src="{{ root }}img/josm_load_and_zoom.png" title="Articoli non taggati ma di cui si conosce la posizione"></th>
+        <th><img src="{{root}}img/josm_load_and_zoom.png" title="Articoli non taggati ma di cui si conosce la posizione"></th>
         {% endif %}
         {% if app.args.show_missing_templates %}
-        <th><img src="{{ root }}img/no_template.png" title="Articoli taggati ma senza template Coord in Wikipedia"></th>
+        <th><img src="{{root}}img/no_template.png" title="Articoli taggati ma senza template Coord in Wikipedia"></th>
         {% endif %}
       </tr>
     </thead>
