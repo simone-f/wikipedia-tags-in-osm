@@ -97,7 +97,7 @@ class App:
         parser.add_argument("-s", "--save_stats",
                             help="If web pages have been created, store the updated number of tagged articles (default: ask to user).",
                             action="store_true")
-        parser.add_argument("--fx",
+        parser.add_argument("--browser",
                             help="Open the web pages with the system browser after creation.",
                             action="store_true")
         parser.add_argument("--copy",
@@ -308,7 +308,7 @@ The number of tagged articles will replace that of the lust run in the tags' num
                 print "\n- Create web pages with locale: ", locale_langcode
                 Creator(self, locale_langcode)
 
-                if self.args.fx:
+                if self.args.browser:
                     url = os.path.join('html', locale_langcode, 'index.html')
                     # using .get() suppress stdout output from browser, won't
                     # suppress stderr
