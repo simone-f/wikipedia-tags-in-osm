@@ -459,12 +459,6 @@ class Creator():
         # non_mapable page
         self.save_file(self.nonMappableHtml, "non_mappable.html")
 
-        if not self.app.args.nofx:
-            call("firefox {0}".format(os.path.join("html",
-                                                   self.locale_langcode,
-                                                   "index.html")),
-                 shell=True
-                 )
 
     def save_file(self, text, fileName, subdir=None):
 

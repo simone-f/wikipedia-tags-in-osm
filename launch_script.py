@@ -35,6 +35,7 @@ import csv
 import ConfigParser
 import sys
 import json
+import webbrowser
 from babel.support import Translations
 
 #local imports
@@ -96,8 +97,8 @@ class App:
         parser.add_argument("-s", "--save_stats",
                             help="If web pages have been created, store the updated number of tagged articles (default: ask to user).",
                             action="store_true")
-        parser.add_argument("--nofx",
-                            help="Do not automatically open the web pages with Firefox after creation.",
+        parser.add_argument("--browser",
+                            help="Open the web pages with the system browser after creation.",
                             action="store_true")
         parser.add_argument("--copy",
                             help="Copy html folder to the directory configured on `config.cfg` (eg. dropbox dir).",
@@ -286,7 +287,7 @@ The number of tagged articles will replace that of the lust run in the tags' num
         if self.args.create_webpages:
             # Restrict to the supported locales
             self.locales = frozenset(self.SUPPORTED_LOCALES).intersection(
-                self.args.locales)
+                frozenset(self.args.locales))
 
             non_supported_locales = frozenset(self.args.locales) - \
                                         frozenset(self.SUPPORTED_LOCALES)
@@ -307,15 +308,18 @@ The number of tagged articles will replace that of the lust run in the tags' num
                 print "\n- Create web pages with locale: ", locale_langcode
                 Creator(self, locale_langcode)
 
-        #Save stats
-        if self.args.create_webpages and self.args.save_stats:
-            answer = "y"
-        else:
-            answer = raw_input("\n- Should I save the number of tagged/to be tagged articles in `./data/stats/stats.csv`?\n  [y/N]\n")
-        if answer in ("y", "Y"):
-            self.save_stats_to_csv()
-        else:
-            print "\nNew numbers will not been saved."
+                if self.args.browser:
+                    url = os.path.join('html', locale_langcode, 'index.html')
+                    # using .get() suppress stdout output from browser, won't
+                    # suppress stderr
+                    webbrowser.get().open_new(url)
+
+            #Save stats
+            if self.args.save_stats:
+                self.save_stats_to_csv()
+                print "\nNew stats have been saved."
+            else:
+                print "\nNo stats saved."
 
         #Copy files from html dir to outdir (for example a Dropbox directory)
         if self.args.copy:
