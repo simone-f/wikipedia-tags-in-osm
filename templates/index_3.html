@@ -18,7 +18,7 @@
 
     <table class="noborder">
       <tr>
-        <td style="vertical-align:top"><img src="img/iD_logo.svg" width="48px"></img></td>
+        <td style="vertical-align:top"><img src="{{ root }}img/iD_logo.png" width="48px"></td>
         <td>{% trans %}Add tags with <b><a href="http://ideditor.com/"target="_blank">iD</a></b> editor, like shown in these tutorials:{% endtrans %}</td>
       </tr>
       <tr>
@@ -34,7 +34,7 @@
 
     <table class="noborder">
       <tr>
-        <td style="vertical-align:top"><img src="img/JOSM_logo.png"></img></td>
+        <td style="vertical-align:top"><img src="{{ root }}img/JOSM_logo.png"></td>
         <td>{% trans %}It you use <b><a href="http://wiki.openstreetmap.org/wiki/IT:JOSM" target="_blank">JOSM</a></b> you can procede in a similar same way, and also use these two tools:{% endtrans %}</td>
       </tr>
       <tr>
@@ -42,7 +42,7 @@
         <td>
           <ul>
             <li>{% trans %}<a href="http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia" target="_blank">Plugin Wikipedia</a>. Hint: copy a category name from a table and paste it into the plugin.{% endtrans %}</li>
-            <li>{% trans %}<a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a>. Hint: you can easily use this tool by clicking on these icons <img src="./img/add-tags.png"> on the pages.{% endtrans %}</li>
+            <li>{% trans %}<a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a>. Hint: you can easily use this tool by clicking on these icons <img src="{{ root }}img/add-tags.png"> on the pages.{% endtrans %}</li>
           </ul>
         </td>
       </tr>
@@ -51,6 +51,6 @@
     <!-- Legenda -->
     <h2>{% trans %}Tables' legend{% endtrans %}</h2>
     <p>{% trans %}Colors and symbols in tables.{% endtrans %}</p>
-    {{ macro.legenda(pageType="home page", display="") }}
+    {{ macro.legenda(root, "") }}
   </div>
 {% endblock %}

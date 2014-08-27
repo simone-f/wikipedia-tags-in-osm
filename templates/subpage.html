@@ -64,7 +64,7 @@
 {% endif %}
 <!-- Legenda -->
 <p><a href="javascript:showHideDiv('legenda');"><img src="{{root}}img/info.png" class="infoImg"> {% trans %}Legenda{% endtrans %}</a></p>
-{{ macro.legenda(pageType="sub page") }}
+{{ macro.legenda(root) }}
 
 <!-- Index -->
 {% if mode == "themes" and item.articles != [] and item.titles == [] %}
