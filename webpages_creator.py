@@ -350,6 +350,7 @@ class Creator():
                                                         filename = filename,
                                                         item=category)
                 category.html = category.html.replace('{{root}}', '../../')
+                category.html = category.html.replace('{root}', '../../')
 
         print "  render regions subpages"
         #regions (subpages)
@@ -369,6 +370,7 @@ class Creator():
                                                 item=region)
 
             region.html = region.html.replace('{{root}}', '../../')
+            region.html = region.html.replace('{root}', '../../')
 
         #Create errors page
         print "  render errors page"
