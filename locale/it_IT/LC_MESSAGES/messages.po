@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-28 20:54+0200\n"
+"POT-Creation-Date: 2014-08-28 21:21+0200\n"
 "PO-Revision-Date: 2014-08-13 21:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: it_IT <LL@li.org>\n"
@@ -195,33 +195,22 @@ msgstr ""
 #: templates/index_3.html:23
 #, fuzzy
 msgid ""
-"Add tags with <b><a "
-"href=\"http://ideditor.com/\"target=\"_blank\">iD</a></b> editor, like "
-"shown in these tutorials:"
+"Add tags with <b><a href=\"http://ideditor.com/\" "
+"target=\"_blank\">iD</a></b> editor, like shown in these tutorials:"
 msgstr ""
 "Aggiungi i tag tramite l'editor <b><a href=\"http://ideditor.com/\" "
 "target=\"_blank\">iD</a></b> come mostrato in questi due tutorial:"
 
 #: templates/index_3.html:29
 #, fuzzy
-msgid ""
-"from <a "
-"href=\"https://www.youtube.com/watch?v=lCJOvFk8sTc&feature=youtu.be&hd=1\""
-" target=\"_blank\">tables</a>"
-msgstr ""
-"from <a "
-"href=\"https://www.youtube.com/watch?v=lCJOvFk8sTc&feature=youtu.be&hd=1\""
-" target=\"_blank\">tables</a>"
+msgid "From articles tables"
+msgstr "dalle tabelle di articoli"
 
-#: templates/index_3.html:30
-msgid ""
-"from the <a href=\"https://www.youtube.com/watch?v=_2ouZ7jK5TE\" "
-"target=\"_blank\">map</a>"
-msgstr ""
-"dalla <a href=\"https://www.youtube.com/watch?v=_2ouZ7jK5TE\" "
-"target=\"_blank\">mappa</a>"
+#: templates/index_3.html:33
+msgid "From the map"
+msgstr "dalla mappa"
 
-#: templates/index_3.html:39
+#: templates/index_3.html:41
 #, fuzzy
 msgid ""
 "If you use <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
@@ -232,7 +221,7 @@ msgstr ""
 " target=\"_blank\">JOSM</a></b>, oltre alle procedure dei video, puoi "
 "usare questi due strumenti:"
 
-#: templates/index_3.html:45
+#: templates/index_3.html:47
 msgid ""
 "<a href=\"http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia\" "
 "target=\"_blank\">Plugin Wikipedia</a>. Hint: copy a category name from a"
@@ -242,7 +231,7 @@ msgstr ""
 "target=\"_blank\">Plugin Wikipedia</a>. Suggerimento: copia dalle tabelle"
 " il nome di una categoria ed incollalo nel plugin."
 
-#: templates/index_3.html:46
+#: templates/index_3.html:48
 msgid ""
 "<a href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl"
 "/Add-tags\" target=\"_blank\">add-tags</a>. Hint: you can easily use this"
@@ -252,11 +241,11 @@ msgstr ""
 "/Add-tags\" target=\"_blank\">add-tags</a>. Suggeriemnto: puoi usare "
 "questo servizio anche cliccando su queste icone"
 
-#: templates/index_3.html:53
+#: templates/index_3.html:55
 msgid "Tables' legend"
 msgstr "Legenda tabelle"
 
-#: templates/index_3.html:54
+#: templates/index_3.html:56
 msgid "Colors and symbols in tables."
 msgstr "Colori e simboli nelle tabelle."
 
@@ -605,7 +594,4 @@ msgstr "Visualizza articoli non mappabili"
 #: templates/subpage.html:107
 msgid "Show also non mappable categories and articles"
 msgstr "Mostra anche categorie ed articoli non mappabili"
-
-#~ msgid ""
-#~ msgstr ""
 
