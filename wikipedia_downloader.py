@@ -121,7 +121,7 @@ def read_old_templates_status(app):
             title = title.decode("utf-8")
             templatesStatus[title] = status
         inFile.close()
-    print "  Senza template:", len([i for i in templatesStatus.values() if i == "False"])
+    print "  Without template:", len([i for i in templatesStatus.values() if i == "False"])
     return templatesStatus
 
 
@@ -251,7 +251,7 @@ def add_wikipedia_coordinates(app):
     for theme in app.themes:
         for category in theme.categories:
             category.check_articles_coords_in_wikipedia()
-    print "  articoli:", len(app.titlesWithCoordsFromWikipedia)
+    print "  articles:", len(app.titlesWithCoordsFromWikipedia)
 
 
 def download_and_filter_wikipedia_coordinates(app):

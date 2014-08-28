@@ -221,7 +221,7 @@ def infer_coordinates_with_nuts4nuts(app):
             category.check_articles_coords_from_nuts4nuts()
 
     app.coordsFromNuts4Nuts = list(set(app.coordsFromNuts4Nuts))
-    print "  articoli:", len(app.coordsFromNuts4Nuts)
+    print "  articles:", len(app.coordsFromNuts4Nuts)
 
 
 if __name__ == '__main__':

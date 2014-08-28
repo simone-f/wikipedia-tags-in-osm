@@ -2,38 +2,44 @@
 
 <div id="legenda" style="display:{{ display }}">
   <table id="legend">
-    <tr><td class="index_done100"></td><td colspan="2">100% articoli taggati</td></tr>
-    <tr><td class="index_done099"></td><td colspan="2">99% articoli taggati</td></tr>
-    <tr><td class="index_done075"></td><td colspan="2">75% articoli taggati</td></tr>
-    <tr><td class="index_done050"></td><td colspan="2">50% articoli taggati</td></tr>
-    <tr><td class="index_done025"></td><td colspan="2">25% articoli taggati</td></tr>
-    <tr><td class="index_done0"></td><td colspan="2">0% articoli taggati</td></tr>
+    <tr><td class="index_done100"></td><td colspan="2">100% {% trans %}articles tagged{% endtrans %}</td></tr>
+    <tr><td class="index_done099"></td><td colspan="2">99% {% trans %}articles tagged{% endtrans %}</td></tr>
+    <tr><td class="index_done075"></td><td colspan="2">75% {% trans %}articles tagged{% endtrans %}</td></tr>
+    <tr><td class="index_done050"></td><td colspan="2">50% {% trans %}articles tagged{% endtrans %}</td></tr>
+    <tr><td class="index_done025"></td><td colspan="2">25% {% trans %}articles tagged{% endtrans %}</td></tr>
+    <tr><td class="index_done0"></td><td colspan="2">0% {% trans %}articles tagged{% endtrans %}</td></tr>
     <tr>
-        <td rowspan="4" class="legendIcon">Oggetto taggato,<br>niente da fare<br>:-)</td>
-        <td class="legendIcon"><img src="{{root}}img/wiwosm.png"></td><td>Vedi l'oggetto sulla mappa Wikipedia</td>
+        <td rowspan="4" class="legendIcon">{% trans %}Tagged object,<br>nothing to do{% endtrans %}<br>:-)</td>
+        <td class="legendIcon"><img src="{{root}}img/wiwosm.png"></td>
+        <td>{% trans %}Watch the object on Wikipedia map (WIWOSM){% endtrans %}</td>
     <tr>
-        <td class="legendIcon"><img src="{{root}}img/josm.png"></td><td>Scarica l'oggetto in JOSM</td>
+        <td class="legendIcon"><img src="{{root}}img/josm.png"></td>
+        <td>{% trans %}Download the object in JOSM{% endtrans %}</td>
     </tr>
     <tr>
-        <td class="legendIcon"><img src="{{root}}img/osm.png"></td><td>Vedi la pagina OSM dell'oggetto</td>
+        <td class="legendIcon"><img src="{{root}}img/osm.png"></td>
+        <td>{% trans %}Go to OSM web page of this object{% endtrans %}</td>
     </tr>
     <tr>
-        <td class="legendIcon"><img src="{{root}}img/Overpass-turbo.png"></td><td>Vedi gli oggetti su Overpass Turbo (mappa cliccabile, esporta come immagine...)</td>
+        <td class="legendIcon"><img src="{{root}}img/Overpass-turbo.png"></td>
+        <td>{% trans %}Watch the objects on Overpass Turbo (clickable map, export as image...{% endtrans %}</td>
     </tr>
     <tr>
-        <td rowspan="4" class="legendIcon">Qualcosa da fare<br>:-(</td>
-        <td class="legendIcon"><img src="{{root}}img/add-tags.png"></td><td>Cerca in OSM possibili oggetti corrispondenti agli articoli e taggali facilmente tramite lo strumento <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a></td>
+        <td rowspan="4" class="legendIcon">{% trans %}There is something to do{% endtrans %}<br>:-(</td>
+        <td class="legendIcon"><img src="{{root}}img/add-tags.png"></td>
+        <td>{% trans %}Search in OSM the objects possibly related to these articles and automatically tag them through <a href="http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags" target="_blank">add-tags</a> tool{% endtrans %}</td>
     </tr>
     <tr>
-        <td class="legendIcon"><img src="{{root}}img/no_template.png"></td><td>All'articolo su Wikipedia manca il <a href="https://it.wikipedia.org/wiki/Template%3ACoord" target="_blank">template Coord</a>. Clicca su un'icona per ulteriori informazioni</td>
+        <td class="legendIcon"><img src="{{root}}img/no_template.png"></td>
+        <td>{% trans %}The Wikipedia article is missing the <a href="https://it.wikipedia.org/wiki/Template%3ACoord" target="_blank">Coord template</a>. Click on the icon for more information{% endtrans %}</td>
     </tr>
     <tr>
-        <td class="legendIcon" nowrap><img src="{{root}}img/josm_load_and_zoom.png"><img src="{{root}}img/id.png"></td>
-        <td>L'articolo non è taggato ma Wikipedia ne conosce la posizione. Clicca sull'icona per zoomare con l'editor JOSM / iD sulla posizione conosciuta e trovare più facilmente l'oggetto da taggare</td>
+        <td class="legendIcon" nowrap><img src="{{root}}img/josm_load_and_zoom.png"><img src="{{ root }}img/id.png"></td>
+        <td>{% trans %}The article is not tagged but Wikipadia knows its position. Click on the icon for zooming with JOSM/iD editor on the knows position and find more easily the object to tag{% endtrans %}</td>
     </tr>
     <tr>
-        <td class="legendIcon" nowrap><img src="{{root}}img/josm_load_and_zoom_blue.png"><img src="{{root}}img/id_blue.png"></td>
-        <td>L'articolo non è taggato ma ne è stata calcolata la posizione approssimata tramite i contenuti dell'articolo e <a href="https://github.com/SpazioDati/Nuts4Nuts" target="_blank">Nuts4Nuts</a>. Clicca sull'icona per aprire JOSM alla posizione conosciuta e trovare più facilmente l'oggetto da taggare</td>
+        <td class="legendIcon" nowrap><img src="{{root}}img/josm_load_and_zoom_blue.png"><img src="{{ root }}img/id_blue.png"></td>
+        <td>{% trans %}The article is not tagged but its position has been calculated through the article's contents and <a href="https://github.com/SpazioDati/Nuts4Nuts" target="_blank">Nuts4Nuts</a>. Click on the icon to zoom with JOSM/iD to the known position and find more easily the object to tag"{% endtrans %}</td>
     </tr>
   </table>
 </div>
@@ -83,15 +89,15 @@ done{% if item.progress[mode]["num"] == 0.0 %}
       <tr>
         <th></th>
         {% if tableIndex == 0 %}
-        <th>Numero di articoli<br>taggati / totale</th>
+        <th>{% trans %}Number of tagged articles / all{% endtrans %}</th>
         {% else %}
         <th></th>
         {% endif %}
         {% if app.args.show_link_to_wikipedia_coordinates %}
-        <th><img src="{{root}}img/josm_load_and_zoom.png" title="Articoli non taggati ma di cui si conosce la posizione"></th>
+        <th><img src="{{root}}img/josm_load_and_zoom.png" title="{% trans %}Non tagged articles whose position is known{% endtrans %}"></th>
         {% endif %}
         {% if app.args.show_missing_templates %}
-        <th><img src="{{root}}img/no_template.png" title="Articoli taggati ma senza template Coord in Wikipedia"></th>
+        <th><img src="{{root}}img/no_template.png" title="{% trans %}Tagged articles which are missing Coord template on Wikipedia{% endtrans %}"></th>
         {% endif %}
       </tr>
     </thead>
@@ -108,9 +114,9 @@ done{% if item.progress[mode]["num"] == 0.0 %}
           {% if app.args.show_missing_templates %}
             {% set colspan = colspan + 1 %}
           {% endif %}
-        <td class="non_mappable" colspan="{{ colspan }}">- <a href="#Articles">Articoli</a></td>
+        <td class="non_mappable" colspan="{{ colspan }}">- <a href="#Articles">{% trans %}Articles{% endtrans %}</a></td>
         {% else %}
-        <td>- <a href="#Articles">Articoli</a></td>
+        <td>- <a href="#Articles">{% trans %}Articles{% endtrans %}</a></td>
         {% endif %}
         {# progress #}
         {% if item.titles|length != 0 %}
@@ -137,7 +143,7 @@ done{% if item.progress[mode]["num"] == 0.0 %}
           {% set link = "#" ~ subcategory.name %}
         {% endif %}
         {% if subcategory.isMappable %}
-        <td>- <a href="{{ link }}" title="Vedi pagina">{{ subcategory.name.replace("_", " ") }}</a></td>
+        <td>- <a href="{{ link }}" title="{% trans %}See page{% endtrans %}">{{ subcategory.name.replace("_", " ") }}</a></td>
         {% else %}
           {% set colspan = 2 %}
           {% if app.args.show_link_to_wikipedia_coordinates %}
@@ -146,7 +152,7 @@ done{% if item.progress[mode]["num"] == 0.0 %}
           {% if app.args.show_missing_templates %}
             {% set colspan = colspan + 1 %}
           {% endif %}
-        <td class="non_mappable" colspan="{{ colspan }}">- <a href="{{ link }}" title="Vedi pagina">{{ subcategory.name.replace("_", " ") }}</a></td>
+        <td class="non_mappable" colspan="{{ colspan }}">- <a href="{{ link }}" title="{% trans %}See page{% endtrans %}">{{ subcategory.name.replace("_", " ") }}</a></td>
         {% endif %}
         {# Progress #}
         {% if subcategory.isMappable %}

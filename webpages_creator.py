@@ -71,7 +71,7 @@ class Helpers:
         url = "http://localhost:8111/"
         if mode == "download":
             url += "import?url=http://overpass.osm.rambler.ru/cgi/interpreter?data=" + data
-            title = "Scarica in JOSM"
+            title = self.app._("Download in JOSM")
         elif mode == "load_and_zoom":
             left = data[1] - 0.0005
             right = data[1] + 0.0005
@@ -113,7 +113,7 @@ class Helpers:
         #create links to OSM web pages
         for osmId in osmIds:
             url = "http://www.openstreetmap.org/browse/%s/%s" % (osmTypeAbbr[osmId[0]], osmId[1:])
-            link = self.url_to_link(url, "%s" % "Vedi pagina OSM", osmId[1:])
+            link = self.url_to_link(url, "%s" % self.app._("Go to OSM web page of this object"), osmId[1:])
             links[osmTypeAbbr[osmId[0]] + "s"].append(link)
         osmIdsString = ""
         for osmType, linksList in links.iteritems():
@@ -400,9 +400,9 @@ class Creator():
         """
         red = "#cc0000"
         green = "#00cc7a"
-        modes = [("to do", "Da mappare"),
-                 ("mapped", "Mappati"),
-                 ("total", "Totali")]
+        modes = [("to do", self.app._("Still to tag")),
+                 ("mapped", self.app._("Tagged")),
+                 ("total", self.app._("Total"))]
 
         #days for stats
         if len(self.app.dates) >= 11:
@@ -412,7 +412,7 @@ class Creator():
             dates = self.app.dates
             days = self.app.days
 
-        rows = [["Articoli"] + dates]
+        rows = [[self.app._("Articles")] + dates]
         for mode, description in modes:
             row = []
             row.append(description)

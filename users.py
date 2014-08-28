@@ -64,7 +64,7 @@ run, and count the tags"
     def print_users_warning(self):
         print "  To show the mappers list, it is necessary to have \
 the tags lists of at least two days. Untill then, \
-listathe mappers list will not be shown on the web pages. The tags have been saved \
+the mappers list will not be shown on the web pages. The tags have been saved \
 to `data/OSM/tags.csv`."
 
     def read_old_tags_per_user(self, today):

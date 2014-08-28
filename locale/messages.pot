@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-13 21:30+0200\n"
+"POT-Creation-Date: 2014-08-28 20:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,10 @@ msgstr ""
 msgid "See {0}: {1}"
 msgstr ""
 
+#: webpages_creator.py:74
+msgid "Download in JOSM"
+msgstr ""
+
 #: webpages_creator.py:81
 msgid "Zoom with JOSM nearby the object that must be tagged"
 msgstr ""
@@ -41,32 +45,59 @@ msgstr ""
 msgid "View as clickable map, image... (Overpass Turbo)"
 msgstr ""
 
-#: webpages_creator.py:136
+#: webpages_creator.py:116 templates/macros.html:21
+msgid "Go to OSM web page of this object"
+msgstr ""
+
+#: webpages_creator.py:132
 msgid "Wikipedia page is missing the coordinates' template"
 msgstr ""
 
-#: webpages_creator.py:175
+#: webpages_creator.py:171
 msgid "Search objects by name and add tag them automatically (WIWOSM add-tags)"
 msgstr ""
 
-#: webpages_creator.py:200
+#: webpages_creator.py:196
 msgid "See Wikipedia map (WIWOSM)"
 msgstr ""
 
-#: webpages_creator.py:209
+#: webpages_creator.py:205
 msgid "See OSM web page"
+msgstr ""
+
+#: webpages_creator.py:403
+msgid "Still to tag"
+msgstr ""
+
+#: webpages_creator.py:404
+msgid "Tagged"
+msgstr ""
+
+#: webpages_creator.py:405
+msgid "Total"
+msgstr ""
+
+#: webpages_creator.py:415 templates/macros.html:117 templates/macros.html:119
+#: templates/subpage.html:61 templates/subpage.html:79
+#: templates/subpage.html:81
+msgid "Articles"
 msgstr ""
 
 #: templates/base.html:5 templates/index_base.html:11
 msgid "Wikipedia articles which can be mapped in OpenStreetMap"
 msgstr ""
 
-#: templates/base.html:19
+#: templates/base.html:14
 msgid "Update time"
 msgstr ""
 
-#: templates/base.html:21
+#: templates/base.html:16
 msgid "Update time of articles in category"
+msgstr ""
+
+#: templates/errors.html:16 templates/non_mappable.html:171
+#: templates/subpage.html:47
+msgid "All categories"
 msgstr ""
 
 #: templates/errors.html:18
@@ -95,17 +126,30 @@ msgid ""
 "target=\"_blank\">the Wiki</a> suggests to do not use them"
 msgstr ""
 
-#: templates/index_3.html:12
+#: templates/index_1.html:30
+msgid "Go to region's page"
+msgstr ""
+
+#: templates/index_2.html:30
+msgid ""
+"<b>Click</b> on an article to visit its page or to map/tag it through the"
+" JOSM/iD link (coordinates are taken form Wikipedia).<br>If an article is"
+" not mappable in OSM, e.g. the place where an historical event took "
+"place, report it to the administrators so that it can be removed (see "
+"\"Help\" page)."
+msgstr ""
+
+#: templates/index_3.html:13
 msgid "What do to"
 msgstr ""
 
-#: templates/index_3.html:14
+#: templates/index_3.html:15
 msgid ""
 "<b>Add the tag</b> to the object in OSM, leaving empty spaces between "
 "words, es.<b>\"wikipedia=en:Article's title\"</b>"
 msgstr ""
 
-#: templates/index_3.html:15
+#: templates/index_3.html:16
 msgid ""
 "<b>Just one language</b>. If the article is already tagged in a foreign "
 "language a new tag is not needed (see <a "
@@ -113,7 +157,7 @@ msgid ""
 "exceptions</a> on OSM Wiki)."
 msgstr ""
 
-#: templates/index_3.html:16
+#: templates/index_3.html:17 templates/index_base.html:58
 msgid ""
 "<b>Non mappable</b> articles or categories, e.g. \"Paintings in X "
 "Museum\", can be removed from these pages, when reported to "
@@ -121,53 +165,52 @@ msgid ""
 "page</a> can help to find them."
 msgstr ""
 
-#: templates/index_3.html:22
+#: templates/index_3.html:23
 msgid ""
 "Add tags with <b><a "
 "href=\"http://ideditor.com/\"target=\"_blank\">iD</a></b> editor, like "
 "shown in these tutorials:"
 msgstr ""
 
-#: templates/index_3.html:28
+#: templates/index_3.html:29
 msgid ""
 "from <a "
 "href=\"https://www.youtube.com/watch?v=lCJOvFk8sTc&feature=youtu.be&hd=1\""
 " target=\"_blank\">tables</a>"
 msgstr ""
 
-#: templates/index_3.html:29
+#: templates/index_3.html:30
 msgid ""
 "from the <a href=\"https://www.youtube.com/watch?v=_2ouZ7jK5TE\" "
 "target=\"_blank\">map</a>"
 msgstr ""
 
-#: templates/index_3.html:38
+#: templates/index_3.html:39
 msgid ""
-"It you use <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
+"If you use <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
 "target=\"_blank\">JOSM</a></b> you can procede in a similar same way, and"
 " also use these two tools:"
 msgstr ""
 
-#: templates/index_3.html:44
+#: templates/index_3.html:45
 msgid ""
 "<a href=\"http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia\" "
 "target=\"_blank\">Plugin Wikipedia</a>. Hint: copy a category name from a"
 " table and paste it into the plugin."
 msgstr ""
 
-#: templates/index_3.html:45
+#: templates/index_3.html:46
 msgid ""
 "<a href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl"
 "/Add-tags\" target=\"_blank\">add-tags</a>. Hint: you can easily use this"
-" tool by clicking on these icons <img src=\"./img/add-tags.png\"> on the "
-"pages."
-msgstr ""
-
-#: templates/index_3.html:52
-msgid "Tables' legend"
+" tool by clicking on these icons"
 msgstr ""
 
 #: templates/index_3.html:53
+msgid "Tables' legend"
+msgstr ""
+
+#: templates/index_3.html:54
 msgid "Colors and symbols in tables."
 msgstr ""
 
@@ -206,12 +249,11 @@ msgstr ""
 
 #: templates/index_base.html:53
 msgid ""
-"Gli oggetti di OpenStreetMap con tag Wikipedia compaiono in quest'ultima "
-"<a href=\"http://toolserver.org/~kolossos/openlayers/kml-on-"
-"ol.php?lang=it&amp;uselang=de&amp;params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&amp;title=Colosseom&amp;zoom=18&amp;lat=41.89&amp;lon=12.49284&amp;layers=B00000FTTTF\">su"
-" una mappa</a> (progetto <a "
-"href=\"http://wiki.openstreetmap.org/wiki/WIWOSM\" "
-"target=\"_blank\">WIWOSM</a>)."
+"OpenStreetMap objects with Wikipedia tags are shown in Wikipedia on <a "
+"href=\"http://toolserver.org/~kolossos/openlayers/kml-on-"
+"ol.php?lang=it&amp;uselang=de&amp;params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&amp;title=Colosseom&amp;zoom=18&amp;lat=41.89&amp;lon=12.49284&amp;layers=B00000FTTTF\">a"
+" map</a> (<a href=\"http://wiki.openstreetmap.org/wiki/WIWOSM\" "
+"target=\"_blank\">WIWOSM</a> project).\""
 msgstr ""
 
 #: templates/index_base.html:54
@@ -222,14 +264,6 @@ msgstr ""
 
 #: templates/index_base.html:56
 msgid "Lists defects"
-msgstr ""
-
-#: templates/index_base.html:58
-msgid ""
-"Non mappable</b> articles or categories, e.g. \"Paintings in X Museum\", "
-"can be removed from these pages, when reported to maintainers.<br><a "
-"href=\"non_mappable.html\" target=\"_blank\">This page</a> can help to "
-"find them."
 msgstr ""
 
 #: templates/index_base.html:59
@@ -287,20 +321,105 @@ msgstr ""
 msgid "Show categories per theme"
 msgstr ""
 
+#: templates/index_base.html:74
+msgid "Themes"
+msgstr ""
+
 #: templates/index_base.html:75
 msgid "Show categories per region"
+msgstr ""
+
+#: templates/index_base.html:75
+msgid "Regions"
 msgstr ""
 
 #: templates/index_base.html:77
 msgid "Show map with non tagged articles"
 msgstr ""
 
+#: templates/index_base.html:77
+msgid "Map"
+msgstr ""
+
 #: templates/index_base.html:79
 msgid "Show help"
 msgstr ""
 
-#: templates/non_mappable.html:171 templates/subpage.html:47
-msgid "All categories"
+#: templates/index_base.html:79
+msgid "Help"
+msgstr ""
+
+#: templates/macros.html:5 templates/macros.html:6 templates/macros.html:7
+#: templates/macros.html:8 templates/macros.html:9 templates/macros.html:10
+msgid "articles tagged"
+msgstr ""
+
+#: templates/macros.html:12
+msgid "Tagged object,<br>nothing to do"
+msgstr ""
+
+#: templates/macros.html:14
+msgid "Watch the object on Wikipedia map (WIWOSM)"
+msgstr ""
+
+#: templates/macros.html:17
+msgid "Download the object in JOSM"
+msgstr ""
+
+#: templates/macros.html:25
+msgid "Watch the objects on Overpass Turbo (clickable map, export as image..."
+msgstr ""
+
+#: templates/macros.html:28
+msgid "There is something to do"
+msgstr ""
+
+#: templates/macros.html:30
+msgid ""
+"Search in OSM the objects possibly related to these articles and "
+"automatically tag them through <a "
+"href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-"
+"tags\" target=\"_blank\">add-tags</a> tool"
+msgstr ""
+
+#: templates/macros.html:34
+msgid ""
+"The Wikipedia article is missing the <a "
+"href=\"https://it.wikipedia.org/wiki/Template%3ACoord\" "
+"target=\"_blank\">Coord template</a>. Click on the icon for more "
+"information"
+msgstr ""
+
+#: templates/macros.html:38
+msgid ""
+"The article is not tagged but Wikipadia knows its position. Click on the "
+"icon for zooming with JOSM/iD editor on the knows position and find more "
+"easily the object to tag"
+msgstr ""
+
+#: templates/macros.html:42
+msgid ""
+"The article is not tagged but its position has been calculated through "
+"the article's contents and <a "
+"href=\"https://github.com/SpazioDati/Nuts4Nuts\" "
+"target=\"_blank\">Nuts4Nuts</a>. Click on the icon to zoom with JOSM/iD "
+"to the known position and find more easily the object to tag\""
+msgstr ""
+
+#: templates/macros.html:92
+msgid "Number of tagged articles / all"
+msgstr ""
+
+#: templates/macros.html:97
+msgid "Non tagged articles whose position is known"
+msgstr ""
+
+#: templates/macros.html:100
+msgid "Tagged articles which are missing Coord template on Wikipedia"
+msgstr ""
+
+#: templates/macros.html:146 templates/macros.html:155
+msgid "See page"
 msgstr ""
 
 #: templates/non_mappable.html:174
@@ -364,11 +483,6 @@ msgstr ""
 
 #: templates/subpage.html:59
 msgid "Categories"
-msgstr ""
-
-#: templates/subpage.html:61 templates/subpage.html:79
-#: templates/subpage.html:81
-msgid "Articles"
 msgstr ""
 
 #: templates/subpage.html:66

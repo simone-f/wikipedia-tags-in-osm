@@ -435,7 +435,6 @@ The number of tagged articles will replace that of the lust run in the tags' num
         self.HTMLDIR = 'html'
         self.make_dir(os.path.join(self.HTMLDIR, "GeoJSON"))
         self.make_dir(os.path.join(self.HTMLDIR, "json"))
-        self.homePageTitle = "Articoli Wikipedia etichettabili in OSM"
         self.UPDATETIME = time.strftime("%b %d, ore %H", time.localtime())
         # stats and logs dir
         statsDir = os.path.join("data", "stats")

@@ -50,12 +50,12 @@
       <h2>{% trans %}Why{% endtrans %}</h2>
       <ul>
         <li>{% trans %}Geographic informations are added to Wikipedia and OpenStreetMap gains more informations about an object.{% endtrans %}</li>
-        <li>{% trans %}Gli oggetti di OpenStreetMap con tag Wikipedia compaiono in quest'ultima <a href="http://toolserver.org/~kolossos/openlayers/kml-on-ol.php?lang=it&amp;uselang=de&amp;params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&amp;title=Colosseom&amp;zoom=18&amp;lat=41.89&amp;lon=12.49284&amp;layers=B00000FTTTF">su una mappa</a> (progetto <a href="http://wiki.openstreetmap.org/wiki/WIWOSM" target="_blank">WIWOSM</a>).{% endtrans %}</li>
+        <li>{% trans %}OpenStreetMap objects with Wikipedia tags are shown in Wikipedia on <a href="http://toolserver.org/~kolossos/openlayers/kml-on-ol.php?lang=it&amp;uselang=de&amp;params=41.89_N_12.491944444444_E_region%3AIT_type%3Alandmark&amp;title=Colosseom&amp;zoom=18&amp;lat=41.89&amp;lon=12.49284&amp;layers=B00000FTTTF">a map</a> (<a href="http://wiki.openstreetmap.org/wiki/WIWOSM" target="_blank">WIWOSM</a> project)."{% endtrans %}</li>
         <li>{% trans %}wikipedia tags lead the queries executed on www.openstreetmap.org (Nominatim) to better results.{% endtrans %}</li>
       </ul>
       <h2>{% trans %}Lists defects{% endtrans %}</h2>
       <ul>
-        <li>{% trans %}Non mappable</b> articles or categories, e.g. "Paintings in X Museum", can be removed from these pages, when reported to maintainers.<br><a href="non_mappable.html" target="_blank">This page</a> can help to find them.{% endtrans %}</li>
+        <li>{% trans %}<b>Non mappable</b> articles or categories, e.g. "Paintings in X Museum", can be removed from these pages, when reported to maintainers.<br><a href="non_mappable.html" target="_blank">This page</a> can help to find them.{% endtrans %}</li>
         <li>{% trans %}It may happen that a sub-category contain an article not striclty related to the choosen theme. If the article is mappable it will be shown anyway.{% endtrans %}</li>
         <li>{% trans %}Articles or sub-categories belonging to multiple categories may appear more than once in the same page.{% endtrans %}</li>
       </ul>
@@ -71,12 +71,12 @@
     </div>
     <div id="tabs">
       <ul>
-        <li{% block indexSelected %}{% endblock %}><a title="{% trans %}Show categories per theme{% endtrans %}" href="./index.html">Temi</a></li>
-        <li{% block index1Selected %}{% endblock %}><a title="{% trans %}Show categories per region{% endtrans %}" href="./index_1.html">Regioni</a></li>
+        <li{% block indexSelected %}{% endblock %}><a title="{% trans %}Show categories per theme{% endtrans %}" href="./index.html">{% trans %}Themes{% endtrans %}</a></li>
+        <li{% block index1Selected %}{% endblock %}><a title="{% trans %}Show categories per region{% endtrans %}" href="./index_1.html">{% trans %}Regions{% endtrans %}</a></li>
         {% if app.args.show_link_to_wikipedia_coordinates %}
-        <li{% block index2Selected %}{% endblock %}><a title="{% trans %}Show map with non tagged articles{% endtrans %}" href="./index_2.html">Mappa</a></li>
+        <li{% block index2Selected %}{% endblock %}><a title="{% trans %}Show map with non tagged articles{% endtrans %}" href="./index_2.html">{% trans %}Map{% endtrans %}</a></li>
         {% endif %}
-        <li class="help"{% block index3Selected %}{% endblock %}><a title="{% trans %}Show help{% endtrans %}" href="./index_3.html">Aiuto</a></li>
+        <li class="help"{% block index3Selected %}{% endblock %}><a title="{% trans %}Show help{% endtrans %}" href="./index_3.html">{% trans %}Help{% endtrans %}</a></li>
        </ul>
     </div>
   </div>

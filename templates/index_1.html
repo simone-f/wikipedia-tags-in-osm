@@ -1,3 +1,4 @@
+{# Regions page #}
 {% extends "index_base.html" %}
 
 {% import "macros.html" as macro %}
@@ -26,7 +27,7 @@
     {% for item in app.regions %}
 
     <!-- region -->
-    <h3><a href="#top">&#8593;</a><a id={{ item.name}}></a><img src="{{root}}{{"img/regions/" ~ item.name.lower() ~ ".png"}}" class="item_img"><a href="{{ "./subpages/" ~ item.name ~ ".html" }}" title="Visualizza pagina della regione">{{ item.name.replace("_", " ") }}</a></h3>
+    <h3><a href="#top">&#8593;</a><a id={{ item.name}}></a><img src="{{root}}{{"img/regions/" ~ item.name.lower() ~ ".png"}}" class="item_img"><a href="{{ "./subpages/" ~ item.name ~ ".html" }}" title="{% trans %}Go to region's page{% endtrans %}">{{ item.name.replace("_", " ") }}</a></h3>
     <!-- list of categories -->
     {{ macro.categoriesIndex(app, item, "regions", "home page", loop.index0, root) }}
     {% endfor %}
