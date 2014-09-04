@@ -45,6 +45,7 @@ On 32 bit system, dwonload [osmconvert/update/filter](http://wiki.openstreetmap.
         sudo chmod +x /usr/bin/osmconvert /usr/bin/osmupdate /usr/bin/osmfilter
     
 On 64 bit system, download and compile the programs as follow:
+
         wget -O - http://m.m.i24.cc/osmconvert.c | cc -x c - -lz -O3 -o osmconvert
         wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmconvert
         wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmconvert
@@ -82,7 +83,7 @@ next time, just update the previously downloaded OSM data to the last minute (th
 
          launch_script.py --show_link_to_wikipedia_coordinates --create_webpages
        
-* Show JOSM link for zooming to the position of a non already tagged article, whose coordinates have been infered with [Nuts4Nuts](https://github.com/SpazioDati/Nuts4Nuts)(see below for more info)
+* Show JOSM link for zooming to the position of a non already tagged article, whose coordinates have been infered with [Nuts4Nuts](https://github.com/SpazioDati/Nuts4Nuts) (see below for more info)
 
          launch_script.py --infer_coordinates_from_wikipedia --create_webpages
 
