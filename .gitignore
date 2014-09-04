@@ -10,7 +10,8 @@ data/nuts4nuts/articles_to_scan.txt
 data/OSM/*
 data/logs/*
 data/stats/*
-html/*.html
-html/json/*
-html/GeoJSON/*
-html/subpages/*
+html/*
+!html/css
+!html/img
+!html/js
+
