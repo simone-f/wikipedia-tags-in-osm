@@ -199,7 +199,9 @@ To repeat the updating process, launch the script again with the `-u` option."
         #Organize data in regions, for a different visualization
         #self.regions = [Region()]
         #  Region().categories = [Category(), ... ]
-        self.regions = Regions(self).regionsList
+        self.regions = []
+        if self.regionsNames != []:
+            self.regions = Regions(self).regionsList
 
         #Print names of all categories
         if self.args.print_categories_list:
@@ -383,6 +385,12 @@ The number of tagged articles will replace that of the lust run in the tags' num
         if self.WIKIPEDIALANG == "" or self.country == "" or self.OSMDIR == "":
             print "\n* Fill in `config.cfg` file the following options: `osmdir`, `preferred language`, `country`"
             sys.exit(1)
+        #regions names
+        if configparser.get("general", "regions names") == "":
+            self.regionsNames = []
+        else:
+            self.regionsNames = [r.decode("utf-8") \
+            for r in configparser.get("general", "regions names").split("|")]
         # directory where html files must be copied after creation
         #(for example, Dropbox dir)
         self.OUTDIR = configparser.get("general", "outdir")

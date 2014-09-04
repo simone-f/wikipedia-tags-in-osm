@@ -77,15 +77,9 @@ class Theme:
 
 class Regions:
     def __init__(self, app):
-        names = ["Abruzzo", "Basilicata", "Calabria", "Campania",
-                 "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio",
-                 "Liguria", "Lombardia", "Marche", "Molise", "Piemonte",
-                 "Puglia", "Sardegna", "Sicilia", "Toscana",
-                 "Trentino-Alto Adige", "Umbria", "Valle d'Aosta",
-                 "Veneto"]
         self.regionsList = []
-        for regId, name in enumerate(names):
-            region = Region(app, name.replace(" ", "_"), regId)
+        for regId, regName in enumerate(app.regionsNames):
+            region = Region(app, regName.replace(" ", "_"), regId)
             self.regionsList.append(region)
 
 

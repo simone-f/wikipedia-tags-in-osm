@@ -263,12 +263,12 @@ class Creator():
     def __init__(self, app, locale_langcode):
         self.app = app
         self.locale_langcode = locale_langcode
-        env = Environment(extensions=['jinja2.ext.i18n',
+        self.env = Environment(extensions=['jinja2.ext.i18n',
                                       'jinja2.ext.autoescape'],
                           loader=FileSystemLoader("templates"),
                           trim_blocks=True,
                           lstrip_blocks=True)
-        env.install_gettext_translations(self.app.translations)
+        self.env.install_gettext_translations(self.app.translations)
 
         #When selectNonMappable==True the cells of tables in webpages
         #can be clicked, to create list of non mappable articles
@@ -277,59 +277,26 @@ class Creator():
         app.tagsPerUser = sorted(self.app.users.items(), key=lambda x: x[1], reverse=True)
 
         #Create homepages
+        self.stats_table = self.stats_table()
         self.homepages = {}
 
         #themes (index)
-        htmlFile = "index.html"
-        print " - render %s (themes)" % htmlFile
-        indexTemplate = env.get_template(htmlFile)
-
-        code = indexTemplate.render(app=self.app,
-                                    root = '../',
-                                    path = '/',
-                                    filename = htmlFile,
-                                    statsRows=self.stats_table())
-        self.homepages[htmlFile] = code
+        self.render_index_template("index.html", "themes")
 
         #regions (index_1)
-        htmlFile = "index_1.html"
-        print " - render %s (regions)" % htmlFile
-        indexTemplate = env.get_template(htmlFile)
-
-        code = indexTemplate.render(app=self.app,
-                                    root = '../',
-                                    path = '/',
-                                    filename = htmlFile,
-                                    statsRows=self.stats_table())
-
-
-        self.homepages[htmlFile] = code
+        if self.app.regions != []:
+            self.render_index_template("index_1.html", "regions")
 
         #map (index_2)
-        htmlFile = "index_2.html"
-        print " - render %s (map)" % htmlFile
-        indexTemplate = env.get_template(htmlFile)
-        code = indexTemplate.render(app=self.app,
-                                    root = '../',
-                                    path = '/',
-                                    filename = htmlFile,
-                                    statsRows=self.stats_table())
-        self.homepages[htmlFile] = code
+        if self.app.args.show_link_to_wikipedia_coordinates:
+            self.render_index_template("index_2.html", "map")
 
         #help (index_3)
-        htmlFile = "index_3.html"
-        print " - render %s (help)" % htmlFile
-        helpTemplate = env.get_template(htmlFile)
-        code = helpTemplate.render(app=self.app,
-                                   root = '../',
-                                   path = '/',
-                                   filename = htmlFile,
-                                   statsRows=self.stats_table())
-        self.homepages[htmlFile] = code
+        self.render_index_template("index_3.html", "help")
 
         #categories (subpages)
         helpers = Helpers(app)
-        print "  render categories subpages"
+        print " - render categories subpages"
         for theme in app.themes:
             for category in theme.categories:
                 #articles
@@ -338,7 +305,7 @@ class Creator():
                 for subcategory in category.subcategories:
                     subcategory.categoryTable = CategoryTable(app, subcategory, selectNonMappable)
 
-                categoryTemplate = env.get_template('subpage.html')
+                categoryTemplate = self.env.get_template('subpage.html')
                 filename = "%s.html" % category.name
 
                 category.html = categoryTemplate.render(app=self.app,
@@ -352,29 +319,32 @@ class Creator():
                 category.html = category.html.replace('{{root}}', '../../')
                 category.html = category.html.replace('{root}', '../../')
 
-        print "  render regions subpages"
         #regions (subpages)
-        for region in app.regions:
-            for subcategory in region.subcategories:
-                subcategory.categoryTable = CategoryTable(app, subcategory, selectNonMappable)
-            regionTemplate = env.get_template('subpage.html')
-            filename = "%s.html" % region.name
+        if self.app.regions != []:
+            print " - render regions subpages"
+            for region in app.regions:
+                for subcategory in region.subcategories:
+                    subcategory.categoryTable = CategoryTable(app,
+                        subcategory,
+                        selectNonMappable)
+                regionTemplate = self.env.get_template('subpage.html')
+                filename = "%s.html" % region.name
 
-            region.html = regionTemplate.render(app=self.app,
-                                                selectNonMappable=selectNonMappable,
-                                                helpers=helpers,
-                                                mode="regions",
-                                                root = '../../',
-                                                path = '/subpages/',
-                                                filename = filename,
-                                                item=region)
+                region.html = regionTemplate.render(app=self.app,
+                                                    selectNonMappable=selectNonMappable,
+                                                    helpers=helpers,
+                                                    mode="regions",
+                                                    root = '../../',
+                                                    path = '/subpages/',
+                                                    filename = filename,
+                                                    item=region)
 
-            region.html = region.html.replace('{{root}}', '../../')
-            region.html = region.html.replace('{root}', '../../')
+                region.html = region.html.replace('{{root}}', '../../')
+                region.html = region.html.replace('{root}', '../../')
 
         #Create errors page
-        print "  render errors page"
-        errorsTemplate = env.get_template('errors.html')
+        print " - render errors page"
+        errorsTemplate = self.env.get_template('errors.html')
 
         self.errorsHtml = errorsTemplate.render(app=self.app,
                                                 root = '../',
@@ -382,8 +352,8 @@ class Creator():
                                                 filename = 'errors.html',
                                                 helpers=helpers)
         #Create non_mappable page
-        print "  render non_mappable page"
-        nonMappableTemplate = env.get_template('non_mappable.html')
+        print " - render non_mappable page"
+        nonMappableTemplate = self.env.get_template('non_mappable.html')
 
         self.nonMappableHtml = nonMappableTemplate.render(app=self.app,
                                                           root = '../',
@@ -393,6 +363,19 @@ class Creator():
 
         #Save all HTML files
         self.save_html_files()
+
+    def render_index_template(self, htmlFile, description):
+        """Add to self.homepages the homepage file and
+           its code rendered from a jinja2 template.
+        """
+        print " - render %s (%s)" % (htmlFile, description)
+        indexTemplate = self.env.get_template(htmlFile)
+        code = indexTemplate.render(app=self.app,
+                                    root = '../',
+                                    path = '/',
+                                    filename = htmlFile,
+                                    statsRows=self.stats_table)
+        self.homepages[htmlFile] = code
 
     def stats_table(self):
         """Return html code of a table with the numbers of tagged/non tagged

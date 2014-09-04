@@ -7,6 +7,8 @@ osmbbox = 6.627730,35.493500,18.521200,47.092600
 preferred language = it
 #country name
 country = italy
+#regions names (optional)
+regions names = Abruzzo|Basilicata|Calabria|Campania|Emilia-Romagna|Friuli-Venezia Giulia|Lazio|Liguria|Lombardia|Marche|Molise|Piemonte|Puglia|Sardegna|Sicilia|Toscana|Trentino-Alto Adige|Umbria|Valle d'Aosta|Veneto
 #path to libspatialite
 libspatialite-path = /usr/lib/x86_64-linux-gnu/libspatialite.so.5.1.0
 #directory where html files must be copied after creation (optional, mandatory if --copy)
