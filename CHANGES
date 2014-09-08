@@ -1,7 +1,18 @@
 development version
 ===================
-- (Cristian Consonni) Add centroid coordinates to the popup for use in the Wikipedia template
-- (Contribution by Luca  Delucchi) New links let the user zoom to the coordinates obtained from Wikipedia with the online editor iD.
+Features:
+- Save pages to different languages (Cristian Consonni)
+- I18n and Italian L10n (Simone F.)
+- Add an help page (Simone F, request by Andrea Borruso)
+- Add centroid coordinates to the popup for use in the Wikipedia template (Cristian Consonni)
+- New links let the user zoom to the coordinates obtained from Wikipedia with iD online editor (Luca Delucchi)
+
+Code clean up:
+- "save_stats" and "browser" options simplification (Cristian Consonni)
+- Translations to English of messages printed to terminal (Simone F.)
+- Generate webpages through jinja2 templates (Simone F.)
+- Substitute CatScan with Quick Intersection (Simone F.)
+- Untrack runtime generated files and other clean up
 
 v0.3.1.1
 ========
