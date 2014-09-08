@@ -386,7 +386,8 @@ The number of tagged articles will replace that of the lust run in the tags' num
             print "\n* Fill in `config.cfg` file the following options: `osmdir`, `preferred language`, `country`"
             sys.exit(1)
         #regions names
-        if configparser.get("general", "regions names") == "":
+        if not configparser.has_option("general", "regions names") or \
+                configparser.get("general", "regions names") == "":
             self.regionsNames = []
         else:
             self.regionsNames = [r.decode("utf-8") \
