@@ -24,9 +24,9 @@ var geoJsonLayer = L.geoJson(coords, {
         var bottom = y - 0.0005;
         var josmUrl = "http://localhost:8111/";
         josmUrl += "load_and_zoom?left=" + left + "&right=" + right + "&top=" + top + "&bottom=" + bottom;
-        var josmLink = "\n<a href='" + josmUrl + "' target='_blank' title=\"Zooma in JOSM vicino all'oggetto da taggare\"><img class='articleLinkImg' src='./img/josm_load_and_zoom.png'></a>";
+        var josmLink = "\n<a href='" + josmUrl + "' target='_blank' title=\"Zooma in JOSM vicino all'oggetto da taggare\"><img class='articleLinkImg' src='../img/josm_load_and_zoom.png'></a>";
         var idUrl = "http://www.openstreetmap.org/edit?editor=id#map=17/" + y + "/" + x + ""
-        var idLink = "\n<a href='" + idUrl + "' target='_blank' title=\"Zooma in iD vicino all'oggetto da taggare\"><img class='articleLinkImg' src='./img/id.png'></a>";
+        var idLink = "\n<a href='" + idUrl + "' target='_blank' title=\"Zooma in iD vicino all'oggetto da taggare\"><img class='articleLinkImg' src='../img/id.png'></a>";
         var tag = "\nAggiungi il tag:<br><i>wikipedia=it:" + feature.properties.title + "</i>";
         var text = "\n<table class='popup'>";
         text += "\n  <tr>";
