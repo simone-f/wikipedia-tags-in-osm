@@ -6,7 +6,7 @@
       <tr>
         <td>{{ tag[0] }}</td>
         <td>{{ helpers.osm_ids_string(tag[1])[1] }}</td>
-        <td>{{ helpers.josm_link("download", helpers.overpass_query(tag[1]), "./img/josm.png") }}</td>
+        <td>{{ helpers.josm_link("download", helpers.overpass_query(tag[1]), "../img/josm.png") }}</td>
       </tr>
     {% endfor %}
     </table>
