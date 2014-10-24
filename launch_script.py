@@ -440,6 +440,7 @@ The number of tagged articles will replace that of the lust run in the tags' num
         # conversions foreign articles titles - preferred language articles
         self.WIKIPEDIAANSWERS = os.path.join("data", "wikipedia", "answers")
         self.WIKIPEDIAANSWER = os.path.join(self.WIKIPEDIAANSWERS, "answer")
+        self.make_dir(self.WIKIPEDIAANSWERS)
         # web pages dir
         self.HTMLDIR = 'html'
         self.make_dir(os.path.join(self.HTMLDIR, "GeoJSON"))
