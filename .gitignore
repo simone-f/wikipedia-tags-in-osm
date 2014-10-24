@@ -5,6 +5,8 @@ data/wikipedia/missing_templates/*
 data/wikipedia/answers/*
 data/wikipedia/catscan/*
 data/wikipedia/wikipedia_it_coordinates.csv
+data/wikipedia/non_mappable/*
+data/workaround/*
 data/nuts4nuts/nuts4nuts*
 data/nuts4nuts/articles_to_scan.txt
 data/OSM/*

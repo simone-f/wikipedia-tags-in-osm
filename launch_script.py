@@ -437,6 +437,27 @@ The number of tagged articles will replace that of the lust run in the tags' num
         # lists of categories and articles that should be ignored
         # (not geographic content)
         self.NONMAPPABLE = os.path.join("data", "wikipedia", "non_mappable")
+        self.make_dir(self.NONMAPPABLE)
+        for fileName in ("articles", "subcategories", "redirects"):
+            fullName = os.path.join(self.NONMAPPABLE, fileName)
+            if not os.path.isfile(fullName):
+                open(fullName, "w").close()
+        # workaround files
+        workaroundDir = os.path.join("data", "workaround")
+        self.make_dir(workaroundDir)
+        fileName = os.path.join(workaroundDir, "tagged.csv")
+        if not os.path.isfile(fileName):
+            f = open(fileName, "w")
+            f.write("#In case the parser doesn't discover a tagged article, \
+it can be added here, so that it will anyhow appear in the webpages.\n\
+#Article	nosmid,wosmid,wosmid,rosmid...")
+            f.close()
+        fileName = os.path.join(workaroundDir, "false_positive_tags.csv")
+        if not os.path.isfile(fileName):
+            f = open(fileName, "w")
+            f.write("#If the script flags a correct tag as an error, write \
+the tag here and it will not be detected as error anymore.")
+            f.close()
         # conversions foreign articles titles - preferred language articles
         self.WIKIPEDIAANSWERS = os.path.join("data", "wikipedia", "answers")
         self.WIKIPEDIAANSWER = os.path.join(self.WIKIPEDIAANSWERS, "answer")
