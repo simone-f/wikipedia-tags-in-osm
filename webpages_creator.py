@@ -351,6 +351,8 @@ class Creator():
                                                 path = '/',
                                                 filename = 'errors.html',
                                                 helpers=helpers)
+        self.errorsHtml = self.errorsHtml.replace('{{root}}', '../')
+
         #Create non_mappable page
         print " - render non_mappable page"
         nonMappableTemplate = self.env.get_template('non_mappable.html')
