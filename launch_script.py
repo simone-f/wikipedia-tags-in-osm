@@ -43,7 +43,7 @@ from osm_parser import ParseOSMData
 import osm_downloader as OSM
 from data_manager import Themes, Regions
 from users import Users
-from webpages_creator import Creator
+from webpages_creator import Creator, Redirect
 import wikipedia_downloader
 import nuts4nuts_infer
 
@@ -315,6 +315,13 @@ The number of tagged articles will replace that of the lust run in the tags' num
                     # using .get() suppress stdout output from browser, won't
                     # suppress stderr
                     webbrowser.get().open_new(url)
+
+            # Create the index.html in the main HTMLDIR to redirect to one
+            # locales directory
+            for lang in self.locales:
+                if self.WIKIPEDIALANG in lang:
+                    Redirect(self, lang)
+                    break
 
             #Save stats
             if self.args.save_stats:

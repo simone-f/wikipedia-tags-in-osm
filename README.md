@@ -43,12 +43,12 @@ On 32 bit system, dwonload [osmconvert/update/filter](http://wiki.openstreetmap.
         sudo wget http://m.m.i24.cc/osmupdate32 -O /usr/bin/osmupdate
         sudo wget http://m.m.i24.cc/osmfilter32 -O /usr/bin/osmfilter
         sudo chmod +x /usr/bin/osmconvert /usr/bin/osmupdate /usr/bin/osmfilter
-    
+
 On 64 bit system, download and compile the programs as follow:
 
         wget -O - http://m.m.i24.cc/osmconvert.c | cc -x c - -lz -O3 -o osmconvert
-        wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmconvert
-        wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmconvert
+        wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmfilter
+        wget -O - http://m.m.i24.cc/osmupdate.c | cc -x c - -lz -O3 -o osmupdate
 
 ##Usage
 
@@ -78,11 +78,11 @@ next time, just update the previously downloaded OSM data to the last minute (th
         launch_script.py --create_webpages
 
 ####Other options
-        
+
 * Show JOSM link for zooming to the position of a non already tagged article, known by Wikipedia:
 
          launch_script.py --show_link_to_wikipedia_coordinates --create_webpages
-       
+
 * Show JOSM link for zooming to the position of a non already tagged article, whose coordinates have been infered with [Nuts4Nuts](https://github.com/SpazioDati/Nuts4Nuts) (see below for more info)
 
          launch_script.py --infer_coordinates_from_wikipedia --create_webpages
@@ -94,7 +94,7 @@ next time, just update the previously downloaded OSM data to the last minute (th
 * Calculate OSM coordinates of articles (point for nodes, centroids for ways and relations) and suggest to use them when a Wikipedia article is missing Coord template:
 
          launch_script.py -t --show_coordinates_from_osm --create_webpages
-                        
+
 For the complete list of options run `launch_script.py -h`.
 
 ##Notes
@@ -102,7 +102,7 @@ For the complete list of options run `launch_script.py -h`.
 1. Create a translation catalog (PO file) for your language, e.g. DE:
 
         pybabel init -l de_DE -d ./locale -i ./locale/messages.pot
-        
+
 2. translate the strings in catalog, e.g. `locale/de_DE/LC_MESSAGES/de_DE.po`
 
 3. compile catalog to binary MO file:
