@@ -47,8 +47,8 @@ On 32 bit system, dwonload [osmconvert/update/filter](http://wiki.openstreetmap.
 On 64 bit system, download and compile the programs as follow:
 
         wget -O - http://m.m.i24.cc/osmconvert.c | cc -x c - -lz -O3 -o osmconvert
-        wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmconvert
-        wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmconvert
+        wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmfilter
+        wget -O - http://m.m.i24.cc/osmupdate.c | cc -x c - -lz -O3 -o osmupdate
 
 ##Usage
 
