@@ -76,7 +76,7 @@ def download_a_new_category(app, themeName, categoryName):
         os.makedirs(os.path.join(app.CATSCANDIR, themeName))
 
     #Download the JSON file with subcategories and articles of the requested category
-    url = "http://tools.wmflabs.org/catscan2/quick_intersection.php?"
+    url = "https://tools.wmflabs.org/quick-intersection/index.php?"
     url += "lang=%s" % app.WIKIPEDIALANG
     url += "&project=wikipedia"
     url += "&cats=" + urllib.quote_plus(categoryName.encode("utf-8"))
