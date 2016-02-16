@@ -82,10 +82,10 @@ def download_a_new_category(app, themeName, categoryName):
     url += "&cats=" + urllib.quote_plus(categoryName.encode("utf-8"))
     url += "&ns=*&depth=-1&max=30000&start=0&format=json&catlist=1&redirects=none&callback="
 
-    print "  url:"
-    print url
-    print "  downloading data from Quick Intersection..."
-    data = urllib2.urlopen(url)
+    print ("  url:/n{0}/n  downloading data from "
+           "Quick Intersection...".format(url))
+    request = urllib2.Request(url, None, {'User-Agent': app.user_agent})
+    data = urllib2.urlopen(request)
     filename = os.path.join(app.CATSCANDIR, themeName, "%s.json" % categoryName)
     csvFile = open(filename, 'w')
     csvFile.write(data.read())
@@ -161,20 +161,18 @@ def download_templates(app, titlesString, continueString, tlcontinueString):
     """Query Wikipedia API for Coord template in articles
     """
     titles = urllib.quote_plus(titlesString.replace("_", " ").encode("utf-8"))
-    url = 'http://it.wikipedia.org/w/api.php?action=query'
-    url += '&format=json'
-    url += '&titles=%s' % titles
-    url += '&prop=templates'
-    url += '&tltemplates=Template:Coord'
-    url += '&continue='
+    url = ('http://it.wikipedia.org/w/api.php?action=query'
+           '&format=json&titles={0}&prop=templates&tltemplates=Template:Coord'
+           '&maxlag=5&continue='.format(titles))
     if continueString != "":
         url += '%s&tlcontinue=%s' % (urllib.quote_plus(continueString), urllib.quote_plus(tlcontinueString))
     #debugging
     #answer = raw_input("\n  Download 50 titles status from Wikipedia?\n%s\n[y/N]" % url)
     answer = "y"
+    request = urllib2.Request(url, None, {'User-Agent': app.user_agent})
     if answer in ("y", "Y"):
         try:
-            wikipediaAnswer = urllib2.urlopen(url)
+            wikipediaAnswer = urllib2.urlopen(request)
         except:
             print "\n* a problem occurred during downloading:", titlesString, continueString, tlcontinueString
             return False

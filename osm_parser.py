@@ -435,13 +435,17 @@ class ParseOSMData():
            preferred language
         """
         string = urllib.quote_plus(titlesString.encode("utf-8"))
-        url = "https://%s.wikipedia.org/w/api.php?action=query&prop=langlinks&lllang=it&format=xml&lllimit=55&titles=%s" % (lang.encode("utf-8"), string)
+        url = ("https://{0}.wikipedia.org/w/api.php?action=query"
+               "&prop=langlinks&lllang=it&format=xml&lllimit=55&titles={1}"
+               "&maxlag=5".format(lang.encode("utf-8"), string))
         #answer = raw_input("\n  Download from Wikipedia 50 titles translations from %s?\n  titles:\n%s\n  url:\n%s\n  [y|n]" % (lang.encode("utf-8"), titlesString.encode("utf-8"), url))
         answer = "y"
+        request = urllib2.Request(url, None,
+                                  {'User-Agent': self.app.user_agent})
         if answer == "y":
             try:
                 #print "\n", url
-                wikipediaAnswer = urllib2.urlopen(url)
+                wikipediaAnswer = urllib2.urlopen(request)
             except:
                 print "\n Wrong url because lang was wrong:", string
                 titles = [t.replace(" ", "_") for t in titlesString.split("|")]

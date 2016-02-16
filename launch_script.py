@@ -405,6 +405,16 @@ The number of tagged articles will replace that of the lust run in the tags' num
         #debugging
         self.print_categories_to_text_files = configparser.get("debug", "print categories to text files")
         self.clickable_cells = configparser.get("debug", "clickable cells")
+        # user agent for requests to Wikipedia and Quick Intersections APIs
+        self.user_agent = configparser.get("general", "user agent")
+        if self.user_agent == "":
+            sys.exit("* Error: please, fill 'user agent' option in the "
+                     "config file.\n"
+                     "The User-Agent will be used when making requests to "
+                     "Wikipedia API and Quick Intersections.\n"
+                     "User agent example: wikipedia-tags-in-osm ("
+                     "https://openstreetmap.it/wikipedia-tags-in-osm; "
+                     "admin@example.com)")
         #themes and categories
         themesAndCatsNames = {}
         for themeName in configparser.options("themes"):
