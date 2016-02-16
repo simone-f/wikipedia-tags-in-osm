@@ -37,18 +37,10 @@ A POLY file with the same name of the country, e.g. `italy.poly`, must be put in
 * zgrep, cut (if using --show_link_to_wikipedia_coordinates)
 * python-requests (if using --infer_coordinates_from_wikipedia)
 
-On 32 bit system, dwonload [osmconvert/update/filter](http://wiki.openstreetmap.org/wiki/Osmconvert) tools:
+Download osmconvert/update/filter from the [web site](http://wiki.openstreetmap.org/wiki/Osmconvert) or install with:
+        
+        sudo apt-get install osmctools
 
-        sudo wget http://m.m.i24.cc/osmconvert32 -O /usr/bin/osmconvert
-        sudo wget http://m.m.i24.cc/osmupdate32 -O /usr/bin/osmupdate
-        sudo wget http://m.m.i24.cc/osmfilter32 -O /usr/bin/osmfilter
-        sudo chmod +x /usr/bin/osmconvert /usr/bin/osmupdate /usr/bin/osmfilter
-
-On 64 bit system, download and compile the programs as follow:
-
-        wget -O - http://m.m.i24.cc/osmconvert.c | cc -x c - -lz -O3 -o osmconvert
-        wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -lz -O3 -o osmfilter
-        wget -O - http://m.m.i24.cc/osmupdate.c | cc -x c - -lz -O3 -o osmupdate
 
 ##Usage
 
