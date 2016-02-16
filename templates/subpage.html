@@ -19,8 +19,8 @@
         function getName(cellThatWasClicked){
           name = decodeURIComponent(cellThatWasClicked.firstChild)
           name = name.replace("http://it.wikipedia.org/wiki/","");
-          name = name.replace("_"," ");'
-          if (name.substring(0,10) == "Categoria:"){'
+          name = name.replace("_"," ");
+          if (name.substring(0,10) == "Categoria:"){
               nonMappableCategories += "|" + name.replace("Categoria:","");
              }
           else {
