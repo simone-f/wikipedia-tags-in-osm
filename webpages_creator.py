@@ -168,7 +168,7 @@ class Helpers:
         url += "&amp;bbox=%s" % self.app.COUNTRYBBOX
         url += "&amp;cat=%s" % urllib.quote_plus(category.name.encode("utf-8"))
         url += "&amp;key=*&amp;value=*&amp;basedeep=10&amp;types=*&amp;request=Submit&amp;iwl=yes"
-        title = self.app._("Search objects by name and add tag them automatically (WIWOSM add-tags)")
+        title = self.app._("Search the objects in OSM by name and tag them automatically (WIWOSM add-tags)")
         img = "{{root}}img/add-tags.png"
         link = self.url_to_link(url, title, None, img)
         return link

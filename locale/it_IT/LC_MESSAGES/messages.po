@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-28 21:21+0200\n"
+"POT-Creation-Date: 2016-03-03 21:11+0100\n"
 "PO-Revision-Date: 2014-08-13 21:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: it_IT <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr "categoria"
 
 #: webpages_creator.py:41
 msgid "See {0}: {1}"
-msgstr "Vedi vedi {0}: {1}"
+msgstr "Vedi {0}: {1}"
 
 #: webpages_creator.py:74
 msgid "Download in JOSM"
@@ -55,8 +55,12 @@ msgid "Wikipedia page is missing the coordinates' template"
 msgstr "Sulla pagina Wikipedia manca il template coord"
 
 #: webpages_creator.py:171
-msgid "Search objects by name and add tag them automatically (WIWOSM add-tags)"
-msgstr "Cerca oggetti per nome ed aggiungi tag automaticamente (WIWOSM add-tags"
+msgid ""
+"Search the objects in OSM by name and tag them automatically (WIWOSM add-"
+"tags)"
+msgstr ""
+"Cerca gli oggetti in OSM per nome ed aggiungi il tag automaticamente "
+"(WIWOSM add-tags)"
 
 #: webpages_creator.py:196
 msgid "See Wikipedia map (WIWOSM)"
@@ -66,19 +70,19 @@ msgstr "Vedi mappa Wikipedia (WIWOSM)"
 msgid "See OSM web page"
 msgstr "Vedi pagina OSM"
 
-#: webpages_creator.py:403
+#: webpages_creator.py:388
 msgid "Still to tag"
 msgstr "Da taggare"
 
-#: webpages_creator.py:404
+#: webpages_creator.py:389
 msgid "Tagged"
 msgstr "Taggati"
 
-#: webpages_creator.py:405
+#: webpages_creator.py:390
 msgid "Total"
 msgstr "Totali"
 
-#: webpages_creator.py:415 templates/macros.html:117 templates/macros.html:119
+#: webpages_creator.py:400 templates/macros.html:117 templates/macros.html:119
 #: templates/subpage.html:61 templates/subpage.html:79
 #: templates/subpage.html:81
 msgid "Articles"
@@ -140,7 +144,7 @@ msgstr ""
 msgid "Go to region's page"
 msgstr "Vai alla pagina della regione"
 
-#: templates/index_2.html:30
+#: templates/index_2.html:31
 #, fuzzy
 msgid ""
 "<b>Click</b> on an article to visit its page or to map/tag it through the"
@@ -188,8 +192,9 @@ msgid ""
 "page</a> can help to find them."
 msgstr ""
 "Articoli o categorie <b>non mappabili</b>, ad es. \"es. Dipinti nel Museo"
-" Tal Dei Tali\", possono essere rimossi dalla pagina, se segnalati (vedi "
-"\"Informazioni e conteggi\").<br><a href=\"non_mappable.html\" "
+" Tal Dei Tali\", possono essere rimossi dalla pagina se segnalati <a "
+"target=\"_blank\" href=\"https://github.com/simone-f/wikipedia-tags-in-"
+"osm_italy-data\">qui</a> o agli autori.<br><a href=\"non_mappable.html\" "
 "target=\"_blank\">Questa pagina</a> può aiutare a trovarli."
 
 #: templates/index_3.html:23
@@ -228,8 +233,8 @@ msgid ""
 " table and paste it into the plugin."
 msgstr ""
 "<a href=\"http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia\" "
-"target=\"_blank\">Plugin Wikipedia</a>. Suggerimento: copia dalle tabelle"
-" il nome di una categoria ed incollalo nel plugin."
+"target=\"_blank\">Plugin Wikipedia</a> Suggerimento: copia dalle tabelle "
+"il nome di una categoria ed incollalo nel plugin."
 
 #: templates/index_3.html:48
 msgid ""
@@ -238,7 +243,7 @@ msgid ""
 " tool by clicking on these icons"
 msgstr ""
 "<a href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl"
-"/Add-tags\" target=\"_blank\">add-tags</a>. Suggeriemnto: puoi usare "
+"/Add-tags\" target=\"_blank\">add-tags</a> Suggerimento: puoi usare "
 "questo servizio anche cliccando su queste icone"
 
 #: templates/index_3.html:55
@@ -345,7 +350,7 @@ msgstr "Codice"
 
 #: templates/index_base.html:63
 msgid "Author"
-msgstr "Altre"
+msgstr "Autore"
 
 #: templates/index_base.html:63
 msgid "Other authors"
@@ -376,35 +381,35 @@ msgstr "Servizi usati per creare le pagine"
 msgid "Themes' icons"
 msgstr "Icone dei temi"
 
-#: templates/index_base.html:74
+#: templates/index_base.html:75
 msgid "Show categories per theme"
 msgstr "Visualizza categorie per tema"
 
-#: templates/index_base.html:74
+#: templates/index_base.html:75
 msgid "Themes"
 msgstr "Temi"
 
-#: templates/index_base.html:75
+#: templates/index_base.html:77
 msgid "Show categories per region"
 msgstr "Visualizza categorie per regione"
 
-#: templates/index_base.html:75
+#: templates/index_base.html:77
 msgid "Regions"
 msgstr "Regioni"
 
-#: templates/index_base.html:77
+#: templates/index_base.html:80
 msgid "Show map with non tagged articles"
 msgstr "Visualizza mappa con articoli da taggare"
 
-#: templates/index_base.html:77
+#: templates/index_base.html:80
 msgid "Map"
 msgstr "Mappa"
 
-#: templates/index_base.html:79
+#: templates/index_base.html:82
 msgid "Show help"
 msgstr "Visualizza aiuto"
 
-#: templates/index_base.html:79
+#: templates/index_base.html:82
 #, fuzzy
 msgid "Help"
 msgstr "Aiuto"
@@ -437,14 +442,16 @@ msgid "There is something to do"
 msgstr "C'è qualcosa da fare"
 
 #: templates/macros.html:30
+#, fuzzy
 msgid ""
-"Search in OSM the objects possibly related to these articles and "
-"automatically tag them through <a "
-"href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-"
-"tags\" target=\"_blank\">add-tags</a> tool"
+"Search the objects in OSM possibly related to this category's article. "
+"Click on this icon to automatically search and tag these objects through "
+"<a href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl"
+"/Add-tags\" target=\"_blank\">add-tags</a> tool"
 msgstr ""
-"Cerca in OSM possibili oggetti corrispondenti agli articoli e taggali "
-"facilmente tramite lo strumento <a "
+"Cerca in OSM i possibili oggetti corrispondenti agli articoli di questa "
+"categoria. Clicca su quest'icona per cercarli e taggarli automaticamente "
+"con lo strumento <a "
 "href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-"
 "tags\" target=\"_blank\">add-tags</a>"
 

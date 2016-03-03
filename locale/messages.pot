@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2014 ORGANIZATION
+# Copyright (C) 2016 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# Simone F. <groppo8@gmail.com>, 2014.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-08-28 21:21+0200\n"
+"POT-Creation-Date: 2016-03-03 21:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,7 +54,9 @@ msgid "Wikipedia page is missing the coordinates' template"
 msgstr ""
 
 #: webpages_creator.py:171
-msgid "Search objects by name and add tag them automatically (WIWOSM add-tags)"
+msgid ""
+"Search the objects in OSM by name and tag them automatically (WIWOSM add-"
+"tags)"
 msgstr ""
 
 #: webpages_creator.py:196
@@ -65,19 +67,19 @@ msgstr ""
 msgid "See OSM web page"
 msgstr ""
 
-#: webpages_creator.py:403
+#: webpages_creator.py:388
 msgid "Still to tag"
 msgstr ""
 
-#: webpages_creator.py:404
+#: webpages_creator.py:389
 msgid "Tagged"
 msgstr ""
 
-#: webpages_creator.py:405
+#: webpages_creator.py:390
 msgid "Total"
 msgstr ""
 
-#: webpages_creator.py:415 templates/macros.html:117 templates/macros.html:119
+#: webpages_creator.py:400 templates/macros.html:117 templates/macros.html:119
 #: templates/subpage.html:61 templates/subpage.html:79
 #: templates/subpage.html:81
 msgid "Articles"
@@ -130,7 +132,7 @@ msgstr ""
 msgid "Go to region's page"
 msgstr ""
 
-#: templates/index_2.html:30
+#: templates/index_2.html:31
 msgid ""
 "<b>Click</b> on an article to visit its page or to map/tag it through the"
 " JOSM/iD link (coordinates are taken form Wikipedia).<br>If an article is"
@@ -311,35 +313,35 @@ msgstr ""
 msgid "Themes' icons"
 msgstr ""
 
-#: templates/index_base.html:74
+#: templates/index_base.html:75
 msgid "Show categories per theme"
 msgstr ""
 
-#: templates/index_base.html:74
+#: templates/index_base.html:75
 msgid "Themes"
 msgstr ""
 
-#: templates/index_base.html:75
+#: templates/index_base.html:77
 msgid "Show categories per region"
 msgstr ""
 
-#: templates/index_base.html:75
+#: templates/index_base.html:77
 msgid "Regions"
 msgstr ""
 
-#: templates/index_base.html:77
+#: templates/index_base.html:80
 msgid "Show map with non tagged articles"
 msgstr ""
 
-#: templates/index_base.html:77
+#: templates/index_base.html:80
 msgid "Map"
 msgstr ""
 
-#: templates/index_base.html:79
+#: templates/index_base.html:82
 msgid "Show help"
 msgstr ""
 
-#: templates/index_base.html:79
+#: templates/index_base.html:82
 msgid "Help"
 msgstr ""
 
@@ -370,10 +372,10 @@ msgstr ""
 
 #: templates/macros.html:30
 msgid ""
-"Search in OSM the objects possibly related to these articles and "
-"automatically tag them through <a "
-"href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-"
-"tags\" target=\"_blank\">add-tags</a> tool"
+"Search the objects in OSM possibly related to this category's article. "
+"Click on this icon to automatically search and tag these objects through "
+"<a href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl"
+"/Add-tags\" target=\"_blank\">add-tags</a> tool"
 msgstr ""
 
 #: templates/macros.html:34
