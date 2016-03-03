@@ -535,7 +535,7 @@ class ParseOSMData():
                 print "%s --> %s" % (foreign, preferred)
 
     def save_updated_conversions(self):
-        print "\n- Salvataggio del file con le traduzioni"
+        print "\n- Saving file with Wikipedia articles' titles translations"
         fileName = os.path.join(self.app.WIKIPEDIAANSWERS, "conversions.csv")
         oldFileName = os.path.join(self.app.WIKIPEDIAANSWERS, "old_conversions.csv")
         call("cp '%s' '%s'" % (fileName, oldFileName), shell=True)

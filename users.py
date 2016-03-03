@@ -27,11 +27,11 @@ import csv
 ### Mappers ############################################################
 class Users:
     def __init__(self, app):
-        """Find which users have added Wikipedia tags from the previous
-           run, and count the tags
+        """Find which users added Wikipedia tags since the previous
+           run and count the tags
         """
-        print "\n- Find which users have added Wikipedia tags from the previous \
-run, and count the tags"
+        print ("\n- Find which users added Wikipedia tags since the "
+               "previous run and count the tags")
         todayTagsPerUser = {}
         tags = list(set(app.tagsInOSM))
         #Read old tags lists

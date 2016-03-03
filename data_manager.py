@@ -136,7 +136,7 @@ class Category:
         self.articles = []
         #Articles of category + articles of its subcategories
         self.allArticles = []
-        #Titles of mappable aarticles
+        #Titles of mappable articles
         self.titles = []
         self.allTitles = []
         self.titlesInOSM = []
@@ -169,8 +169,8 @@ class Category:
         for subIdx, subcatName in enumerate(sorted(categoriesData[categoryName]["subcategories"])):
             if subcatName in parents_categories_names:
                 print ("\nWARNING: Infinite loop."
-                       "\n{0} is a sub-category of {1} but it is also a "
-                       "parent category and will be discarded.".format(
+                       "\n\"{0}\" is a sub-category of \"{1}\" but it is also "
+                       "a parent category, thus it will be discarded.".format(
                            subcatName.encode("utf-8"),
                            self.name.encode("utf-8")))
                 continue
@@ -204,7 +204,7 @@ class Category:
     def read_categories_data(self, catscanFile, category):
         """Extract categories data from Quick Intersection
         """
-        #print "\n- Read cateogries, sub-categories and articles relations"
+        #print "\n- Read categories, sub-categories and articles relations"
         #categoriesData = {cat1: {subcat1: None, subcat2: None, "articles": ["article1", ...]},
         categoriesData = {}
 

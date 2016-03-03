@@ -157,7 +157,7 @@ To repeat the updating process, launch the script again with the `-u` option."
             #If an article is tagged in a foreign language, ask to Wikpedia
             #what is the corresponding article of the preferred language, so
             #that we can flag it as tagged aswell.
-            print "\n- Read from OSM file the already tagged articles"
+            print "\n- Read from the OSM file the articles already tagged"
             parseOSMData = ParseOSMData(self)
             #list of Wikipedia tags in OSM
             self.tagsInOSM = parseOSMData.allTags
@@ -545,7 +545,7 @@ the tag here and it will not be detected as error anymore.")
 
 ### Print info to terminal #############################################
     def print_category_info(self, categoryName):
-        """Print to the terminal informaions about the reqiested category
+        """Print to the terminal informations about the requested category
         """
         catFound = False
         for theme in self.themes:
