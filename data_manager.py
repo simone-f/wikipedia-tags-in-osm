@@ -345,11 +345,13 @@ class Category:
     def check_article_coords_in_wikipedia(self, article):
         scanFile = open(os.path.join("data", "nuts4nuts", "articles_to_scan.txt"), "a+")
         if article.isMappable and not article.inOSM:
-            #Check if Wikipedia coordinates are known (from new_C.gz)
-            if article.name in self.app.titlesCoords:
-                article.wikipediaCoords = self.app.titlesCoords[article.name]
+            # Check if Wikipedia coordinates are known
+            if article.name in self.app.titles_coords_from_wikipedia:
+                article.wikipediaCoords = \
+                    self.app.titles_coords_from_wikipedia[article.name]
                 article.wikipediaCoordsSource = 'Template:Coord'
-                self.app.titlesWithCoordsFromWikipedia[article.name] = article.wikipediaCoords
+                self.app.titlesWithCoordsFromWikipedia[article.name] = \
+                    article.wikipediaCoords
             else:
                 #create list of titles without coordinates, needed by Nuts4Nuts
                 scanFile.write(article.name.encode('utf-8') + '\n')

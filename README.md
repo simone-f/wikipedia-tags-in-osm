@@ -135,7 +135,7 @@ This program has been inspired by JOSM's [Wikipedia Plugin](http://wiki.openstre
 
 Services linked from the pages: [WIWOSM](http://wiki.openstreetmap.org/wiki/WIWOSM) (master, Kolossos), [add-tags](http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl/Add-tags) (Kolossos), [OverpassTurbo](http://overpass-turbo.eu/) (tyr.asd)
 
-Services used by the program: MediaWiki [API](https://www.mediawiki.org/wiki/API:Main_page), [Wikipedia coordinates](https://tools.wmflabs.org/wp-world/dumps/new_red0wd4.gz), [Nuts4Nuts](http://nuts4nutsrecon.spaziodati.eu/), [quick_intersection](http://tools.wmflabs.org/catscan2/quick_intersection.php) (Magnus Manske)
+Services used by the program: MediaWiki [API](https://www.mediawiki.org/wiki/API:Main_page), [Nuts4Nuts](http://nuts4nutsrecon.spaziodati.eu/), [quick_intersection](http://tools.wmflabs.org/catscan2/quick_intersection.php) (Magnus Manske)
 
 * themes icons are from [Maki](https://github.com/mapbox/maki), License BSD
 * regions icons are from [araldicacivica.it](http://www.araldicacivica.it), License [CC BY-NC-ND 3.0](http://creativecommons.org/licenses/by-nc-nd/3.0/it/)
