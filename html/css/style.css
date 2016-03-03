@@ -212,9 +212,6 @@ div#tabs li {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 }
-div#tabs li.help{
-    float: right;
-}
 
 div#tabs a {
     text-decoration: none;
