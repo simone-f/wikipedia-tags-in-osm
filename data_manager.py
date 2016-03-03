@@ -108,7 +108,9 @@ class Category:
     osmIds, list of OSM objects
     html, html code of web page
     """
-    def __init__(self, app, catId, catscanFile, categoryName, parentIsMappable, mainCategory=None, categoriesData=None):
+    def __init__(self, app, catId, catscanFile, categoryName, parentIsMappable,
+                 mainCategory=None, categoriesData=None,
+                 parents_categories_names = []):
         self.app = app
         self.ident = catId
         self.typ = "Categoria"
@@ -165,8 +167,18 @@ class Category:
 
         #Build subcategories
         for subIdx, subcatName in enumerate(sorted(categoriesData[categoryName]["subcategories"])):
+            if subcatName in parents_categories_names:
+                print ("\nWARNING: Infinite loop."
+                       "\n{0} is a sub-category of {1} but it is also a "
+                       "parent category and will be discarded.".format(
+                           subcatName.encode("utf-8"),
+                           self.name.encode("utf-8")))
+                continue
             subIdx = "%s_%s" % (self.ident, subIdx)
-            subcategory = Category(app, subIdx, catscanFile, subcatName, self.isMappable, self.mainCategory, categoriesData)
+            subcategory = Category(app, subIdx, catscanFile, subcatName,
+                                   self.isMappable, self.mainCategory,
+                                   categoriesData,
+                                   parents_categories_names + [self.name])
             self.subcategories.append(subcategory)
             self.allArticles.extend(subcategory.allArticles)
 
