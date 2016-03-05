@@ -213,7 +213,8 @@ To repeat the updating process, launch the script again with the `-u` option."
 ### Merge OSM info into Wikipedia data #################################
         #Add to Wikipedia categories and articles istances info about
         #their status in OSM: (tagged/not tagged), osm ids and counters
-        print "\n- Check which articles are already tagged in country's OSM file"
+        print ("\n- Check which articles are already tagged in the country's "
+               "OSM file")
         for theme in self.themes:
             for category in theme.categories:
                 category.check_articles_in_osm()
@@ -340,6 +341,8 @@ The number of tagged articles will replace that of the lust run in the tags' num
         """Save a GeoJSON file with the coordinates known by Wikipedia.
            It is used by the "Map" tab in homepage
         """
+        print ("\n- Save a GeoJSON file with the coordinates from "
+               "Wikipedia (map markers)")
         tree = {"type": "FeatureCollection", "features": []}
         i = 0
         for title, coords in self.titlesWithCoordsFromWikipedia.iteritems():
@@ -382,6 +385,8 @@ The number of tagged articles will replace that of the lust run in the tags' num
         configparser.read(configFile)
         #country
         self.WIKIPEDIALANG = configparser.get("general", "preferred language")
+        self.category_translation = configparser.get("general",
+                                                     "category translation")
         self.country = configparser.get("general", "country")
         self.OSMDIR = configparser.get("general", "osmdir")
         self.COUNTRYBBOX = configparser.get("general", "osmbbox")

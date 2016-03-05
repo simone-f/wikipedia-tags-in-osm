@@ -113,8 +113,8 @@ class Category:
                  parents_categories_names = []):
         self.app = app
         self.ident = catId
-        self.typ = "Categoria"
         self.name = categoryName
+
         if mainCategory is None:
             #A mainCategory is a category with a catsan file and a
             #dedicated webpage
@@ -123,7 +123,10 @@ class Category:
             self.updateTime = self.app.categoriesDates[self.name.encode("utf-8")]
         else:
             self.mainCategory = mainCategory
-        self.wikipediaUrl = "http://it.wikipedia.org/wiki/Categoria:%s" % urllib.quote_plus(self.name.encode("utf-8"))
+        self.wikipedia_url = "http://{0}.wikipedia.org/wiki/{1}:{2}".format(
+                                 app.WIKIPEDIALANG,
+                                 app.category_translation,
+                                 urllib.quote_plus(self.name.encode("utf-8")))
 
         #Extract categories info from Quick Intersection data
         #print "\n- reading Quick Intersection data"
@@ -505,9 +508,10 @@ class Article:
         """
         self.app = app
         self.ident = artId
-        self.typ = "Articolo"
         self.name = name
-        self.wikipediaUrl = "http://it.wikipedia.org/wiki/%s" % urllib.quote_plus(self.name.encode("utf-8"))
+        self.wikipedia_url = "http://{0}.wikipedia.org/wiki/{1}".format(
+                                 app.WIKIPEDIALANG,
+                                 urllib.quote_plus(self.name.encode("utf-8")))
         self.wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=it&title=%s" % self.name.encode("utf-8")
         self.OSMcoords = []
         self.OSMdim = 0

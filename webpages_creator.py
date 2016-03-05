@@ -40,7 +40,8 @@ class Helpers:
             itemType = self.app._("category")
         title = self.app._("See {0}: {1}").format(itemType, text)
         cssClass = ' class="wikipedia_link"'
-        link = self.url_to_link(item.wikipediaUrl, title, text, None, cssClass)
+        link = self.url_to_link(item.wikipedia_url, title, text, None,
+                                cssClass)
         return link
 
     def osm_ids_string_for_overpass(self, osmIds):

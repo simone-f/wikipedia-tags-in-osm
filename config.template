@@ -5,6 +5,8 @@ osmdir = ./data/osm
 osmbbox = 6.627730,35.493500,18.521200,47.092600
 # country language
 preferred language = it
+# category translation, used in links to Wikipedia categories
+category translation = Categoria
 # country name
 country = italy
 # regions names (optional)

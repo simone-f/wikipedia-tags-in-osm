@@ -28,9 +28,10 @@ import json
 
 
 class CoordsDownloader:
-    def __init__(self, user_agent, coords_file, titles):
+    def __init__(self, user_agent, coords_file, wikipedia_lang, titles):
         self.user_agent = user_agent
         self.coords_file = coords_file
+        self.wikipedia_lang = wikipedia_lang
         self.titles = sorted(titles)
         self.titles_coords, titles_coords_num = self.read_previous_coords()
 
@@ -124,13 +125,13 @@ class CoordsDownloader:
         """
         titles = urllib.quote_plus(
             titles_string.replace("_", " ").encode("utf-8"))
-        url = ('http://it.wikipedia.org/w/api.php?action=query'
+        url = ('http://{0}.wikipedia.org/w/api.php?action=query'
                '&format=json'
-               '&titles={0}'
+               '&titles={1}'
                '&prop=coordinates'
                '&coprimary=primary'
                '&maxlag=5'
-               '&continue='.format(titles))
+               '&continue='.format(self.wikipedia_lang, titles))
         if continue_string != "":
             url += '{0}&cocontinue={1}'.format(
                        urllib.quote_plus(continue_string),
@@ -141,9 +142,10 @@ class CoordsDownloader:
             wikipedia_answer = urllib2.urlopen(request)
         except:
             print ("\n* a problem occurred during download:\n"
-                   "{0}, {1}, {2}".format(titles_string.encode("utf-8"),
-                                          continue_string.encode("utf-8"),
-                                          cocontinue_string.encode("utf-8")))
+                   "{0}, {1}, {2}\ncontinue...".format(
+                       titles_string.encode("utf-8"),
+                       continue_string.encode("utf-8"),
+                       cocontinue_string.encode("utf-8")))
             return False
         else:
             with open(os.path.join("answer.json"), "w") as f:
@@ -212,5 +214,6 @@ if __name__ == "__main__":
               "Biblioteca della Libera Università di Bolzano"]
     CoordsDownloader(user_agent,
                      coords_file,
+                     "it",
                      [t.decode("utf-8") for t in titles])
     print "\nDone."

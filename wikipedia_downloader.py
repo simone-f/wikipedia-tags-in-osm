@@ -161,9 +161,9 @@ def download_templates(app, titlesString, continueString, tlcontinueString):
     """Query Wikipedia API for Coord template in articles
     """
     titles = urllib.quote_plus(titlesString.replace("_", " ").encode("utf-8"))
-    url = ('http://it.wikipedia.org/w/api.php?action=query'
-           '&format=json&titles={0}&prop=templates&tltemplates=Template:Coord'
-           '&maxlag=5&continue='.format(titles))
+    url = ('http://{0}.wikipedia.org/w/api.php?action=query'
+           '&format=json&titles={1}&prop=templates&tltemplates=Template:Coord'
+           '&maxlag=5&continue='.format(app.WIKIPEDIALANG, titles))
     if continueString != "":
         url += '%s&tlcontinue=%s' % (urllib.quote_plus(continueString), urllib.quote_plus(tlcontinueString))
     #debugging
@@ -241,6 +241,7 @@ def add_wikipedia_coordinates(app):
     coords_downloader = CoordsDownloader(
         app.user_agent,
         coords_file,
+        app.WIKIPEDIALANG,
         app.titlesNotInOSM)
 
     #coords from Wikipedia = {article title : [lat, lon],...}
