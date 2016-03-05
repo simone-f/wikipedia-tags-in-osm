@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-05 14:52+0100\n"
+"POT-Creation-Date: 2016-03-05 15:19+0100\n"
 "PO-Revision-Date: 2014-08-13 21:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: it_IT <LL@li.org>\n"
@@ -35,11 +35,11 @@ msgstr "Scarica in JOSM"
 
 #: webpages_creator.py:82
 msgid "Zoom with JOSM nearby the object that must be tagged"
-msgstr "Zooma in JOSM vicino all'oggetto da taggare"
+msgstr "Fai lo zoom in JOSM vicino all'oggetto da taggare"
 
 #: webpages_creator.py:93
 msgid "Zoom with browser, {0} editor, nearby the object that must be tagged"
-msgstr "Zooma in JOSM vicino all'oggetto da taggare"
+msgstr "Fai lo zoom con il browser, editor {0}, vicino all'oggetto da taggare"
 
 #: webpages_creator.py:99
 msgid "View as clickable map, image... (Overpass Turbo)"
@@ -178,7 +178,7 @@ msgstr ""
 "href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" target=\"_blank\"> "
 "eccezioni</a> sul Wiki di OSM)."
 
-#: templates/index_3.html:17 templates/index_base.html:58
+#: templates/index_3.html:17 templates/index_base.html:62
 msgid ""
 "<b>Non mappable</b> articles or categories, e.g. \"Paintings in X "
 "Museum\", can be removed from these pages, when reported to "
@@ -196,8 +196,8 @@ msgid ""
 "Tutorials for adding tags with <b><a href=\"http://ideditor.com/\" "
 "target=\"_blank\">iD</a></b> editor:"
 msgstr ""
-"Tutorial per aggiungere i tag tramite l'editor <b><a href=\"http://ideditor.com/\" "
-"target=\"_blank\">iD</a></b>:"
+"Tutorial per aggiungere i tag tramite l'editor <b><a "
+"href=\"http://ideditor.com/\" target=\"_blank\">iD</a></b>:"
 
 #: templates/index_3.html:29
 msgid "From articles tables"
@@ -213,7 +213,8 @@ msgid ""
 "href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
 "target=\"_blank\">JOSM</a></b> editor:"
 msgstr ""
-"Tutorial per aggiungere i tag tramite l'editor <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
+"Tutorial per aggiungere i tag tramite l'editor <b><a "
+"href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
 "target=\"_blank\">JOSM</a></b>:"
 
 #: templates/index_3.html:53
@@ -256,8 +257,12 @@ msgstr ""
 "target=\"_blank\">wikipedia</a> = it:Titolo dell'articolo"
 
 #: templates/index_base.html:15
-msgid "Information and counters"
+msgid "Information and counts"
 msgstr "Informazioni e conteggi"
+
+#: templates/index_base.html:15
+msgid "View suspicious tags"
+msgstr "Vedi tag sospetti"
 
 #: templates/index_base.html:15
 msgid "Suspicious tags"
@@ -307,10 +312,18 @@ msgstr ""
 " www.openstreetmap.org (Nominatim)."
 
 #: templates/index_base.html:56
+msgid "How"
+msgstr "Come"
+
+#: templates/index_base.html:58
+msgid "See <a href=\"index_3.html\">Help</a> tab."
+msgstr "Vedi <a href=\"index_3.html\">Aiuto</a>."
+
+#: templates/index_base.html:60
 msgid "Lists defects"
 msgstr "Difetti nelle liste"
 
-#: templates/index_base.html:59
+#: templates/index_base.html:63
 msgid ""
 "It may happen that a sub-category contain an article not striclty related"
 " to the choosen theme. If the article is mappable it will be shown "
@@ -320,7 +333,7 @@ msgstr ""
 "il tema di partenza. Se questi sono mappabili vengono comunque mostrati "
 "in tabella."
 
-#: templates/index_base.html:60
+#: templates/index_base.html:64
 msgid ""
 "Articles or sub-categories belonging to multiple categories may appear "
 "more than once in the same page."
@@ -328,76 +341,77 @@ msgstr ""
 "Articoli o sottocategorie appartenenti a più categorie possono ripetersi "
 "più volte in una stessa pagina (i conteggi ne tengono conto)."
 
-#: templates/index_base.html:62
+#: templates/index_base.html:66
 msgid "Program for pages creation"
 msgstr "Programma per generare le pagine"
 
-#: templates/index_base.html:63
+#: templates/index_base.html:67
 msgid "Code"
 msgstr "Codice"
 
-#: templates/index_base.html:63
+#: templates/index_base.html:67
 msgid "Author"
 msgstr "Autore"
 
-#: templates/index_base.html:63
+#: templates/index_base.html:67
 msgid "Other authors"
 msgstr "Altri autori"
 
-#: templates/index_base.html:64
+#: templates/index_base.html:68
 msgid "Credits and attributions."
 msgstr "Riconoscimenti ed attribuzioni."
 
-#: templates/index_base.html:65
+#: templates/index_base.html:69
 msgid ""
 "Thanks to those who reported non mappable articles (the names are in "
 "commits messages) and to Andrea Borruso and Alessandro Palmas for iD and "
 "JOSM tutorials."
 msgstr ""
 "Grazie a chi ha segnalato gli articoli non mappabili (i nomi sono nei "
-"commit) e ad Andrea Borruso e Alessandro Palmas per i video tutorial per iD e JOSM."
+"commit) e ad Andrea Borruso e Alessandro Palmas per i video tutorial per "
+"iD e JOSM."
 
-#: templates/index_base.html:66
+#: templates/index_base.html:70
 msgid "Services linked from these pages"
 msgstr "Servizi linkati da queste pagine"
 
-#: templates/index_base.html:67
+#: templates/index_base.html:71
 msgid "Services used for pages creation"
 msgstr "Servizi usati per creare le pagine"
 
-#: templates/index_base.html:68
+#: templates/index_base.html:72
 msgid "Themes' icons"
 msgstr "Icone dei temi"
 
-#: templates/index_base.html:75
+#: templates/index_base.html:79
 msgid "Show categories per theme"
 msgstr "Visualizza categorie per tema"
 
-#: templates/index_base.html:75
+#: templates/index_base.html:79
 msgid "Themes"
 msgstr "Temi"
 
-#: templates/index_base.html:77
+#: templates/index_base.html:81
 msgid "Show categories per region"
 msgstr "Visualizza categorie per regione"
 
-#: templates/index_base.html:77
+#: templates/index_base.html:81
 msgid "Regions"
 msgstr "Regioni"
 
-#: templates/index_base.html:80
+#: templates/index_base.html:84
 msgid "Show map with non tagged articles"
 msgstr "Visualizza mappa con articoli da taggare"
 
-#: templates/index_base.html:80
+#: templates/index_base.html:84
 msgid "Map"
 msgstr "Mappa"
 
-#: templates/index_base.html:82
+#: templates/index_base.html:86
 msgid "Show help"
 msgstr "Visualizza aiuto"
 
-#: templates/index_base.html:82
+#: templates/index_base.html:86
 msgid "Help"
 msgstr "Aiuto"
 

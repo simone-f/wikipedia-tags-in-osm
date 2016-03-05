@@ -450,7 +450,8 @@ class ParseOSMData():
                 print "\n Wrong url because lang was wrong:", string
                 titles = [t.replace(" ", "_") for t in titlesString.split("|")]
                 self.add_to_nonexistent(lang, titles)
-                print "\n- nonexistent titles returned from Wikipedia:\n", titles
+                # print "\n- nonexistent titles returned from Wikipedia:"
+                # print titles
                 return False
             else:
                 if wikipediaAnswer is None:
