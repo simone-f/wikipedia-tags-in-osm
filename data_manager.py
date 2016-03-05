@@ -358,7 +358,6 @@ class Category:
         self.wikipediaCoordsNum = len(titlesWithCoords)
 
     def check_article_coords_in_wikipedia(self, article):
-        scanFile = open(os.path.join("data", "nuts4nuts", "articles_to_scan.txt"), "a+")
         if article.isMappable and not article.inOSM:
             # Check if Wikipedia coordinates are known
             if article.name in self.app.titles_coords_from_wikipedia:
@@ -368,9 +367,9 @@ class Category:
                 self.app.titlesWithCoordsFromWikipedia[article.name] = \
                     article.wikipediaCoords
             else:
-                #create list of titles without coordinates, needed by Nuts4Nuts
-                scanFile.write(article.name.encode('utf-8') + '\n')
-        scanFile.close()
+                # append to the list of titles without coordinates,
+                # needed by Nuts4Nuts
+                self.app.mappable_titles_without_coords.append(article.name)
 
     def check_articles_coords_from_nuts4nuts(self):
         """Add coordinates to those articles that are not yet in OSM but

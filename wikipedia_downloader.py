@@ -250,8 +250,18 @@ def add_wikipedia_coordinates(app):
         if (lat, lon) != ("", ""):
             app.titles_coords_from_wikipedia[title] = [float(lat), float(lon)]
     app.titlesWithCoordsFromWikipedia = {}
+    # create a list of mapapble titles without coordinates, needed by Nuts4Nuts
+    app.mappable_titles_without_coords = []
+
     #add wikipediaCoords attribute to articles
     for theme in app.themes:
         for category in theme.categories:
             category.check_articles_coords_in_wikipedia()
     print "  articles:", len(app.titlesWithCoordsFromWikipedia)
+
+    app.mappable_titles_without_coords = \
+        list(set(app.mappable_titles_without_coords))
+    with open(os.path.join(
+              "data", "nuts4nuts", "articles_to_scan.txt"), "w") as f:
+        f.write("\n".join(title.encode('utf-8')
+                for title in app.mappable_titles_without_coords))
