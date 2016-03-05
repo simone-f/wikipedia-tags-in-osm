@@ -28,7 +28,8 @@ import json
 
 
 class CoordsDownloader:
-    def __init__(self, user_agent, coords_file, wikipedia_lang, titles):
+    def __init__(self, user_agent, coords_file, answer_file, wikipedia_lang,
+                 titles):
         self.user_agent = user_agent
         self.coords_file = coords_file
         self.wikipedia_lang = wikipedia_lang
@@ -53,7 +54,7 @@ class CoordsDownloader:
         print "to be checked:", len(titles_to_check)
 
         # Query Wikpedia for coordinates
-        self.query_wikipedia(titles_to_check)
+        self.query_wikipedia(titles_to_check, answer_file)
 
         # Save updated titles' coordinates
         self.save_titles_coords()
@@ -78,7 +79,7 @@ class CoordsDownloader:
                 titles_coords[title] = [lat, lon]
         return titles_coords, titles_coords_num
 
-    def query_wikipedia(self, titles_to_check):
+    def query_wikipedia(self, titles_to_check, answer_file):
         """Query Wikipedia API for coordinates."""
         # Create titles_strings with 50 titles each to query Wikipedia API
         titles_strings = []
@@ -105,13 +106,15 @@ class CoordsDownloader:
                 break
 
             while True:
-                wikipedia_answer = self.download_coordinates(titles_string,
+                wikipedia_answer = self.download_coordinates(answer_file,
+                                                             titles_string,
                                                              continue_string,
                                                              cocontinue_string)
                 if not wikipedia_answer:
                     break
                 # Parsing
-                continue_string, cocontinue_string = self.parse_answer()
+                continue_string, cocontinue_string = self.parse_answer(
+                    answer_file)
                 if (continue_string, cocontinue_string) == ("", ""):
                     break
                 else:
@@ -119,7 +122,7 @@ class CoordsDownloader:
             if not wikipedia_answer:
                 break
 
-    def download_coordinates(self, titles_string, continue_string,
+    def download_coordinates(self, answer_file, titles_string, continue_string,
                              cocontinue_string):
         """Query Wikipedia API for articles' coordinates
         """
@@ -148,13 +151,13 @@ class CoordsDownloader:
                        cocontinue_string.encode("utf-8")))
             return False
         else:
-            with open(os.path.join("answer.json"), "w") as f:
+            with open(answer_file, "w") as f:
                 f.write(wikipedia_answer.read())
             return True
 
-    def parse_answer(self):
+    def parse_answer(self, answer_file):
         """Read coordinates from Wikipedia API answer."""
-        with open(os.path.join("answer.json"), "r") as f:
+        with open(answer_file, "r") as f:
             data = json.load(f)
         for page in data["query"]["pages"].values():
             title = page["title"].replace(" ", "_")
@@ -214,6 +217,7 @@ if __name__ == "__main__":
               "Biblioteca della Libera Università di Bolzano"]
     CoordsDownloader(user_agent,
                      coords_file,
+                     "answer.json",
                      "it",
                      [t.decode("utf-8") for t in titles])
     print "\nDone."

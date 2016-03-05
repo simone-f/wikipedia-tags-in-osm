@@ -237,10 +237,12 @@ def add_wikipedia_coordinates(app):
                                "wikipedia",
                                "wikipedia_{0}_coordinates.csv".format(
                                    app.WIKIPEDIALANG))
+    answer_file = os.path.join("data", "wikipedia", "answers", "answer.json")
 
     coords_downloader = CoordsDownloader(
         app.user_agent,
         coords_file,
+        answer_file,
         app.WIKIPEDIALANG,
         app.titlesNotInOSM)
 
