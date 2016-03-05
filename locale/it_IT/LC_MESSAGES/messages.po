@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PROJECT project.
 # Simone F. <groppo8@gmail.com>, 2014.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-03 21:11+0100\n"
+"POT-Creation-Date: 2016-03-05 14:52+0100\n"
 "PO-Revision-Date: 2014-08-13 21:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: it_IT <LL@li.org>\n"
@@ -30,31 +29,31 @@ msgstr "categoria"
 msgid "See {0}: {1}"
 msgstr "Vedi {0}: {1}"
 
-#: webpages_creator.py:74
+#: webpages_creator.py:75
 msgid "Download in JOSM"
 msgstr "Scarica in JOSM"
 
-#: webpages_creator.py:81
+#: webpages_creator.py:82
 msgid "Zoom with JOSM nearby the object that must be tagged"
 msgstr "Zooma in JOSM vicino all'oggetto da taggare"
 
-#: webpages_creator.py:92
+#: webpages_creator.py:93
 msgid "Zoom with browser, {0} editor, nearby the object that must be tagged"
 msgstr "Zooma in JOSM vicino all'oggetto da taggare"
 
-#: webpages_creator.py:98
+#: webpages_creator.py:99
 msgid "View as clickable map, image... (Overpass Turbo)"
 msgstr "Visualizza come mappa cliccabile, immagine... (Overpass Turbo)"
 
-#: webpages_creator.py:116 templates/macros.html:21
+#: webpages_creator.py:117 templates/macros.html:21
 msgid "Go to OSM web page of this object"
 msgstr "Vedi la pagina OSM dell'oggetto"
 
-#: webpages_creator.py:132
+#: webpages_creator.py:133
 msgid "Wikipedia page is missing the coordinates' template"
 msgstr "Sulla pagina Wikipedia manca il template coord"
 
-#: webpages_creator.py:171
+#: webpages_creator.py:172
 msgid ""
 "Search the objects in OSM by name and tag them automatically (WIWOSM add-"
 "tags)"
@@ -62,27 +61,27 @@ msgstr ""
 "Cerca gli oggetti in OSM per nome ed aggiungi il tag automaticamente "
 "(WIWOSM add-tags)"
 
-#: webpages_creator.py:196
+#: webpages_creator.py:197
 msgid "See Wikipedia map (WIWOSM)"
 msgstr "Vedi mappa Wikipedia (WIWOSM)"
 
-#: webpages_creator.py:205
+#: webpages_creator.py:206
 msgid "See OSM web page"
 msgstr "Vedi pagina OSM"
 
-#: webpages_creator.py:388
+#: webpages_creator.py:389
 msgid "Still to tag"
 msgstr "Da taggare"
 
-#: webpages_creator.py:389
+#: webpages_creator.py:390
 msgid "Tagged"
 msgstr "Taggati"
 
-#: webpages_creator.py:390
+#: webpages_creator.py:391
 msgid "Total"
 msgstr "Totali"
 
-#: webpages_creator.py:400 templates/macros.html:117 templates/macros.html:119
+#: webpages_creator.py:401 templates/macros.html:117 templates/macros.html:119
 #: templates/subpage.html:61 templates/subpage.html:79
 #: templates/subpage.html:81
 msgid "Articles"
@@ -102,7 +101,6 @@ msgstr "Aggiornamento degli articoli nella categoria"
 
 #: templates/errors.html:16 templates/non_mappable.html:171
 #: templates/subpage.html:47
-#, fuzzy
 msgid "All categories"
 msgstr "Tutte le categorie"
 
@@ -119,7 +117,6 @@ msgstr ""
 "stranieri inesistenti o che non sembrano articoli Wikipedia."
 
 #: templates/errors.html:22
-#, fuzzy
 msgid "No errors where found"
 msgstr "Nessun errore rilevato."
 
@@ -128,7 +125,6 @@ msgid "Warnings"
 msgstr "Avvertimenti"
 
 #: templates/errors.html:28
-#, fuzzy
 msgid ""
 "Wikipedia articles tagged with a url or with uppercase lang.<br>They are "
 "not errors and are used by WIWOSM, but the Wiki <a "
@@ -145,7 +141,6 @@ msgid "Go to region's page"
 msgstr "Vai alla pagina della regione"
 
 #: templates/index_2.html:31
-#, fuzzy
 msgid ""
 "<b>Click</b> on an article to visit its page or to map/tag it through the"
 " JOSM/iD link (coordinates are taken form Wikipedia).<br>If an article is"
@@ -184,7 +179,6 @@ msgstr ""
 "eccezioni</a> sul Wiki di OSM)."
 
 #: templates/index_3.html:17 templates/index_base.html:58
-#, fuzzy
 msgid ""
 "<b>Non mappable</b> articles or categories, e.g. \"Paintings in X "
 "Museum\", can be removed from these pages, when reported to "
@@ -198,16 +192,14 @@ msgstr ""
 "target=\"_blank\">Questa pagina</a> può aiutare a trovarli."
 
 #: templates/index_3.html:23
-#, fuzzy
 msgid ""
-"Add tags with <b><a href=\"http://ideditor.com/\" "
-"target=\"_blank\">iD</a></b> editor, like shown in these tutorials:"
+"Tutorials for adding tags with <b><a href=\"http://ideditor.com/\" "
+"target=\"_blank\">iD</a></b> editor:"
 msgstr ""
-"Aggiungi i tag tramite l'editor <b><a href=\"http://ideditor.com/\" "
-"target=\"_blank\">iD</a></b> come mostrato in questi due tutorial:"
+"Tutorial per aggiungere i tag tramite l'editor <b><a href=\"http://ideditor.com/\" "
+"target=\"_blank\">iD</a></b>:"
 
 #: templates/index_3.html:29
-#, fuzzy
 msgid "From articles tables"
 msgstr "dalle tabelle di articoli"
 
@@ -216,17 +208,15 @@ msgid "From the map"
 msgstr "dalla mappa"
 
 #: templates/index_3.html:41
-#, fuzzy
 msgid ""
-"If you use <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
-"target=\"_blank\">JOSM</a></b> you can procede in a similar same way, and"
-" also use these two tools:"
+"Tutorial for adding tags with <b><a "
+"href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
+"target=\"_blank\">JOSM</a></b> editor:"
 msgstr ""
-"Se usi l'editor <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\""
-" target=\"_blank\">JOSM</a></b>, oltre alle procedure dei video, puoi "
-"usare questi due strumenti:"
+"Tutorial per aggiungere i tag tramite l'editor <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
+"target=\"_blank\">JOSM</a></b>:"
 
-#: templates/index_3.html:47
+#: templates/index_3.html:53
 msgid ""
 "<a href=\"http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia\" "
 "target=\"_blank\">Plugin Wikipedia</a>. Hint: copy a category name from a"
@@ -236,7 +226,7 @@ msgstr ""
 "target=\"_blank\">Plugin Wikipedia</a> Suggerimento: copia dalle tabelle "
 "il nome di una categoria ed incollalo nel plugin."
 
-#: templates/index_3.html:48
+#: templates/index_3.html:54
 msgid ""
 "<a href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl"
 "/Add-tags\" target=\"_blank\">add-tags</a>. Hint: you can easily use this"
@@ -246,11 +236,11 @@ msgstr ""
 "/Add-tags\" target=\"_blank\">add-tags</a> Suggerimento: puoi usare "
 "questo servizio anche cliccando su queste icone"
 
-#: templates/index_3.html:55
+#: templates/index_3.html:61
 msgid "Tables' legend"
 msgstr "Legenda tabelle"
 
-#: templates/index_3.html:56
+#: templates/index_3.html:62
 msgid "Colors and symbols in tables."
 msgstr "Colori e simboli nelle tabelle."
 
@@ -286,7 +276,6 @@ msgid "Why"
 msgstr "Perché"
 
 #: templates/index_base.html:52
-#, fuzzy
 msgid ""
 "Geographic informations are added to Wikipedia and OpenStreetMap gains "
 "more informations about an object."
@@ -295,7 +284,6 @@ msgstr ""
 "informazioni sull'oggetto."
 
 #: templates/index_base.html:53
-#, fuzzy
 msgid ""
 "OpenStreetMap objects with Wikipedia tags are shown in Wikipedia on <a "
 "href=\"http://toolserver.org/~kolossos/openlayers/kml-on-"
@@ -361,13 +349,13 @@ msgid "Credits and attributions."
 msgstr "Riconoscimenti ed attribuzioni."
 
 #: templates/index_base.html:65
-#, fuzzy
 msgid ""
-"Thanks to those who reported non mappable articles (names are in commits "
-"messages) and to Andrea Borruso for iD tutorials."
+"Thanks to those who reported non mappable articles (the names are in "
+"commits messages) and to Andrea Borruso and Alessandro Palmas for iD and "
+"JOSM tutorials."
 msgstr ""
 "Grazie a chi ha segnalato gli articoli non mappabili (i nomi sono nei "
-"commit) e ad Andrea Borruso per i video tutorial su iD."
+"commit) e ad Andrea Borruso e Alessandro Palmas per i video tutorial per iD e JOSM."
 
 #: templates/index_base.html:66
 msgid "Services linked from these pages"
@@ -410,7 +398,6 @@ msgid "Show help"
 msgstr "Visualizza aiuto"
 
 #: templates/index_base.html:82
-#, fuzzy
 msgid "Help"
 msgstr "Aiuto"
 
@@ -442,7 +429,6 @@ msgid "There is something to do"
 msgstr "C'è qualcosa da fare"
 
 #: templates/macros.html:30
-#, fuzzy
 msgid ""
 "Search the objects in OSM possibly related to this category's article. "
 "Click on this icon to automatically search and tag these objects through "
@@ -508,12 +494,10 @@ msgid "See page"
 msgstr "Vedi pagina"
 
 #: templates/non_mappable.html:174
-#, fuzzy
 msgid "Search non mappable items"
 msgstr "Cerca non mappabili"
 
 #: templates/non_mappable.html:175
-#, fuzzy
 msgid "Search possible non mappable articles and categories with a substring."
 msgstr ""
 "Cerca tramite una sottostringa gli articoli e le categorie probabilmente "
@@ -546,7 +530,6 @@ msgid "categories"
 msgstr "categorie"
 
 #: templates/non_mappable.html:189
-#, fuzzy
 msgid "mappable"
 msgstr "mappabili"
 
@@ -594,11 +577,9 @@ msgid "Show non mappable"
 msgstr "Mostra non mappabili"
 
 #: templates/subpage.html:84
-#, fuzzy
 msgid "View non mappable articles"
 msgstr "Visualizza articoli non mappabili"
 
 #: templates/subpage.html:107
 msgid "Show also non mappable categories and articles"
 msgstr "Mostra anche categorie ed articoli non mappabili"
-

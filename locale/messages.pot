@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-03 21:11+0100\n"
+"POT-Creation-Date: 2016-03-05 14:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,57 +29,57 @@ msgstr ""
 msgid "See {0}: {1}"
 msgstr ""
 
-#: webpages_creator.py:74
+#: webpages_creator.py:75
 msgid "Download in JOSM"
 msgstr ""
 
-#: webpages_creator.py:81
+#: webpages_creator.py:82
 msgid "Zoom with JOSM nearby the object that must be tagged"
 msgstr ""
 
-#: webpages_creator.py:92
+#: webpages_creator.py:93
 msgid "Zoom with browser, {0} editor, nearby the object that must be tagged"
 msgstr ""
 
-#: webpages_creator.py:98
+#: webpages_creator.py:99
 msgid "View as clickable map, image... (Overpass Turbo)"
 msgstr ""
 
-#: webpages_creator.py:116 templates/macros.html:21
+#: webpages_creator.py:117 templates/macros.html:21
 msgid "Go to OSM web page of this object"
 msgstr ""
 
-#: webpages_creator.py:132
+#: webpages_creator.py:133
 msgid "Wikipedia page is missing the coordinates' template"
 msgstr ""
 
-#: webpages_creator.py:171
+#: webpages_creator.py:172
 msgid ""
 "Search the objects in OSM by name and tag them automatically (WIWOSM add-"
 "tags)"
 msgstr ""
 
-#: webpages_creator.py:196
+#: webpages_creator.py:197
 msgid "See Wikipedia map (WIWOSM)"
 msgstr ""
 
-#: webpages_creator.py:205
+#: webpages_creator.py:206
 msgid "See OSM web page"
 msgstr ""
 
-#: webpages_creator.py:388
+#: webpages_creator.py:389
 msgid "Still to tag"
 msgstr ""
 
-#: webpages_creator.py:389
+#: webpages_creator.py:390
 msgid "Tagged"
 msgstr ""
 
-#: webpages_creator.py:390
+#: webpages_creator.py:391
 msgid "Total"
 msgstr ""
 
-#: webpages_creator.py:400 templates/macros.html:117 templates/macros.html:119
+#: webpages_creator.py:401 templates/macros.html:117 templates/macros.html:119
 #: templates/subpage.html:61 templates/subpage.html:79
 #: templates/subpage.html:81
 msgid "Articles"
@@ -169,8 +169,8 @@ msgstr ""
 
 #: templates/index_3.html:23
 msgid ""
-"Add tags with <b><a href=\"http://ideditor.com/\" "
-"target=\"_blank\">iD</a></b> editor, like shown in these tutorials:"
+"Tutorials for adding tags with <b><a href=\"http://ideditor.com/\" "
+"target=\"_blank\">iD</a></b> editor:"
 msgstr ""
 
 #: templates/index_3.html:29
@@ -183,30 +183,30 @@ msgstr ""
 
 #: templates/index_3.html:41
 msgid ""
-"If you use <b><a href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
-"target=\"_blank\">JOSM</a></b> you can procede in a similar same way, and"
-" also use these two tools:"
+"Tutorial for adding tags with <b><a "
+"href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
+"target=\"_blank\">JOSM</a></b> editor:"
 msgstr ""
 
-#: templates/index_3.html:47
+#: templates/index_3.html:53
 msgid ""
 "<a href=\"http://josm.openstreetmap.de/wiki/Help/Plugin/Wikipedia\" "
 "target=\"_blank\">Plugin Wikipedia</a>. Hint: copy a category name from a"
 " table and paste it into the plugin."
 msgstr ""
 
-#: templates/index_3.html:48
+#: templates/index_3.html:54
 msgid ""
 "<a href=\"http://wiki.openstreetmap.org/wiki/JOSM/Plugins/RemoteControl"
 "/Add-tags\" target=\"_blank\">add-tags</a>. Hint: you can easily use this"
 " tool by clicking on these icons"
 msgstr ""
 
-#: templates/index_3.html:55
+#: templates/index_3.html:61
 msgid "Tables' legend"
 msgstr ""
 
-#: templates/index_3.html:56
+#: templates/index_3.html:62
 msgid "Colors and symbols in tables."
 msgstr ""
 
@@ -297,8 +297,9 @@ msgstr ""
 
 #: templates/index_base.html:65
 msgid ""
-"Thanks to those who reported non mappable articles (names are in commits "
-"messages) and to Andrea Borruso for iD tutorials."
+"Thanks to those who reported non mappable articles (the names are in "
+"commits messages) and to Andrea Borruso and Alessandro Palmas for iD and "
+"JOSM tutorials."
 msgstr ""
 
 #: templates/index_base.html:66
