@@ -74,10 +74,10 @@ class Helpers:
             url += "import?url=http://overpass.osm.rambler.ru/cgi/interpreter?data=" + data
             title = self.app._("Download in JOSM")
         elif mode == "load_and_zoom":
-            left = data[1] - 0.0005
-            right = data[1] + 0.0005
-            top = data[0] + 0.0005
-            bottom = data[0] - 0.0005
+            left = data[1] - 0.0008
+            right = data[1] + 0.0008
+            top = data[0] + 0.0008
+            bottom = data[0] - 0.0008
             url += "load_and_zoom?left=%f&amp;right=%f&amp;top=%f&amp;bottom=%f" % tuple((left, right, top, bottom))
             title = self.app._("Zoom with JOSM nearby the object that must be tagged")
         link = self.url_to_link(url, title, None, img)
