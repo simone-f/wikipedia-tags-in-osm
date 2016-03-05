@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-05 15:19+0100\n"
+"POT-Creation-Date: 2016-03-05 15:42+0100\n"
 "PO-Revision-Date: 2014-08-13 21:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: it_IT <LL@li.org>\n"
@@ -216,6 +216,10 @@ msgstr ""
 "Tutorial per aggiungere i tag tramite l'editor <b><a "
 "href=\"http://wiki.openstreetmap.org/wiki/IT:JOSM\" "
 "target=\"_blank\">JOSM</a></b>:"
+
+#: templates/index_3.html:51
+msgid "You can also use these two useful tools with JOSM:"
+msgstr "Con JOSM, puoi anche usare questi due utili strumenti:"
 
 #: templates/index_3.html:53
 msgid ""
@@ -597,3 +601,4 @@ msgstr "Visualizza articoli non mappabili"
 #: templates/subpage.html:107
 msgid "Show also non mappable categories and articles"
 msgstr "Mostra anche categorie ed articoli non mappabili"
+
