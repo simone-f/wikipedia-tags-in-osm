@@ -370,7 +370,7 @@ The number of tagged articles will replace that of the lust run in the tags' num
         """Setup configurations
         """
         # Program version
-        self.version = "v0.3.1.1"
+        self.version = "v0.4 beta"
 
         #Read configuration from config files
         configFile = "config.cfg"
