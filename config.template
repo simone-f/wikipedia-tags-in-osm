@@ -12,7 +12,7 @@ country = italy
 # regions names (optional)
 regions names = Abruzzo|Basilicata|Calabria|Campania|Emilia-Romagna|Friuli-Venezia Giulia|Lazio|Liguria|Lombardia|Marche|Molise|Piemonte|Puglia|Sardegna|Sicilia|Toscana|Trentino-Alto Adige|Umbria|Valle d'Aosta|Veneto
 # user agent for requests to Wikipedia and Quick Intersections APIs
-# example: wikipedia-tags-in-osm (https://openstreetmap.it/wikipedia-tags-in-osm; admin@example.com)
+# example: wikipedia-tags-in-osm (https://openstreetmap.org/wikipedia-tags-in-osm; admin@example.com)
 user agent =
 # path to libspatialite
 libspatialite-path = /usr/lib/x86_64-linux-gnu/libspatialite.so.5.1.0
@@ -28,12 +28,13 @@ supported_locales = it_IT | en_US
 # theme name = category A name|category B name|category C name...
 cultura = Biblioteche d'Italia per regione | Osservatori astronomici d'Italia | Siti archeologici d'Italia | Università in Italia | Orti botanici d'Italia | Scuole in Italia | Teatri d'Italia
 escursionismo = Bivacchi d'Italia | Rifugi d'Italia | Sentieri delle Alpi | Sentieri dell'Italia | Malghe
-infrastrutture = Aeroporti d'Italia per regione | Fari d'Italia | Metropolitane in Italia | Porti d'Italia | Canali artificiali d'Italia | Funicolari in Italia |Parchi eolici in Italia | Stazioni ferroviarie d'Italia | Centrali idroelettriche in Italia| Idroscali d'Italia |Piste ciclabili d'Italia | Depositi locomotive d'Italia | Linee ferroviarie in Italia |Ponti d'Italia | Dighe d'Italia | Centrali termoelettriche in Italia | Trafori ferroviari in Italia | Trafori stradali in Italia | Autostrade in Italia
+infrastrutture = Aeroporti d'Italia per regione | Fari d'Italia | Metropolitane in Italia | Porti d'Italia | Canali artificiali d'Italia | Funicolari in Italia |Parchi eolici in Italia | Stazioni ferroviarie d'Italia | Centrali idroelettriche in Italia| Idroscali d'Italia |Piste ciclabili d'Italia |Trafori ferroviari in Italia | Depositi locomotive d'Italia | Linee ferroviarie in Italia |Ponti d'Italia | Dighe d'Italia | Centrali termoelettriche in Italia | Trafori ferroviari in Italia | Trafori stradali in Italia | Autostrade in Italia
 luoghi di culto = Abbazie d'Italia | Cattedrali d'Italia | Monasteri d'Italia | Santuari cattolici d'Italia | Basiliche d'Italia | Cimiteri d'Italia | Moschee d'Italia | Sinagoghe d'Italia | Cappelle d'Italia | Eremi d'Italia | Oratori d'Italia | Templi d'Italia | Chiese d'Italia per regione | Conventi d'Italia
-natura = Aree naturali protette per regione | Cascate d'Italia | Grotte d'Italia | Stretti d'Italia | Baie d'Italia | Coste d'Italia | Isole d'Italia | Zone umide | Canali naturali d'Italia | Foreste d'Italia | Laghi d'Italia per regione | Canyon d'Italia | Ghiacciai d'Italia | Lagune d'Italia | Capi e promontori d'Italia | Golfi d'Italia | Passi e valichi d'Italia | Fiumi_d'Italia_per_regione | Montagne d'Italia per regione
+natura = Aree naturali protette per regione | Cascate d'Italia | Grotte d'Italia | Stretti d'Italia | Baie d'Italia | Coste d'Italia | Isole d'Italia | Zone umide | Canali naturali d'Italia | Foreste d'Italia | Laghi d'Italia per regione | Canyon d'Italia | Ghiacciai d'Italia | Lagune d'Italia | Capi e promontori d'Italia | Golfi d'Italia | Valichi d'Italia | Fiumi_d'Italia_per_regione | Montagne d'Italia per regione
 sport = Circuiti motoristici d'Italia | Stadi del ghiaccio d'Italia | Impianti sportivi d'Italia per regione | Piste sciistiche italiane | Trampolini d'Italia
 strutture architettoniche = Architetture militari d'Italia per regione | Fontane d'Italia | Monumenti d'Italia | Piazze d'Italia | Caffè storici d'Italia | Gallerie commerciali | Musei d'Italia per regione | Ville d'Italia | Centri commerciali d'Italia | Grattacieli d'Italia | Palazzi d'Italia
 svago = Parchi di divertimento in Italia
+divisioni amministrative = Regioni d'Italia
 
 [debug]
 # save cateogories data as a text files in "data/logs/"
