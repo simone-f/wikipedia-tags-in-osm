@@ -12,8 +12,8 @@
 
   <div id="update_time">
     {% trans %}Update time{% endtrans %}: {{ app.UPDATETIME }}
-  {% if pageType == "sub page" and mode == "themes" %}
-<br />{% trans %}Update time of articles in category{% endtrans %}: {{ item.updateTime }}
+  {% if path == "/subpages/" and mode == "themes" %}
+    <br />{% trans %}Update time of articles lists{% endtrans %}: {{ item.updateTime }}
   {% endif %}
   </div>
 
