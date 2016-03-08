@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-05 15:42+0100\n"
+"POT-Creation-Date: 2016-03-08 21:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,7 +94,7 @@ msgid "Update time"
 msgstr ""
 
 #: templates/base.html:16
-msgid "Update time of articles in category"
+msgid "Update time of articles lists"
 msgstr ""
 
 #: templates/errors.html:16 templates/non_mappable.html:171
@@ -217,8 +217,8 @@ msgstr ""
 #: templates/index_base.html:12
 msgid ""
 "Lists of Wikipedia articles which can be mapped in OpenStreetMap, through"
-" the tag <b><a href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" "
-"target=\"_blank\">wikipedia</a> = en:Article's title"
+" the tag <b>\"<a href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" "
+"target=\"_blank\">wikipedia</a> = en:Article's title\"</b>."
 msgstr ""
 
 #: templates/index_base.html:15

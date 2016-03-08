@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-05 15:42+0100\n"
+"POT-Creation-Date: 2016-03-08 21:36+0100\n"
 "PO-Revision-Date: 2014-08-13 21:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: it_IT <LL@li.org>\n"
@@ -96,8 +96,8 @@ msgid "Update time"
 msgstr "Aggiornamento"
 
 #: templates/base.html:16
-msgid "Update time of articles in category"
-msgstr "Aggiornamento degli articoli nella categoria"
+msgid "Update time of articles lists"
+msgstr "Aggiornamento liste articoli"
 
 #: templates/errors.html:16 templates/non_mappable.html:171
 #: templates/subpage.html:47
@@ -252,13 +252,13 @@ msgstr "Colori e simboli nelle tabelle."
 #: templates/index_base.html:12
 msgid ""
 "Lists of Wikipedia articles which can be mapped in OpenStreetMap, through"
-" the tag <b><a href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" "
-"target=\"_blank\">wikipedia</a> = en:Article's title"
+" the tag <b>\"<a href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" "
+"target=\"_blank\">wikipedia</a> = en:Article's title\"</b>."
 msgstr ""
 "Liste di articoli Wikipedia che possono essere mappati in OpenStreetMap, "
-"tramite il tag <b><a "
+"tramite il tag <b>\"<a "
 "href=\"http://wiki.openstreetmap.org/wiki/Wikipedia\" "
-"target=\"_blank\">wikipedia</a> = it:Titolo dell'articolo"
+"target=\"_blank\">wikipedia</a> = it:Titolo dell'articolo\"</b>."
 
 #: templates/index_base.html:15
 msgid "Information and counts"
