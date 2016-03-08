@@ -82,8 +82,8 @@ def download_a_new_category(app, themeName, categoryName):
     url += "&cats=" + urllib.quote_plus(categoryName.encode("utf-8"))
     url += "&ns=*&depth=-1&max=30000&start=0&format=json&catlist=1&redirects=none&callback="
 
-    print ("  url:/n{0}/n  downloading data from "
-           "Quick Intersection...".format(url))
+    print ("  url:\n{0}\n  downloading data from Quick Intersection...".format(
+           url))
     request = urllib2.Request(url, None, {'User-Agent': app.user_agent})
     data = urllib2.urlopen(request)
     filename = os.path.join(app.CATSCANDIR, themeName, "%s.json" % categoryName)
