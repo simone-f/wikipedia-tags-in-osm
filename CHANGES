@@ -6,6 +6,7 @@ Features:
 - Add an help page (Simone F, request by Andrea Borruso)
 - Add centroid coordinates to the popup for use in the Wikipedia template (Cristian Consonni)
 - New links let the user zoom to the coordinates obtained from Wikipedia with iD online editor (Luca Delucchi)
+- A web page helps finding non-mappable articles and categories, starting from one or more substrings (Simone F.)
 - Video tutorials for iD and JOSM (Andrea Borruso and Alessandro Palmas)
 - Download Wikipedia coordinates from MediaWiki API instead of using an old database dump as source (Simone F.)
 

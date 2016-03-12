@@ -395,3 +395,15 @@ table.popup tr:nth-child(3) {
     bottom: 10px;
     left: 10px;
 }
+
+
+/* non_mappable.html */
+
+.parent {
+    color: grey;
+    font-size: 90%;
+}
+
+table.results td:nth-child(2) {
+    text-align: right;
+}

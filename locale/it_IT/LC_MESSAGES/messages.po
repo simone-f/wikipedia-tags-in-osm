@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-08 21:36+0100\n"
+"POT-Creation-Date: 2016-03-12 14:14+0100\n"
 "PO-Revision-Date: 2014-08-13 21:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: it_IT <LL@li.org>\n"
@@ -99,7 +99,7 @@ msgstr "Aggiornamento"
 msgid "Update time of articles lists"
 msgstr "Aggiornamento liste articoli"
 
-#: templates/errors.html:16 templates/non_mappable.html:171
+#: templates/errors.html:16 templates/non_mappable.html:189
 #: templates/subpage.html:47
 msgid "All categories"
 msgstr "Tutte le categorie"
@@ -511,61 +511,97 @@ msgstr "Articoli taggati ma senza template Coord in Wikipedia"
 msgid "See page"
 msgstr "Vedi pagina"
 
-#: templates/non_mappable.html:174
+#: templates/non_mappable.html:49
+msgid "No results"
+msgstr "Nessun risultato"
+
+#: templates/non_mappable.html:52
+msgid "Results"
+msgstr "Risultati"
+
+#: templates/non_mappable.html:139
+msgid "Category"
+msgstr "Categoria"
+
+#: templates/non_mappable.html:139
+msgid "Article"
+msgstr "Articolo"
+
+#: templates/non_mappable.html:141
+msgid "Parent category"
+msgstr "Categoria superiore"
+
+#: templates/non_mappable.html:192
 msgid "Search non mappable items"
-msgstr "Cerca non mappabili"
+msgstr "Cerca voci non mappabili"
 
-#: templates/non_mappable.html:175
-msgid "Search possible non mappable articles and categories with a substring."
+#: templates/non_mappable.html:193
+msgid ""
+"Search possible non mappable articles and categories with one or more "
+"substrings, separated by \"|\"."
 msgstr ""
-"Cerca tramite una sottostringa gli articoli e le categorie probabilmente "
-"non mappabili."
+"Cerca articoli e categorie probabilmente non mappabili, tramite una o più"
+" sottostringhe separate da \"|\"."
 
-#: templates/non_mappable.html:176
-msgid "Examples"
-msgstr "Esempi"
+#: templates/non_mappable.html:194
+msgid "Items examples:"
+msgstr "Esempi di voci:"
 
-#: templates/non_mappable.html:178
+#: templates/non_mappable.html:196
 msgid "Article \"<i>List</i> of churches in Salerno\"."
 msgstr "Articolo \"<i>Lista</i> delle chiese di Salerno\"."
 
-#: templates/non_mappable.html:179
+#: templates/non_mappable.html:197
 msgid "Category \"<i>Paintings</i> in Santa Maria Novella basilica\""
-msgstr ""
-"Categoria \"<i>Dipinti</i> nella basilica e nel convento di Santa Maria "
-"Novella\""
+msgstr "Categoria \"<i>Dipinti</i> nella basilica di Santa Maria Novella\""
 
-#: templates/non_mappable.html:184
+#: templates/non_mappable.html:199
+msgid "Strings example"
+msgstr "Esempio di stringhe"
+
+#: templates/non_mappable.html:200
+msgid "strings_example"
+msgstr "sepolti|studenti|rettori|professori|rettori|persone|nati|morti|tiranni|vescovi|glossatori|organi|affreschi|dipinti|storie|abati|opere<br>fondo|società|polittico|adorazione|crocifissione|assunzione|ritratto|catalogo|associazione|agenzia|periodico|rivista|strage| guerra |battaglia|progetto|costruzione| rete | pala | lista |congregazione|bibliografia|elenco|alleanze|culti"
+
+#: templates/non_mappable.html:202
+msgid "Search configuration"
+msgstr "Configura la ricerca"
+
+#: templates/non_mappable.html:205
 msgid "Typology"
 msgstr "Tipologia"
 
-#: templates/non_mappable.html:185
+#: templates/non_mappable.html:206
 msgid "Status"
 msgstr "Status"
 
-#: templates/non_mappable.html:188
+#: templates/non_mappable.html:209
 msgid "categories"
 msgstr "categorie"
 
-#: templates/non_mappable.html:189
+#: templates/non_mappable.html:210
 msgid "mappable"
 msgstr "mappabili"
 
-#: templates/non_mappable.html:192
+#: templates/non_mappable.html:213
 msgid "articles"
 msgstr "articoli"
 
-#: templates/non_mappable.html:193
+#: templates/non_mappable.html:214
 msgid "non mappable"
 msgstr "non mappabili"
 
-#: templates/non_mappable.html:196 templates/non_mappable.html:197
+#: templates/non_mappable.html:217 templates/non_mappable.html:218
 msgid "all"
 msgstr "tutti"
 
-#: templates/non_mappable.html:200
+#: templates/non_mappable.html:221
 msgid "Search string"
 msgstr "Stringa di ricerca"
+
+#: templates/non_mappable.html:222
+msgid "Find"
+msgstr "Cerca"
 
 #: templates/subpage.html:58
 msgid ""

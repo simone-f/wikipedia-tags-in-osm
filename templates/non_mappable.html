@@ -3,10 +3,11 @@
 {% block scripts %}
     <script type="text/javascript">
         $(document).ready(function () {
-
         var itemTypeFilter;
+        var input;
         var mappability;
         var items = [];
+        var itemsNames = [];
         //var itemsNum = {"categories" : 0, "articles" : 0};
 
         $.getJSON( "{{ root }}json/main.json", function(data){
@@ -20,13 +21,13 @@
             $("#in").keypress(function(event){
                 if(event.keyCode == 13){
                     event.preventDefault();
-                    $("#button").click();
+                    $("#searchButton").click();
                 }
             });
 
-            $("#button").click(function(){
+            $("#searchButton").click(function(){
 
-                //reset
+                // reset
                 if (document.getElementById("categoriesRBtn").checked) {itemTypeFilter = ["category"]};
                 if (document.getElementById("articlesRBtn").checked) {itemTypeFilter = ["article"]};
                 if (document.getElementById("allItemsRBtn").checked) {itemTypeFilter = ["category", "article"]};
@@ -34,135 +35,152 @@
                 if (document.getElementById("nonMappableRBtn").checked) {mappability = "non mappable"};
                 if (document.getElementById("allStatusesRBtn").checked) {mappability = "all"};
                 items = [];
+                itemsNames = [];
 
-                //find items
-                var input = $("#in").val();
-                find(data, input);
+                // find items
+                input = $("#in").val().split("|");
+                for (var i=0; i < input.length; i++) {
+                    find(data, input[i], null);
+                }
 
+                // print results
                 var code = "";
-                if (items.length == 0){
-                    code += "<br><i>No results</i>.";}
+                if (items.length == 0) {
+                    code += "<br><i>{% trans %}No results{% endtrans %}</i>.";
+                    }
                 else {
+                    code += "<br><i>{% trans %}Results{% endtrans %}: " + items.length + "</i>.<br><br>";
 
-                    //remove duplicates items
-                    var arr = {"category": {}, "article": {}};
-                    for (var i=0; i<items.length; i++) {
-                        arr[item_type(items[i])][items[i]["name"]] = items[i];
-                        };
-                    items = new Array();
-                    for (name in arr["category"]) {
-                        items.push(arr["category"][name]);
-                        };
-                    for (name in arr["article"]) {
-                        items.push(arr["article"][name]);
-                        };
-
-                    //sort
+                    // sort items per type and name
                     var categoriesItems = new Array;
                     var articlesItems = new Array;
-                    sort_by_type(categoriesItems, articlesItems)
+                    sort_by_type(categoriesItems, articlesItems);
 
-                    code += "<br><i>" + items.length + " voci</i>.<br>";
-
+                    // tables with results
                     var modes = new Array("categories", "articles");
                     for (var modeIdx=0; modeIdx<modes.length; modeIdx++) {
-
-                        if (modeIdx == 0) {
-                            var finalItems = categoriesItems,
-                                modeStr = "Categorie:";
-                            }
-                        else {
-                            var finalItems = articlesItems,
-                                modeStr = "Articoli:";
-                            }
-
-                        if (finalItems.length != 0) {
-                            code += "<br>" + modeStr;
-
-                            for (var i=0; i<finalItems.length; i++){
-                                var item = finalItems[i];
-
-                                //Wikipedia link
-                                var itemType = item_type(item);
-
-                                var itemTypeStr = "";
-                                if (itemType == "category") {itemTypeStr = "Categoria:";}
-                                else {itemTypeStr = ""};
-
-                                var link = "<a href='http://it.wikipedia.org/wiki/" + itemTypeStr + item.name + "' target='_blank'>";
-                                link += item.name + "</a>";
-
-                                code += "<br>" + link;
-                                if (mappability == "all") {
-                                    var itemMappability;
-                                    if (item.mappable){itemMappability = "M";}
-                                    else {itemMappability = "NM";}
-                                    code += " " + itemMappability;
-                                  }
-                                };
+                        itemsList = modeIdx == 0 ? categoriesItems : articlesItems;
+                        if (itemsList.length == 0) {
+                            continue;
+                        } else {
+                            code += create_results_table(modeIdx, itemsList);
                             code += "<br>";
-                            };
+                            }
                         }
                     }
 
                 $("#out").html(code)});
-
             }
-        );
+        )
 
         /* Functions */
-        function item_type(item){
+        function return_item_type(item){
             return "children" in item ? "category" : "article";
-            };
+            }
 
         /*function count_items(item) {
-            itemType = item_type(item);
+            itemType = return_item_type(item);
             itemsNum.itemType += 1;
             if (itemType == "category") {
                 var children = item.children;
                 for (var i=0; i<children.length; i++){
                     count_items(children[i])};
                 }
-            };*/
+            }*/
 
-        function find(item, input){
-            if (item.name.search(new RegExp(input, "i")) != -1) {
+        function find(item, input, parent){
+            // Search items matching with input substring
+            if (itemsNames.indexOf(item.name) < 0) {
+                if (item.name.search(new RegExp(input, "i")) != -1) {
+                    if (itemTypeFilter.indexOf(return_item_type(item)) > -1) {
+                        if (
+                            (mappability == "mappable" && item.mappable) ||
+                            (mappability == "non mappable" && !item.mappable) ||
+                            (mappability != "mappable" && mappability != "non mappable")
+                           ) {
+                            item.parent = parent;
+                            items.push(item);
+                            itemsNames.push(item.name);
+                            }
+                        }
+                    }
 
-                if (itemTypeFilter.indexOf(item_type(item)) > -1) {
-                    if (mappability == "mappable" && item.mappable){
-                        items.push(item);}
-                    else {
-                        if (mappability == "non mappable" && !item.mappable) {
-                            items.push(item);}
-                        if (mappability != "mappable" && mappability != "non mappable") {
-                            items.push(item);}
-                        };
-                    };
+                // recurse
+                if ("children" in item) {
+                    var children = item.children;
+                    for (var i=0; i<children.length; i++){
+                        find(children[i], input, item)};
+                    }
                 };
-
-            //recurse
-            if ("children" in item) {
-                var children = item.children;
-                for (var i=0; i<children.length; i++){
-                    find(children[i], input)};
-                }
-            };
+            }
 
         function sort_by_type(categoriesItems, articlesItems){
             for (var i=0; i<items.length; i++){
-                if (item_type(items[i]) == "category") {categoriesItems.push(items[i]);}
-                else {articlesItems.push(items[i])};
-                };
-            categoriesItems.sort(sort_by_name)
-            articlesItems.sort(sort_by_name)
-            };
+                if (return_item_type(items[i]) == "category") {
+                    categoriesItems.push(items[i]);
+                    }
+                else {
+                    articlesItems.push(items[i]);
+                    }
+                }
+            categoriesItems.sort(sort_by_name);
+            articlesItems.sort(sort_by_name);
+            }
 
         function sort_by_name(a, b){
             var aName = a.name.toLowerCase();
             var bName = b.name.toLowerCase();
             return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-            };
+            }
 
+       function create_results_table(modeIdx, resultsItems) {
+            // Create an html table with the results
+            table = "<table class=\"noborder results\">";
+            modeStr = modeIdx == 0 ? "{% trans %}Category{% endtrans %}:" : "{% trans %}Article{% endtrans %}:";
+            table += "<th>" + modeStr + "</th>";
+            table += "<th></th><th class=\"parent\">{% trans %}Parent category{% endtrans %}:</th>";
+
+            for (var i=0; i < resultsItems.length; i++) {
+                var item = resultsItems[i];
+
+                // Wikipedia link
+                var itemlink = "<a href='http://{{ app.WIKIPEDIALANG }}.wikipedia.org/wiki/";
+                if (return_item_type(item) == "category") {
+                    itemlink += "{{ app.category_translation }}:";
+                    }
+                itemlink += item.name + "' target='_blank'>";
+                var name = item.name;
+                for(var j = 0; j < input.length; j++) {
+                    name = name.replace(
+                                RegExp(input[j], "i"),
+                                '<span style="color:red;">$&</span>');
+                }
+                itemlink +=  name + "</a>";
+
+                // Mappability
+                var itemMappability;
+                if (mappability != "all") {
+                    itemMappability = "";
+                } else {
+                    itemMappability = item.mappable ? "M" : "NM";
+                }
+
+                // Parent category
+                if (item.parent != null) {
+                    var parentlink = "<span class=\"parent\">";
+                    parentlink += "<a class=\"parent\" href='http://{{ app.WIKIPEDIALANG }}.wikipedia.org/wiki/{{ app.category_translation }}:";
+                    parentlink += item.parent.name + "' target='_blank'>";
+                    parentlink += item.parent.name + "</a>";
+                    parentlink += "</span>";
+                    }
+
+                table += "<tr><td>" + itemlink + "</td>";
+                table += "<td>" + itemMappability + "</td>";
+                table += "<td>" + parentlink + "</td></tr>";
+                }
+            table += "</table>";
+            return table;
+            }
     });
     </script>
 {% endblock %}
@@ -171,14 +189,17 @@
   <div id="go_to_home"><a href="./index.html">&#8592; {% trans %}All categories{% endtrans %}</a></div>
   <div id="content">
     <div class="form-field">
-      <br><h1>{% trans %}Search non mappable items{% endtrans %}</h1>
-      <p>{% trans %}Search possible non mappable articles and categories with a substring.{% endtrans %}</p>
-      <p>{% trans %}Examples{% endtrans %}</p>
+      <h1>{% trans %}Search non mappable items{% endtrans %}</h1>
+      <p>{% trans %}Search possible non mappable articles and categories with one or more substrings, separated by "|".{% endtrans %}</p>
+      <p>{% trans %}Items examples:{% endtrans %}</p>
       <ul>
         <li>{% trans %}Article "<i>List</i> of churches in Salerno".{% endtrans %}</li>
         <li>{% trans %}Category "<i>Paintings</i> in Santa Maria Novella basilica"{% endtrans %}</li>
-      </ul><!--<p>Categorie: <span id="articlesNum"></span></p>
-      <p>Articoli: <span id="articlesNum"></span></p>-->
+      </ul>
+      <p>{% trans %}Strings example{% endtrans %}:</p>
+      <p style="word-break: break-all; white-space: normal;">{% trans %}strings_example{% endtrans %}</p>
+      <hr>
+      <p>{% trans %}Search configuration{% endtrans %}</p>
       <table class="noborder">
         <tr>
           <th>{% trans %}Typology{% endtrans %}:</th>
@@ -197,8 +218,8 @@
           <td><input type=radio name=r2 id="allStatusesRBtn" value="all">{% trans %}all{% endtrans %}</td>
         </tr>
       </table>
-      <p>{% trans %}Search string{% endtrans %}: <input type="text" name="itemName" id="in">
-      <input type="button" value="Cerca" id="button"></p>
+      <p>{% trans %}Search string{% endtrans %}: <input type="text" name="itemName" id="in" size="80">
+      <input type="button" value="{% trans %}Find{% endtrans %}" id="searchButton"></p>
     </div>
   <div id="out"></div>
 </div>
