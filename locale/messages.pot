@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-12 14:14+0100\n"
+"POT-Creation-Date: 2016-03-12 14:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,8 +29,8 @@ msgstr ""
 msgid "See {0}: {1}"
 msgstr ""
 
-#: webpages_creator.py:75
-msgid "Download in JOSM"
+#: webpages_creator.py:75 templates/macros.html:17
+msgid "Download the object in JOSM"
 msgstr ""
 
 #: webpages_creator.py:82
@@ -42,7 +42,7 @@ msgid "Zoom with browser, {0} editor, nearby the object that must be tagged"
 msgstr ""
 
 #: webpages_creator.py:99
-msgid "View as clickable map, image... (Overpass Turbo)"
+msgid "View the object as a clickable map, image... (Overpass Turbo)"
 msgstr ""
 
 #: webpages_creator.py:117 templates/macros.html:21
@@ -60,11 +60,11 @@ msgid ""
 msgstr ""
 
 #: webpages_creator.py:197
-msgid "See Wikipedia map (WIWOSM)"
+msgid "See the object on Wikipedia map (WIWOSM)"
 msgstr ""
 
 #: webpages_creator.py:206
-msgid "See OSM web page"
+msgid "See the object's OSM web page"
 msgstr ""
 
 #: webpages_creator.py:389
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Update time of articles lists"
 msgstr ""
 
-#: templates/errors.html:16 templates/non_mappable.html:171
+#: templates/errors.html:16 templates/non_mappable.html:189
 #: templates/subpage.html:47
 msgid "All categories"
 msgstr ""
@@ -375,10 +375,6 @@ msgstr ""
 msgid "Watch the object on Wikipedia map (WIWOSM)"
 msgstr ""
 
-#: templates/macros.html:17
-msgid "Download the object in JOSM"
-msgstr ""
-
 #: templates/macros.html:25
 msgid "Watch the objects on Overpass Turbo (clickable map, export as image..."
 msgstr ""
@@ -435,56 +431,94 @@ msgstr ""
 msgid "See page"
 msgstr ""
 
-#: templates/non_mappable.html:174
-msgid "Search non mappable items"
+#: templates/non_mappable.html:49
+msgid "No results"
 msgstr ""
 
-#: templates/non_mappable.html:175
-msgid "Search possible non mappable articles and categories with a substring."
+#: templates/non_mappable.html:52
+msgid "Results"
 msgstr ""
 
-#: templates/non_mappable.html:176
-msgid "Examples"
+#: templates/non_mappable.html:139
+msgid "Category"
 msgstr ""
 
-#: templates/non_mappable.html:178
-msgid "Article \"<i>List</i> of churches in Salerno\"."
+#: templates/non_mappable.html:139
+msgid "Article"
 msgstr ""
 
-#: templates/non_mappable.html:179
-msgid "Category \"<i>Paintings</i> in Santa Maria Novella basilica\""
-msgstr ""
-
-#: templates/non_mappable.html:184
-msgid "Typology"
-msgstr ""
-
-#: templates/non_mappable.html:185
-msgid "Status"
-msgstr ""
-
-#: templates/non_mappable.html:188
-msgid "categories"
-msgstr ""
-
-#: templates/non_mappable.html:189
-msgid "mappable"
+#: templates/non_mappable.html:141
+msgid "Parent category"
 msgstr ""
 
 #: templates/non_mappable.html:192
-msgid "articles"
+msgid "Search non mappable items"
 msgstr ""
 
 #: templates/non_mappable.html:193
-msgid "non mappable"
+msgid ""
+"Search possible non mappable articles and categories with one or more "
+"substrings, separated by \"|\"."
 msgstr ""
 
-#: templates/non_mappable.html:196 templates/non_mappable.html:197
-msgid "all"
+#: templates/non_mappable.html:194
+msgid "Items examples:"
+msgstr ""
+
+#: templates/non_mappable.html:196
+msgid "Article \"<i>List</i> of churches in Salerno\"."
+msgstr ""
+
+#: templates/non_mappable.html:197
+msgid "Category \"<i>Paintings</i> in Santa Maria Novella basilica\""
+msgstr ""
+
+#: templates/non_mappable.html:199
+msgid "Strings example"
 msgstr ""
 
 #: templates/non_mappable.html:200
+msgid "strings_example"
+msgstr ""
+
+#: templates/non_mappable.html:202
+msgid "Search configuration"
+msgstr ""
+
+#: templates/non_mappable.html:205
+msgid "Typology"
+msgstr ""
+
+#: templates/non_mappable.html:206
+msgid "Status"
+msgstr ""
+
+#: templates/non_mappable.html:209
+msgid "categories"
+msgstr ""
+
+#: templates/non_mappable.html:210
+msgid "mappable"
+msgstr ""
+
+#: templates/non_mappable.html:213
+msgid "articles"
+msgstr ""
+
+#: templates/non_mappable.html:214
+msgid "non mappable"
+msgstr ""
+
+#: templates/non_mappable.html:217 templates/non_mappable.html:218
+msgid "all"
+msgstr ""
+
+#: templates/non_mappable.html:221
 msgid "Search string"
+msgstr ""
+
+#: templates/non_mappable.html:222
+msgid "Find"
 msgstr ""
 
 #: templates/subpage.html:58

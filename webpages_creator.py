@@ -72,7 +72,7 @@ class Helpers:
         url = "http://localhost:8111/"
         if mode == "download":
             url += "import?url=http://overpass.osm.rambler.ru/cgi/interpreter?data=" + data
-            title = self.app._("Download in JOSM")
+            title = self.app._("Download the object in JOSM")
         elif mode == "load_and_zoom":
             left = data[1] - 0.0008
             right = data[1] + 0.0008
@@ -96,7 +96,7 @@ class Helpers:
 
     def overpass_turbo_link(self, query, cssClass=""):
         url = 'http://overpass-turbo.eu/index.html?Q=%s&amp;R' % urllib.quote_plus(query)
-        title = self.app._("View as clickable map, image... (Overpass Turbo)")
+        title = self.app._("View the object as a clickable map, image... (Overpass Turbo)")
         img = "{{root}}img/Overpass-turbo.png"
         if cssClass != "":
             cssClass = ' class="%s"' % cssClass
@@ -194,7 +194,7 @@ class Helpers:
         """
         #WIWOSM link
         wiwosmUrl = "http://toolserver.org/~kolossos/openlayers/kml-on-ol-json3.php?lang=%s&amp;title=%s" % (self.app.WIKIPEDIALANG, article.name)
-        wiwosmTitle = self.app._("See Wikipedia map (WIWOSM)")
+        wiwosmTitle = self.app._("See the object on Wikipedia map (WIWOSM)")
         wiwosmImg = "{{root}}img/wiwosm.png"
         wiwosmLink = self.url_to_link(wiwosmUrl, wiwosmTitle, None, wiwosmImg)
 
@@ -203,7 +203,7 @@ class Helpers:
         osmLinks, osmIdsDiv = self.osm_ids_string(article)
         #link for showing the div
         osmUrl = "javascript:showHideDiv(\'%s\');" % article.ident
-        osmLinkTitle = self.app._("See OSM web page")
+        osmLinkTitle = self.app._("See the object's OSM web page")
         #check what kinds of OSM primitive are tagged and use the
         #right icon
         osmTypeAbbr = [osmType[0] for osmType in osmLinks if osmLinks[osmType] != []]

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-03-12 14:14+0100\n"
+"POT-Creation-Date: 2016-03-12 14:34+0100\n"
 "PO-Revision-Date: 2014-08-13 21:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: it_IT <LL@li.org>\n"
@@ -29,9 +29,9 @@ msgstr "categoria"
 msgid "See {0}: {1}"
 msgstr "Vedi {0}: {1}"
 
-#: webpages_creator.py:75
-msgid "Download in JOSM"
-msgstr "Scarica in JOSM"
+#: webpages_creator.py:75 templates/macros.html:17
+msgid "Download the object in JOSM"
+msgstr "Scarica l'oggetto in JOSM"
 
 #: webpages_creator.py:82
 msgid "Zoom with JOSM nearby the object that must be tagged"
@@ -42,8 +42,9 @@ msgid "Zoom with browser, {0} editor, nearby the object that must be tagged"
 msgstr "Fai lo zoom con il browser, editor {0}, vicino all'oggetto da taggare"
 
 #: webpages_creator.py:99
-msgid "View as clickable map, image... (Overpass Turbo)"
-msgstr "Visualizza come mappa cliccabile, immagine... (Overpass Turbo)"
+#, fuzzy
+msgid "View the object as a clickable map, image... (Overpass Turbo)"
+msgstr "Visualizza l'oggetto come mappa cliccabile, immagine... (Overpass Turbo)"
 
 #: webpages_creator.py:117 templates/macros.html:21
 msgid "Go to OSM web page of this object"
@@ -62,12 +63,13 @@ msgstr ""
 "(WIWOSM add-tags)"
 
 #: webpages_creator.py:197
-msgid "See Wikipedia map (WIWOSM)"
-msgstr "Vedi mappa Wikipedia (WIWOSM)"
+#, fuzzy
+msgid "See the object on Wikipedia map (WIWOSM)"
+msgstr "Vedi l'oggetto sulla mappa Wikipedia (WIWOSM)"
 
 #: webpages_creator.py:206
-msgid "See OSM web page"
-msgstr "Vedi pagina OSM"
+msgid "See the object's OSM web page"
+msgstr "Vedi la pagina OSM dell'oggetto"
 
 #: webpages_creator.py:389
 msgid "Still to tag"
@@ -432,10 +434,6 @@ msgstr "Oggetto taggato,<br>niente da fare"
 msgid "Watch the object on Wikipedia map (WIWOSM)"
 msgstr "Vedi l'oggetto sulla mappa Wikipedia (WIWOSM)"
 
-#: templates/macros.html:17
-msgid "Download the object in JOSM"
-msgstr "Scarica l'oggetto in JOSM"
-
 #: templates/macros.html:25
 msgid "Watch the objects on Overpass Turbo (clickable map, export as image..."
 msgstr ""
@@ -561,7 +559,10 @@ msgstr "Esempio di stringhe"
 
 #: templates/non_mappable.html:200
 msgid "strings_example"
-msgstr "sepolti|studenti|rettori|professori|rettori|persone|nati|morti|tiranni|vescovi|glossatori|organi|affreschi|dipinti|storie|abati|opere<br>fondo|società|polittico|adorazione|crocifissione|assunzione|ritratto|catalogo|associazione|agenzia|periodico|rivista|strage| guerra |battaglia|progetto|costruzione| rete | pala | lista |congregazione|bibliografia|elenco|alleanze|culti"
+msgstr ""
+"sepolti|studenti|rettori|professori|rettori|persone|nati|morti|tiranni|vescovi|glossatori|organi|affreschi|dipinti|storie|abati|opere<br>fondo|società|polittico|adorazione|crocifissione|assunzione|ritratto|catalogo|associazione|agenzia|periodico|rivista|strage|"
+" guerra |battaglia|progetto|costruzione| rete | pala | lista "
+"|congregazione|bibliografia|elenco|alleanze|culti"
 
 #: templates/non_mappable.html:202
 msgid "Search configuration"
@@ -637,4 +638,3 @@ msgstr "Visualizza articoli non mappabili"
 #: templates/subpage.html:107
 msgid "Show also non mappable categories and articles"
 msgstr "Mostra anche categorie ed articoli non mappabili"
-
