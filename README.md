@@ -34,8 +34,8 @@ A POLY file with the same name of the country, e.g. `italy.poly`, must be put in
 * wget
 * python-jinja2
 * python-babel
-* zgrep, cut (if using --show_link_to_wikipedia_coordinates)
 * python-requests (if using --infer_coordinates_from_wikipedia)
+* python-pysqlite2, spatialite-bin (if using --show_coordinates_from_osm)
 
 Download osmconvert/update/filter from the [web site](http://wiki.openstreetmap.org/wiki/Osmconvert) or install with:
         
@@ -126,7 +126,7 @@ For debugging purpose, categories trees can be print to text files, by setting `
 ##Development
 Authors: [Simone F.](http://wiki.openstreetmap.org/wiki/User:Groppo/) <groppo8@gmail.com> (main author), Luca Delucchi, Cristian Consonni
 
-Contributors: dforsi, aborruso
+Contributors: dforsi, aborruso, Alessandro Palmas
 
 Code: Python, license GPLv3
 
