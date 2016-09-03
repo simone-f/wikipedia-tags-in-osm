@@ -140,3 +140,4 @@ Services used by the program: MediaWiki [API](https://www.mediawiki.org/wiki/API
 * themes icons are from [Maki](https://github.com/mapbox/maki), License BSD
 * regions icons are from [araldicacivica.it](http://www.araldicacivica.it), License [CC BY-NC-ND 3.0](http://creativecommons.org/licenses/by-nc-nd/3.0/it/)
 * nodes, ways, relations and Overpass Turbo icons are from the [OSM Wiki](http://wiki.openstreetmap.org/)
+* copy.svg icon made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](http://www.flaticon.com)

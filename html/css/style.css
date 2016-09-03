@@ -295,7 +295,7 @@ div.showHideNonMappable a:hover {
     display: none;
 }
 
-.articleLinkImg, .infoImg {
+.articleLinkImg, .infoImg, .copyImg {
     vertical-align: middle;
 }
 
@@ -371,18 +371,20 @@ div#map {
 }
 
 table.popup {
-    width: 150px;
+    width: 200px;
 }
 table.popup td {
     border: 0px solid;
 }
 table.popup tr:nth-child(1),
-table.popup tr:nth-child(2) {
+table.popup tr:nth-child(4) {
     text-align: center;
-    font-size: 90%;
+    font-size: 95%;
 }
+
+table.popup tr:nth-child(2),
 table.popup tr:nth-child(3) {
-    font-size: 65%;
+    font-size: 75%;
 }
 .overlay {
     position: absolute;
